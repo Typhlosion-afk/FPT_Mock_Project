@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Theme.MuzicTheme" parent="Theme.AppCompat.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/background_color</item>
+        <item name="colorPrimaryVariant">@color/background_color</item>
+        <item name="colorOnPrimary">@color/background_color</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/background_color</item>
+        <item name="colorSecondaryVariant">@color/background_color</item>
+        <item name="colorOnSecondary">@color/background_color</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+        <item name="backgroundColor">@color/background_color</item>
+    </style>
+
+    <style name="Theme.MuzicTheme.Starting" parent="Theme.MuzicTheme">
+
+        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.MuzicTheme</item>
+
+    </style>
+
+    <style name="NavigationStyle">
+
+        <!-- text size in menu-->
+        <item name="android:textSize">16sp</item>
+
+        <!-- item size in menu-->
+        <item name="android:listPreferredItemHeightSmall">18dp</item>
+        <item name="listPreferredItemHeightSmall">18dp</item>
+    </style>
+</resources>

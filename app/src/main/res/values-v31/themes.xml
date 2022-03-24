@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.MuzicTheme.Starting" parent="Theme.MuzicTheme">
+        <item name="android:windowSplashScreenBackground">@color/background_color
+        </item>
+
+        <item name="android:windowBackground">@drawable/splash_background</item>
+
+        <item name="android:windowSplashScreenAnimatedIcon">
+            @drawable/app_logo_null_bg
+        </item>
+
+        <item name="postSplashScreenTheme">@style/Theme.MuzicTheme</item>
+    </style>
+</resources>

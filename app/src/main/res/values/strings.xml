@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Muzic</string>
+    <string name="home">Home</string>
+    <string name="songs">Songs</string>
+    <string name="setting">Settings</string>
+    <string name="search_album_song">Search album song</string>
+    <string name="hot_recommended">Hot Recommended</string>
+    <string name="author">Author</string>
+    <string name="playlist">Playlist</string>
+    <string name="recently_played">Recently Played</string>
+    <string name="txt_long_example">Can\'t get you out of my head</string>
+</resources>
