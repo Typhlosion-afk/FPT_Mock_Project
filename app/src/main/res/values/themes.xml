@@ -23,8 +23,8 @@
 
     <style name="BottomNavigation">
 
-        <item name="itemIconTint">@drawable/item_select_nav</item>
-        <item name="itemTextColor">@drawable/item_select_nav</item>
+        <item name="itemIconTint">@drawable/item_home_nav</item>
+        <item name="itemTextColor">@drawable/item_home_nav</item>
         <!-- item size in menu-->
         <item name="android:listPreferredItemHeightSmall">18dp</item>
         <item name="listPreferredItemHeightSmall">18dp</item>
