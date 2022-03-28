@@ -87,22 +87,19 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager horizontalLayout2 =
                 new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.HORIZONTAL, false);
 
-        mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
-        mRecycleViewRecently.setLayoutManager(verticalLayout);
-        mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListSong);
-        mRecycleViewRecently.setAdapter(mHomeRecentlyAdapter);
+        mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
+        mRecycleViewRecommend.setLayoutManager(horizontalLayout2);
+        mHomeRecommendAdapter = new HomeRecommendAdapter(mListSong);
+        mRecycleViewRecommend.setAdapter(mHomeRecommendAdapter);
 
         mRecycleViewPlaylist = mRootView.findViewById(R.id.recycle_playlist);
         mRecycleViewPlaylist.setLayoutManager(horizontalLayout);
         mHomePlaylistAdapter = new HomePlaylistAdapter(mListPlaylist);
         mRecycleViewPlaylist.setAdapter(mHomePlaylistAdapter);
 
-        mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
-        mRecycleViewRecommend.setLayoutManager(horizontalLayout2);
-        mHomeRecommendAdapter = new HomeRecommendAdapter(mListSong);
-        mRecycleViewRecommend.setAdapter(mHomeRecommendAdapter);
-
-
+        mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
+        mRecycleViewRecently.setLayoutManager(verticalLayout);
+        mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListSong);
+        mRecycleViewRecently.setAdapter(mHomeRecentlyAdapter);
     }
-
 }

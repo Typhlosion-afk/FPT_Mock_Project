@@ -10,22 +10,29 @@
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/gradient_peach_bg.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2101851851851852" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2611111111111111" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_home_nav.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_nav.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_select_nav.xml" value="0.28489583333333335" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/rating_bar.xml" value="0.23703703703703705" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/selector_home_ic.xml" value="0.124" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/selector_item_text.xml" value="0.124" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/selector_setting_ic.xml" value="0.124" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/selector_songs_ic.xml" value="0.124" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/splash_background.xml" value="0.15260416666666668" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/font/circular_std_medium_regular.xml" value="0.2564814814814815" />
-        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.31950207468879666" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_splash2.xml" value="0.22" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_hot_recommended.xml" value="0.5054704595185996" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_playlist.xml" value="0.26875" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_recently.xml" value="0.33" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_albums.xml" value="0.16770833333333332" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_home.xml" value="0.2" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_playlists.xml" value="0.16770833333333332" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_settings.xml" value="0.1" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_song.xml" value="0.1" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/menu-v26/bottom_nav.xml" value="0.14114583333333333" />
-        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/menu/bottom_nav.xml" value="0.5" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/menu/bottom_nav.xml" value="0.43023255813953487" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15572916666666667" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/mipmap-anydpi-v26/ic_launcher_round.xml" value="0.15572916666666667" />
       </map>

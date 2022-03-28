@@ -5,6 +5,7 @@ import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.NavigationUI;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -57,6 +58,8 @@ public class MainActivity extends AppCompatActivity {
     private void initBottomNav() {
         BottomNavigationView bottomNavigationView = this.findViewById(R.id.bottom_nav);
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+
+        bottomNavigationView.setItemIconTintList(null);
 
         navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
             mEdtSearch.setVisibility(View.GONE);

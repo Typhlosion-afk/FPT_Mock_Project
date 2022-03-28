@@ -14,11 +14,10 @@ import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapter.HomeHolder> {
 
-    private View rootView;
+    private View mRootView;
 
     private ArrayList<Song> mListSong;
 
@@ -30,8 +29,8 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
     @NonNull
     @Override
     public HomeRecentlyAdapter.HomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_recently, parent, false);
-        return new HomeHolder(rootView);
+        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_recently, parent, false);
+        return new HomeHolder(mRootView);
     }
 
     @Override
