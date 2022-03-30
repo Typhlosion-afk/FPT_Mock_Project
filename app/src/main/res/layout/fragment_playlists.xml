@@ -1,17 +1,225 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingTop="20dp"
     tools:context=".fragment.songs.PlaylistsFragment">
 
+    <!--    ////////////My Top Tracks Item///////////  -->
+    <ImageView
+        android:id="@+id/item_bg"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_bg_top_tracks"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/item_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/my_top_tracks"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_number"
+        app:layout_constraintStart_toStartOf="@+id/item_number" />
+
+    <TextView
+        android:id="@+id/item_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/songs"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg"
+        app:layout_constraintStart_toStartOf="@+id/item_bg" />
+
+    <ImageView
+        android:id="@+id/btn_item_play"
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_play_white"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg"
+        app:layout_constraintEnd_toEndOf="@+id/item_bg"
+        tools:ignore="ContentDescription" />
+
+    <!--    ////////////Latest Added Item///////////  -->
+    <ImageView
+        android:id="@+id/item_bg2"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_bg_latest_added"
+        app:layout_constraintStart_toEndOf="@+id/item_bg"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/item_name2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/latest_added"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_number2"
+        app:layout_constraintStart_toStartOf="@+id/item_number2" />
+
+    <TextView
+        android:id="@+id/item_number2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/songs"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg2"
+        app:layout_constraintStart_toStartOf="@+id/item_bg2" />
+
+    <ImageView
+        android:id="@+id/btn_item_play2"
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_play_white"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg2"
+        app:layout_constraintEnd_toEndOf="@+id/item_bg2"
+        tools:ignore="ContentDescription" />
+
+    <!--    ////////////History Item///////////  -->
+    <ImageView
+        android:id="@+id/item_bg3"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_bg_history"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_bg"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/item_name3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/history"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_number3"
+        app:layout_constraintStart_toStartOf="@+id/item_number3" />
+
+    <TextView
+        android:id="@+id/item_number3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/songs"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg3"
+        app:layout_constraintStart_toStartOf="@+id/item_bg3" />
+
+    <ImageView
+        android:id="@+id/btn_item_play3"
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_play_white"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg3"
+        app:layout_constraintEnd_toEndOf="@+id/item_bg3"
+        tools:ignore="ContentDescription" />
+
+    <!--    ////////////Favourites Item///////////  -->
+    <ImageView
+        android:id="@+id/item_bg4"
+        android:layout_width="0dp"
+        android:layout_height="128dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/img_bg_favourites"
+        app:layout_constraintStart_toEndOf="@+id/item_bg3"
+        app:layout_constraintTop_toBottomOf="@+id/item_bg2"
+        app:layout_constraintWidth_percent="0.5"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/item_name4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/favourites"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toTopOf="@+id/item_number4"
+        app:layout_constraintStart_toStartOf="@+id/item_number4" />
+
+    <TextView
+        android:id="@+id/item_number4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:text="@string/songs"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg4"
+        app:layout_constraintStart_toStartOf="@+id/item_bg4" />
+
+    <ImageView
+        android:id="@+id/btn_item_play4"
+        android:layout_width="22sp"
+        android:layout_height="22sp"
+        android:layout_margin="20dp"
+        android:src="@drawable/ic_play_white"
+        app:layout_constraintBottom_toBottomOf="@+id/item_bg4"
+        app:layout_constraintEnd_toEndOf="@+id/item_bg4"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:paddingVertical="20dp"
+        android:text="@string/my_playlists"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/item_bg3" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="20dp"
+        android:fontFamily="@font/circular_std_medium"
+        android:paddingVertical="20dp"
+        android:text="@string/view_all"
+        android:textColor="@color/light_peach"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView4"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/textView4" />
+
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/menu_container"
+        android:id="@+id/my_playlist_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="20dp"
+        app:layout_constraintTop_toBottomOf="@+id/textView4" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

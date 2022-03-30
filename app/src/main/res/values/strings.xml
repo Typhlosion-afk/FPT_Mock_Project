@@ -11,4 +11,10 @@
     <string name="txt_long_example" tools:ignore="Typos">This is a very very very very very very very very long name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="my_playlists">My Playlists</string>
+    <string name="view_all">View All</string>
+    <string name="my_top_tracks">My Top Tracks</string>
+    <string name="latest_added">Latest Added</string>
+    <string name="history">History</string>
+    <string name="favourites">Favourites</string>
 </resources>

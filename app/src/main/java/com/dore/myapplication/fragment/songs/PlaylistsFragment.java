@@ -3,7 +3,6 @@ package com.dore.myapplication.fragment.songs;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -13,8 +12,7 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.adapter.AllSongsAdapter;
-import com.dore.myapplication.adapter.PlaylistMenuAdapter;
+import com.dore.myapplication.adapter.MyPlaylistAdapter;
 import com.dore.myapplication.model.Playlist;
 import com.dore.myapplication.model.Song;
 
@@ -29,11 +27,9 @@ public class PlaylistsFragment extends Fragment {
 
     private List<Playlist> mListPlaylist = new ArrayList<>();
 
-    private PlaylistMenuAdapter mMenuAdapter;
+    private RecyclerView mRecycler;
 
-    private GridView mGridView;
-
-    private RecyclerView mRecyclerMenu;
+    private MyPlaylistAdapter mMyPlaylistAdapter;
 
     public PlaylistsFragment() {}
 
@@ -44,7 +40,7 @@ public class PlaylistsFragment extends Fragment {
         mRootView = inflater.inflate(R.layout.fragment_playlists, container, false);
 
         initData();
-        initMenu();
+        handleMenu();
         initAdapter();
 
         return mRootView;
@@ -60,6 +56,7 @@ public class PlaylistsFragment extends Fragment {
         mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
 
         mListPlaylist.clear();
+        mListPlaylist.add(new Playlist("Playlist 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", mListSong));
         mListPlaylist.add(new Playlist("Playlist 1", mListSong));
         mListPlaylist.add(new Playlist("Playlist 2", mListSong));
         mListPlaylist.add(new Playlist("Playlist 3", mListSong));
@@ -67,20 +64,17 @@ public class PlaylistsFragment extends Fragment {
         mListPlaylist.add(new Playlist("Playlist 5", mListSong));
         mListPlaylist.add(new Playlist("Playlist 6", mListSong));
         mListPlaylist.add(new Playlist("Playlist 7", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 8", mListSong));
     }
 
-    private void initMenu(){
-        mRecyclerMenu = mRootView.findViewById(R.id.menu_container);
-        mMenuAdapter = new PlaylistMenuAdapter(mRootView.getContext());
-        mRecyclerMenu.setLayoutManager(
-                new GridLayoutManager(mRootView.getContext(),2, RecyclerView.HORIZONTAL, false));
+    private void handleMenu(){
 
-        mRecyclerMenu.setAdapter(mMenuAdapter);
 
     }
 
     private void initAdapter() {
-
+        mMyPlaylistAdapter = new MyPlaylistAdapter(mListPlaylist);
+        mRecycler = mRootView.findViewById(R.id.my_playlist_container);
+        mRecycler.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.HORIZONTAL, false));
+        mRecycler.setAdapter(mMyPlaylistAdapter);
     }
 }
