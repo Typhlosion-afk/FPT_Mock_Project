@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="10dp"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/img_card_disc"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:scaleType="fitCenter"
+        android:background="@drawable/bg_card_disc"
+        android:src="@drawable/img_bg_playlist_default"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/txt_name_song"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:fontFamily="@font/circular_std_medium_regular"
+        android:text="@string/txt_long_example"
+        android:textSize="13sp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        app:layout_constraintWidth_percent="0.6"
+        app:layout_constraintStart_toEndOf="@+id/img_card_disc"
+        app:layout_constraintTop_toTopOf="@+id/img_card_disc" />
+
+    <TextView
+        android:id="@+id/txt_author"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/songs"
+        android:textColor="@color/black_200"
+        android:textSize="10sp"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_song"
+        app:layout_constraintTop_toBottomOf="@+id/txt_name_song"
+        tools:ignore="SmallSp" />
+
+    <ImageView
+        android:id="@+id/img_play_icon"
+        android:layout_width="22dp"
+        android:layout_height="22dp"
+        android:src="@drawable/ic_play_gradient"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_author"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/txt_name_song" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/view_line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintRight_toRightOf="@id/img_play_icon"
+        app:layout_constraintStart_toEndOf="@+id/img_card_disc" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

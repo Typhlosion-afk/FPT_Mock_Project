@@ -1,6 +1,5 @@
 package com.dore.myapplication.adapter;
 
-import android.media.Image;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.model.Playlist;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
@@ -39,7 +37,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @Override
     public void onBindViewHolder(@NonNull HomeRecommendAdapter.HomeHolder holder, int position) {
 
-        holder.imgBackground.setImageResource(R.drawable.bg_recomment_default);
+        holder.imgBackground.setImageResource(R.drawable.img_bg_recomment_default);
 
         holder.txtName.setText(mListSong.get(position).getName());
         holder.txtAuthor.setText(mListSong.get(position).getAuthor());

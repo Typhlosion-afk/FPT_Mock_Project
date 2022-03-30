@@ -6,12 +6,12 @@
     android:layout_height="wrap_content"
     android:layout_marginHorizontal="20dp">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_card"
         android:layout_width="232dp"
         android:layout_height="128dp"
-        android:background="@drawable/bg_img_card_hot_recommend"
         android:scaleType="centerCrop"
+        app:shapeAppearanceOverlay="@style/CornerImage_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         android:contentDescription="@string/app_name" />

@@ -3,64 +3,84 @@ package com.dore.myapplication.fragment.songs;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.adapter.AllSongsAdapter;
+import com.dore.myapplication.adapter.PlaylistMenuAdapter;
+import com.dore.myapplication.model.Playlist;
+import com.dore.myapplication.model.Song;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link PlaylistsFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
+import java.util.ArrayList;
+import java.util.List;
+
 public class PlaylistsFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private View mRootView;
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private List<Song> mListSong = new ArrayList<>();
 
-    public PlaylistsFragment() {
-        // Required empty public constructor
-    }
+    private List<Playlist> mListPlaylist = new ArrayList<>();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment PlaylistsFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static PlaylistsFragment newInstance(String param1, String param2) {
-        PlaylistsFragment fragment = new PlaylistsFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private PlaylistMenuAdapter mMenuAdapter;
 
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
+    private GridView mGridView;
+
+    private RecyclerView mRecyclerMenu;
+
+    public PlaylistsFragment() {}
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_playlists, container, false);
+
+        mRootView = inflater.inflate(R.layout.fragment_playlists, container, false);
+
+        initData();
+        initMenu();
+        initAdapter();
+
+        return mRootView;
+    }
+
+    private void initData() {
+        mListSong.clear();
+        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
+        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
+        mListSong.add(new Song("Bai hat so 3", "Ca si 2", "path 3"));
+        mListSong.add(new Song("Bai hat so 4", "Ca si 2", "path 4"));
+        mListSong.add(new Song("Bai hat so 5", "Ca si 2", "path 5"));
+        mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
+
+        mListPlaylist.clear();
+        mListPlaylist.add(new Playlist("Playlist 1", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 2", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 3", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 4", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 5", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 6", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 7", mListSong));
+        mListPlaylist.add(new Playlist("Playlist 8", mListSong));
+    }
+
+    private void initMenu(){
+        mRecyclerMenu = mRootView.findViewById(R.id.menu_container);
+        mMenuAdapter = new PlaylistMenuAdapter(mRootView.getContext());
+        mRecyclerMenu.setLayoutManager(
+                new GridLayoutManager(mRootView.getContext(),2, RecyclerView.HORIZONTAL, false));
+
+        mRecyclerMenu.setAdapter(mMenuAdapter);
+
+    }
+
+    private void initAdapter() {
+
     }
 }

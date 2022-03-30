@@ -3,7 +3,7 @@ package com.dore.myapplication.model;
 public abstract class AbsObject {
     public int rate = 0;
     public boolean isFavor = false;
-
+    public boolean isPlaying = false;
 
     public int getRate() {
         return rate;

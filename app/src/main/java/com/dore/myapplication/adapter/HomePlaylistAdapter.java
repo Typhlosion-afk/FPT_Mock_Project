@@ -35,7 +35,7 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
     @Override
     public void onBindViewHolder(@NonNull HomePlaylistAdapter.HomeHolder holder, int position) {
 
-        holder.imgBackground.setImageResource(R.drawable.bg_playlist_default);
+        holder.imgBackground.setImageResource(R.drawable.img_bg_playlist_default);
 
         holder.txtName.setText(mListPlaylist.get(position).getName());
         holder.txtAuthor.setText(getStrSize(mListPlaylist.get(position).getListSong().size()));

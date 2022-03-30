@@ -26,4 +26,16 @@
         <item name="android:textSize">13sp</item>
         <item name="android:textAllCaps">false</item>
     </style>
+
+    <style name="CornerImage_8">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">8sp</item>
+        <item name="color">@color/white</item>
+    </style>
+
+    <style name="CornerImage_circle">
+        <item name="background">@drawable/bg_card_disc</item>
+        <item name="color">@color/white</item>
+    </style>
+
 </resources>

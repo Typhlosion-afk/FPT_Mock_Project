@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">Muzic</string>
     <string name="home">Home</string>
     <string name="songs">Songs</string>
@@ -8,7 +8,7 @@
     <string name="author">Author</string>
     <string name="playlist">Playlist</string>
     <string name="recently_played">Recently Played</string>
-    <string name="txt_long_example">Can\'t get you out of my head</string>
+    <string name="txt_long_example" tools:ignore="Typos">This is a very very very very very very very very long name</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
