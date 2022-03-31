@@ -6,9 +6,10 @@
     tools:context=".fragment.songs.ArtistsFragment">
 
     <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+    <com.dore.myapplication.view.DiscCircleView
+        android:src="@drawable/img_bg_playlist_default"
+        android:scaleType="centerCrop"
+         android:layout_height="120dp"
+         android:layout_width="120dp"/>
 
 </FrameLayout>
