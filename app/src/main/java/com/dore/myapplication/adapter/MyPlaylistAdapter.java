@@ -1,5 +1,6 @@
 package com.dore.myapplication.adapter;
 
+import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +22,10 @@ public class MyPlaylistAdapter extends RecyclerView.Adapter<MyPlaylistAdapter.Pl
 
     private List<Playlist> mListPlaylist = new ArrayList<>();
 
-    public MyPlaylistAdapter(List<Playlist> ls) {
+    private Context mContext;
+
+    public MyPlaylistAdapter(List<Playlist> ls, Context context) {
+        this.mContext = context;
         if(ls.size()!=0) {
             mListPlaylist = ls;
         }
@@ -30,9 +34,7 @@ public class MyPlaylistAdapter extends RecyclerView.Adapter<MyPlaylistAdapter.Pl
     @NonNull
     @Override
     public PlaylistHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
-        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_my_playlist, parent, false);
-
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_my_playlist, parent, false);
         return new PlaylistHolder(mRootView);
     }
 
@@ -55,7 +57,6 @@ public class MyPlaylistAdapter extends RecyclerView.Adapter<MyPlaylistAdapter.Pl
 
         public PlaylistHolder(@NonNull View itemView) {
             super(itemView);
-
             img = itemView.findViewById(R.id.img_card);
             textView = itemView.findViewById(R.id.txt_name_card);
         }

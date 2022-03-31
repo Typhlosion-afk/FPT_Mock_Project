@@ -89,15 +89,18 @@ public class HomeFragment extends Fragment {
 
         mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
         mRecycleViewRecommend.setLayoutManager(layoutHomeRecommend);
+        mRecycleViewRecommend.setNestedScrollingEnabled(false);
         mHomeRecommendAdapter = new HomeRecommendAdapter(mListSong);
         mRecycleViewRecommend.setAdapter(mHomeRecommendAdapter);
 
         mRecycleViewPlaylist = mRootView.findViewById(R.id.recycle_playlist);
         mRecycleViewPlaylist.setLayoutManager(layoutPlaylist);
         mHomePlaylistAdapter = new HomePlaylistAdapter(mListPlaylist);
+        mRecycleViewPlaylist.setNestedScrollingEnabled(false);
         mRecycleViewPlaylist.setAdapter(mHomePlaylistAdapter);
 
         mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
+        mRecycleViewRecently.setNestedScrollingEnabled(false);
         mRecycleViewRecently.setLayoutManager(layoutRecently);
         mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListSong);
         mRecycleViewRecently.setAdapter(mHomeRecentlyAdapter);

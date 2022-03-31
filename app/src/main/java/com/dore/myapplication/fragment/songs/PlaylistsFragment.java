@@ -72,7 +72,7 @@ public class PlaylistsFragment extends Fragment {
     }
 
     private void initAdapter() {
-        mMyPlaylistAdapter = new MyPlaylistAdapter(mListPlaylist);
+        mMyPlaylistAdapter = new MyPlaylistAdapter(mListPlaylist, mRootView.getContext());
         mRecycler = mRootView.findViewById(R.id.my_playlist_container);
         mRecycler.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.HORIZONTAL, false));
         mRecycler.setAdapter(mMyPlaylistAdapter);

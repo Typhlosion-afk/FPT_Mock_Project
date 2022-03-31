@@ -11,6 +11,8 @@
         android:layout_width="232dp"
         android:layout_height="128dp"
         android:scaleType="centerCrop"
+        app:strokeColor="@color/black_200"
+        app:strokeWidth="0.5dp"
         app:shapeAppearanceOverlay="@style/CornerImage_8"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
