@@ -7,16 +7,29 @@
     android:paddingVertical="10dp"
     android:layout_height="wrap_content">
 
-    <ImageView
+    <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_card_disc"
         android:layout_width="48dp"
         android:layout_height="48dp"
-        android:scaleType="fitCenter"
-        android:background="@drawable/bg_card_disc"
+        android:scaleType="centerCrop"
+        android:padding="3dp"
         android:src="@drawable/img_bg_playlist_default"
+        app:strokeColor="@color/black_100"
+        app:strokeWidth="3dp"
+        app:shapeAppearanceOverlay="@style/CornerImage_circle"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="12dp"
+        android:layout_height="12dp"
+        android:background="@drawable/black_hole"
+        android:elevation="1dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_card_disc"
+        app:layout_constraintEnd_toEndOf="@+id/img_card_disc"
+        app:layout_constraintStart_toStartOf="@+id/img_card_disc"
+        app:layout_constraintTop_toTopOf="@+id/img_card_disc" />
 
     <TextView
         android:id="@+id/txt_name_song"
@@ -50,7 +63,8 @@
         android:src="@drawable/ic_play_gradient"
         app:layout_constraintBottom_toBottomOf="@+id/txt_author"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/txt_name_song" />
+        app:layout_constraintTop_toTopOf="@+id/txt_name_song"
+        tools:ignore="ContentDescription" />
 
     <View
         android:layout_width="0dp"

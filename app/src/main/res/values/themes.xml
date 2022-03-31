@@ -31,13 +31,13 @@
         <item name="cornerFamily">rounded</item>
         <item name="background">@color/white</item>
         <item name="cornerSize">8sp</item>
-        <item name="strokeWidth">0.5dp</item>
-        <item name="strokeColor">@color/black_200</item>
         <item name="color">@color/white</item>
     </style>
 
     <style name="CornerImage_circle">
-        <item name="background">@drawable/bg_card_disc</item>
+        <item name="cornerFamily">rounded</item>
+        <item name="background">@color/white</item>
+        <item name="cornerSize">50%</item>
         <item name="color">@color/white</item>
     </style>
 
