@@ -3,13 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="20dp">
+    android:paddingTop="20dp"
+    android:paddingHorizontal="10dp"
+    android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/img_card"
         android:layout_width="match_parent"
         android:layout_height="162dp"
+        android:scaleType="centerCrop"
+        android:alpha="0.6"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -22,6 +25,7 @@
         android:fontFamily="@font/circular_std_medium"
         android:textSize="15sp"
         android:textStyle="bold"
+        android:textColor="@color/white"
         app:layout_constraintBottom_toBottomOf="@+id/img_card"
         app:layout_constraintEnd_toEndOf="@+id/img_card"
         app:layout_constraintStart_toStartOf="@+id/img_card"
@@ -34,6 +38,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/circular_std_medium_book"
         android:textSize="10sp"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="@+id/txt_name_card"
         app:layout_constraintStart_toStartOf="@+id/txt_name_card"
         app:layout_constraintTop_toBottomOf="@+id/txt_name_card"

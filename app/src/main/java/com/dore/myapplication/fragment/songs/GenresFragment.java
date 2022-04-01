@@ -61,6 +61,7 @@ public class GenresFragment extends Fragment {
         mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
         mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
 
+        mListMusicStyle.clear();
         mListMusicStyle.add(new MusicStyle("Classical", mListSong, BitmapFactory.decodeResource(getResources(), R.drawable.classical_bg)));
         mListMusicStyle.add(new MusicStyle("Pop", mListSong, BitmapFactory.decodeResource(getResources(), R.drawable.pop_bg)));
         mListMusicStyle.add(new MusicStyle("Hip-Hop", mListSong, BitmapFactory.decodeResource(getResources(), R.drawable.hiphop_bg)));

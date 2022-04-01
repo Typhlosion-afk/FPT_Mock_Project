@@ -1,16 +1,21 @@
 package com.dore.myapplication.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 
 import java.util.ArrayList;
@@ -21,10 +26,13 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     private View mRootView;
 
     private List<Author> mListAuthor;
+    
+    private Context mContext;
 
-    public ArtistsAdapter(List<Author> mListAuthor) {
+    public ArtistsAdapter(List<Author> mListAuthor, Context context) {
         this.mListAuthor = new ArrayList<>();
         this.mListAuthor = mListAuthor;
+        this.mContext = context;
     }
 
     private String strNumSong(int num){
@@ -78,13 +86,100 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
             txtNumAlbum = itemView.findViewById(R.id.txt_num_album_card);
             imgDotMenu = itemView.findViewById(R.id.img_menu);
 
-            imgDotMenu.setOnClickListener(v -> {
-                Log.d("TAG", "open Menu");
-            });
-
+            handleMenu();
+            
             itemView.setOnClickListener(v -> {
                 Log.d("TAG", "ArtistsViewHolder: " + mListAuthor.get(getAdapterPosition()).getName());
             });
+        }
+
+        @SuppressLint("NonConstantResourceId")
+        private void handleMenu(){
+            imgDotMenu.setOnClickListener(v -> {
+                Author author = mListAuthor.get(getAdapterPosition());
+
+                Context wrapper = new ContextThemeWrapper(mContext, R.style.PopupMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper,imgDotMenu);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_album, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()){
+                        case R.id.pop_play:{
+                            play(author);
+                            break;
+                        }
+                        case R.id.pop_play_next:{
+                            playNext(author);
+                            break;
+                        }
+                        case R.id.pop_add_to_playing_queue:{
+                            addToPlayingQueue(author);
+                            break;
+                        }
+                        case R.id.pop_add_to_playlist:{
+                            addToPlaylist(author);
+                            break;
+                        }
+                        case R.id.pop_rename:{
+                            rename(author);
+                            break;
+                        }
+                        case R.id.pop_tag_editor:{
+                            tagEditor(author);
+                            break;
+                        }
+                        case R.id.pop_go_to_artist:{
+                            goToArtist(author);
+                            break;
+                        }
+                        case R.id.pop_delete_from_device:{
+                            deleteFromDevice(author);
+                            break;
+                        }
+                        case R.id.pop_details:{
+                            details(author);
+                            break;
+                        }
+                    }
+                    return true;
+                });
+
+                popupMenu.show();
+
+            });
+        }
+
+        private void play(Author author) {
+
+        }
+
+        private void playNext(Author author) {
+
+        }
+
+        private void addToPlayingQueue(Author author) {
+
+        }
+
+        private void addToPlaylist(Author author) {
+
+        }
+
+        private void rename(Author author) {
+        }
+
+        private void tagEditor(Author author) {
+        }
+
+        private void goToArtist(Author author) {
+
+        }
+
+        private void deleteFromDevice(Author author) {
+
+        }
+
+        private void details(Author author) {
+
         }
     }
 }

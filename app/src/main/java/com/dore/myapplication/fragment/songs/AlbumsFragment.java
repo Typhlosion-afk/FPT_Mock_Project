@@ -73,7 +73,7 @@ public class AlbumsFragment extends Fragment {
     }
 
     private void initAdapter() {
-        mAlbumsAdapter = new AlbumsAdapter(mListAlbum);
+        mAlbumsAdapter = new AlbumsAdapter(mListAlbum, mRootView.getContext());
         mRecyclerView = mRootView.findViewById(R.id.albums_container);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mRootView.getContext(), 2, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAlbumsAdapter);

@@ -81,7 +81,7 @@ public class ArtistsFragment extends Fragment {
     }
 
     private void initAdapter() {
-        mArtistsAdapter = new ArtistsAdapter(mListAuthor);
+        mArtistsAdapter = new ArtistsAdapter(mListAuthor, mRootView.getContext());
         mRecyclerView = mRootView.findViewById(R.id.artists_container);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mArtistsAdapter);

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pop_social_share"
+        android:title="@string/social_share" />
+
+    <item
+        android:id="@+id/pop_playing_queue"
+        android:title="@string/playing_queue" />
+
+    <item
+        android:id="@+id/pop_add_to_playlist"
+        android:title="@string/add_to_playlist" />
+
+    <item
+        android:id="@+id/pop_lyrics"
+        android:title="@string/lyrics" />
+
+    <item
+        android:id="@+id/pop_volume"
+        android:title="@string/volume" />
+
+    <item
+        android:id="@+id/pop_details"
+        android:title="@string/details" />
+
+    <item
+        android:id="@+id/pop_sleep_timer"
+        android:title="@string/sleep_timer" />
+
+    <item
+        android:id="@+id/pop_equaliser"
+        android:title="@string/equaliser" />
+
+    <item
+        android:id="@+id/pop_ringtone_cutter"
+        android:title="@string/ringtone_cutter" />
+
+    <item
+        android:id="@+id/pop_player_theme"
+        android:title="@string/player_theme" />
+
+    <item
+        android:id="@+id/pop_driver_mode"
+        android:title="@string/driver_mode" />
+</menu>

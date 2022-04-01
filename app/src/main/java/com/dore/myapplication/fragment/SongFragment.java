@@ -46,11 +46,11 @@ public class SongFragment extends Fragment {
         mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mSongsPagerAdapter = new SongsPagerAdapter(this);
 
-
+        mViewPager.setOffscreenPageLimit(3);
 
         mViewPager.setAdapter(mSongsPagerAdapter);
         new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> {
-            switch (position){
+            switch (position) {
                 case 0: {
                     tab.setText("All Songs");
                     break;
@@ -72,7 +72,6 @@ public class SongFragment extends Fragment {
                     break;
                 }
             }
-                }
-        ).attach();
+        }).attach();
     }
 }

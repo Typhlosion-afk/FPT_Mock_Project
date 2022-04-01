@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/pop_play"
+        android:title="@string/play" />
+
+    <item
+        android:id="@+id/pop_play_next"
+        android:title="@string/play_next" />
+
+    <item
+        android:id="@+id/pop_add_to_playing_queue"
+        android:title="@string/add_to_playing_queue" />
+
+    <item
+        android:id="@+id/pop_add_to_playlist"
+        android:title="@string/add_to_playlist" />
+
+    <item
+        android:id="@+id/pop_rename"
+        android:title="@string/rename" />
+
+    <item
+        android:id="@+id/pop_tag_editor"
+        android:title="@string/tag_editor" />
+
+    <item
+        android:id="@+id/pop_go_to_artist"
+        android:title="@string/go_to_artist" />
+
+    <item
+        android:id="@+id/pop_delete_from_device"
+        android:title="@string/delete_from_device" />
+
+    <item
+        android:id="@+id/pop_share"
+        android:title="@string/share" />
+</menu>

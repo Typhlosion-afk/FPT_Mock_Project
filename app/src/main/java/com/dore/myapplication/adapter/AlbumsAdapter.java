@@ -1,10 +1,15 @@
 package com.dore.myapplication.adapter;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.util.Log;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,9 +27,16 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
 
     private View mRootView;
 
-    private List<Album> mAlbumList = new ArrayList<>();
+    private List<Album> mAlbumList;
 
-    public AlbumsAdapter(List<Album> albumList) {
+    private Context mContext;
+
+    private final String TAG = "album";
+
+    public AlbumsAdapter(List<Album> albumList, Context context) {
+
+        this.mContext = context;
+        this.mAlbumList = new ArrayList<>();
         this.mAlbumList = albumList;
 
     }
@@ -36,7 +48,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
     @NonNull
     @Override
     public AlbumsAdapter.AlbumsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_albums, parent, false);
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_albums, parent, false);
         return new AlbumsHolder(mRootView);
     }
 
@@ -79,10 +91,94 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
 
         }
 
+        @SuppressLint("NonConstantResourceId")
         private void handleMenu(){
             imgDotMenu.setOnClickListener(v -> {
-                Log.d("TAG", "onClick: ");
+                Log.d(TAG, "handleMenu: click");
+                Album album = mAlbumList.get(getAdapterPosition());
+
+                Context wrapper = new ContextThemeWrapper(mContext, R.style.PopupMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper,imgDotMenu);
+                popupMenu.getMenuInflater().inflate(R.menu.popup_album, popupMenu.getMenu());
+                popupMenu.setOnMenuItemClickListener(item -> {
+                    switch (item.getItemId()){
+                        case R.id.pop_play:{
+                            play(album);
+                            break;
+                        }
+                        case R.id.pop_play_next:{
+                            playNext(album);
+                            break;
+                        }
+                        case R.id.pop_add_to_playing_queue:{
+                            addToPlayingQueue(album);
+                            break;
+                        }
+                        case R.id.pop_add_to_playlist:{
+                            addToPlaylist(album);
+                            break;
+                        }
+                        case R.id.pop_rename:{
+                            rename(album);
+                            break;
+                        }
+                        case R.id.pop_tag_editor:{
+                            tagEditor(album);
+                            break;
+                        }
+                        case R.id.pop_go_to_artist:{
+                            goToArtist(album);
+                            break;
+                        }
+                        case R.id.pop_delete_from_device:{
+                            deleteFromDevice(album);
+                            break;
+                        }
+                        case R.id.pop_details:{
+                            details(album);
+                            break;
+                        }
+                    }
+                    return true;
+                });
+
+                popupMenu.show();
+
             });
+        }
+
+        private void play(Album album) {
+
+        }
+
+        private void playNext(Album album) {
+
+        }
+
+        private void addToPlayingQueue(Album album) {
+
+        }
+
+        private void addToPlaylist(Album album) {
+
+        }
+
+        private void rename(Album album) {
+        }
+
+        private void tagEditor(Album album) {
+        }
+
+        private void goToArtist(Album album) {
+
+        }
+
+        private void deleteFromDevice(Album album) {
+
+        }
+
+        private void details(Album album) {
+
         }
     }
 }
