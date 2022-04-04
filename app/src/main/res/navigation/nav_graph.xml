@@ -14,11 +14,30 @@
         android:id="@+id/songsFragment"
         android:name="com.dore.myapplication.fragment.SongFragment"
         android:label="song"
-        tools:layout="@layout/fragment_song" />
+        tools:layout="@layout/fragment_song" >
+        <action
+            android:id="@+id/action_show_detail_artist"
+            app:destination="@id/artistDetailsFragment" />
+        <action
+            android:id="@+id/action_show_detail_album"
+            app:destination="@id/albumDetailFragment" />
+    </fragment>
+
     <fragment
         android:id="@+id/settingsFragment"
         android:name="com.dore.myapplication.fragment.SettingsFragment"
         android:label="setting"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/artistDetailsFragment"
+        android:name="com.dore.myapplication.fragment.songs.ArtistDetailsFragment"
+        android:label="fragment_artist_details"
+        tools:layout="@layout/fragment_artist_details" />
+    <fragment
+        android:id="@+id/albumDetailFragment"
+        android:name="com.dore.myapplication.fragment.songs.AlbumDetailFragment"
+        android:label="fragment_album_detail"
+        tools:layout="@layout/fragment_album_detail" />
 
 </navigation>

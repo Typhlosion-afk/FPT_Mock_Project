@@ -9,6 +9,6 @@
         android:id="@+id/genres_container"
         android:paddingHorizontal="10dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="wrap_content" />
 
 </FrameLayout>

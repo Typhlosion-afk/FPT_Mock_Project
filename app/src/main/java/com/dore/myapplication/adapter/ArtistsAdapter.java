@@ -2,6 +2,7 @@ package com.dore.myapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -12,10 +13,10 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 
 import java.util.ArrayList;
@@ -28,6 +29,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     private List<Author> mListAuthor;
     
     private Context mContext;
+
 
     public ArtistsAdapter(List<Author> mListAuthor, Context context) {
         this.mListAuthor = new ArrayList<>();
@@ -59,6 +61,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         holder.txtName.setText(author.getName());
         holder.txtNumSong.setText(strNumSong(author.getSongs().size()));
         holder.txtNumAlbum.setText(strNumAlbum( author.getAlbums().size()));
+
     }
 
     @Override
@@ -89,7 +92,9 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
             handleMenu();
             
             itemView.setOnClickListener(v -> {
-                Log.d("TAG", "ArtistsViewHolder: " + mListAuthor.get(getAdapterPosition()).getName());
+                Bundle authorBundle = new Bundle();
+                authorBundle.putSerializable("author", mListAuthor.get(getAdapterPosition()));
+                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_artist, authorBundle);
             });
         }
 
@@ -182,4 +187,5 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 
         }
     }
+
 }

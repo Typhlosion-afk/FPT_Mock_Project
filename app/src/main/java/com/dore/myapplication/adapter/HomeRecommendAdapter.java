@@ -37,7 +37,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @Override
     public void onBindViewHolder(@NonNull HomeRecommendAdapter.HomeHolder holder, int position) {
 
-        holder.imgBackground.setImageResource(R.drawable.img_bg_recomment_default);
+        holder.imgBackground.setImageResource(R.drawable.img_bg_recommend_default);
 
         holder.txtName.setText(mListSong.get(position).getName());
         holder.txtAuthor.setText(mListSong.get(position).getAuthor());

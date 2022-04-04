@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.adapter.AllSongsAdapter;
 import com.dore.myapplication.adapter.ArtistsAdapter;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
@@ -35,7 +34,8 @@ public class ArtistsFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
 
-    public ArtistsFragment() {}
+    public ArtistsFragment() {
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -64,10 +64,10 @@ public class ArtistsFragment extends Fragment {
         mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
 
         mListAlbum.clear();
-        mListAlbum.add(new Album("album", "author", mListSong));
-        mListAlbum.add(new Album("album", "author", mListSong));
-        mListAlbum.add(new Album("album", "author", mListSong));
-        mListAlbum.add(new Album("album", "author", mListSong));
+        mListAlbum.add(new Album("album", "author", mListSong, "1991"));
+        mListAlbum.add(new Album("album", "author", mListSong, "1991"));
+        mListAlbum.add(new Album("album", "author", mListSong, "1991"));
+        mListAlbum.add(new Album("album", "author", mListSong, "1991"));
 
         mListAuthor.add(new Author("Ca si 1", mListAlbum, mListSong));
         mListAuthor.add(new Author("Ca si 2", mListAlbum, mListSong));

@@ -11,60 +11,57 @@
         android:id="@+id/img_play"
         android:layout_width="22dp"
         android:layout_height="22dp"
-        android:layout_marginTop="8dp"
         android:src="@drawable/ic_play_gradient"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/txt_song_name_card"
+        android:id="@+id/txt_name_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:fontFamily="@font/circular_std_medium"
-        android:text="@string/songs"
-        android:layout_marginHorizontal="40dp"
+        android:layout_marginHorizontal="20dp"
         android:ellipsize="end"
+        android:ems="10"
+        android:fontFamily="@font/circular_std_medium"
         android:maxLines="1"
-        android:ems="12"
+        android:text="@string/songs"
+        android:textSize="13sp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toEndOf="@+id/img_play"
-        app:layout_constraintTop_toTopOf="@+id/img_play" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/txt_author_card"
+        android:id="@+id/txt_time_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:fontFamily="@font/circular_std_medium"
-        android:text="@string/author"
-        android:textSize="10sp"
+        android:text="@string/time_default"
         android:textColor="@color/text_hint_color"
-        android:layout_marginHorizontal="40dp"
-        app:layout_constraintStart_toEndOf="@+id/img_play"
-        app:layout_constraintTop_toBottomOf="@+id/txt_song_name_card"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/txt_name_card"
+        app:layout_constraintTop_toTopOf="parent"
         tools:ignore="SmallSp" />
 
     <ImageView
-        android:id="@+id/img_favor"
-        android:layout_width="10dp"
-        android:layout_height="10dp"
-        android:src="@drawable/ic_heart_off"
-        app:layout_constraintBottom_toTopOf="@+id/rating_bar"
-        app:layout_constraintEnd_toEndOf="@+id/rating_bar"
-        app:layout_constraintStart_toStartOf="@+id/rating_bar"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="ContentDescription" />
-
-    <androidx.appcompat.widget.AppCompatRatingBar
-        android:id="@+id/rating_bar"
+        android:id="@+id/imageView7"
         android:layout_width="wrap_content"
-        android:layout_height="10dp"
-        android:rating="0"
-        android:numStars="5"
-        android:stepSize="1"
-        android:progressDrawable="@drawable/rating_bar"
+        android:layout_height="match_parent"
+        android:scaleType="center"
+        android:src="@drawable/ic_null_dot"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:background="@color/view_line_color"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/imageView7"
+        app:layout_constraintStart_toStartOf="@+id/txt_name_card" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

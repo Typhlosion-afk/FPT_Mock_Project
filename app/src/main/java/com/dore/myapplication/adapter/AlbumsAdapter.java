@@ -2,6 +2,7 @@ package com.dore.myapplication.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
@@ -79,7 +81,14 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
             super(itemView);
 
             initView();
+            handleAction();
             handleMenu();
+
+            itemView.setOnClickListener(v -> {
+                Bundle b = new Bundle();
+                b.putSerializable("album", mAlbumList.get(getAdapterPosition()));
+                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_album,b);
+            });
         }
 
         private void initView(){
@@ -90,6 +99,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
             imgDotMenu = itemView.findViewById(R.id.btn_card_menu);
 
         }
+
+        private void handleAction(){
+
+        }
+
 
         @SuppressLint("NonConstantResourceId")
         private void handleMenu(){

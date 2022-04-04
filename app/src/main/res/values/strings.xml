@@ -42,4 +42,11 @@
     <string name="lockscreen">Lockscreen</string>
     <string name="advanced">Advanced</string>
     <string name="other">Other</string>
+    <string name="followers">Followers</string>
+    <string name="num_default">3,689</string>
+    <string name="follow">Follow</string>
+    <string name="listeners">Listeners</string>
+    <string name="top_albums">Top Albums</string>
+    <string name="time_default">4:12</string>
+    <string name="top_songs">Top Songs</string>
 </resources>

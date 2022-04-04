@@ -1,9 +1,10 @@
 package com.dore.myapplication.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Album {
+public class Album implements Serializable {
 
     private String name;
 
@@ -11,10 +12,13 @@ public class Album {
 
     private String author;
 
-    public Album(String name, String author ,List<Song> songList){
+    private String year;
+
+    public Album(String name, String author ,List<Song> songList, String year){
         this.name = name;
         this.listSong.addAll(songList);
         this.author = author;
+        this.year = year;
     }
 
     public String getAuthor() {
@@ -39,5 +43,9 @@ public class Album {
 
     public void setListSong(ArrayList<Song> listSong) {
         this.listSong = listSong;
+    }
+
+    public String getYear() {
+        return this.year;
     }
 }

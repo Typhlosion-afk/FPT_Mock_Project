@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background_color"
     android:orientation="vertical"
     tools:context=".fragment.SongFragment">
@@ -12,19 +12,17 @@
         android:id="@+id/tab_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabSelectedTextColor="@color/hard_peach"
+        app:tabGravity="start"
         app:tabIndicatorColor="@color/light_peach"
         app:tabIndicatorFullWidth="true"
         app:tabMode="scrollable"
-        app:tabTextAppearance="@style/ThemeTabTextAppearance">
-    </com.google.android.material.tabs.TabLayout>
+        app:tabSelectedTextColor="@color/hard_peach"
+        app:tabTextAppearance="@style/ThemeTabTextAppearance" />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/view_pager"
-        android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="1">
-    </androidx.viewpager2.widget.ViewPager2>
-
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

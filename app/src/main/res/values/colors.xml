@@ -20,6 +20,8 @@
     <color name="background_color">#181B2C</color>
     <color name="hard_peach">#D9519D</color>
     <color name="light_peach">#ED8770</color>
+    <color name="color_text_50">@color/black_50</color>
+
 
     <color name="popup_background">#383B49</color>
 
