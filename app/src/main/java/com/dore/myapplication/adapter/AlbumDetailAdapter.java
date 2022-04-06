@@ -1,11 +1,14 @@
 package com.dore.myapplication.adapter;
 
+import android.content.Context;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
@@ -20,7 +23,10 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
     private List<Song> mListSong;
 
-    public AlbumDetailAdapter(List<Song> mListSong) {
+    private Context mContext;
+
+    public AlbumDetailAdapter(Context context, List<Song> mListSong) {
+        this.mContext = context;
         this.mListSong = mListSong;
     }
 
@@ -46,7 +52,7 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
         return mListSong.size();
     }
 
-    public class AlbumHolder extends RecyclerView.ViewHolder {
+    class AlbumHolder extends RecyclerView.ViewHolder {
 
         TextView txtName;
 
@@ -57,6 +63,13 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtTime = itemView.findViewById(R.id.txt_time_card);
+
+            itemView.setOnClickListener(v -> {
+                Bundle bSong = new Bundle();
+                bSong.putSerializable("song", mListSong.get(getAdapterPosition()));
+                Navigation.findNavController(mRootView).navigate(R.id.action_play_song, bSong);
+            });
         }
+
     }
 }

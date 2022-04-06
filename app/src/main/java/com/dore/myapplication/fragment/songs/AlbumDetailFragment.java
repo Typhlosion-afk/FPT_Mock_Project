@@ -101,7 +101,7 @@ public class AlbumDetailFragment extends Fragment {
 
     private void initAdapter() {
         mRecyclerView = mRootView.findViewById(R.id.album_songs_container);
-        mAlbumDetailAdapter = new AlbumDetailAdapter(mListSong);
+        mAlbumDetailAdapter = new AlbumDetailAdapter(mRootView.getContext(), mListSong);
         mRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAlbumDetailAdapter);
     }

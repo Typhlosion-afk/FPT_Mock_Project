@@ -1,6 +1,6 @@
 package com.dore.myapplication.adapter;
 
-import android.util.Log;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
@@ -18,7 +19,7 @@ import java.util.List;
 
 public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdapter.HomeHolder> {
 
-    private View rootView;
+    private View mRootView;
 
     private ArrayList<Song> mListSong;
 
@@ -30,8 +31,8 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @NonNull
     @Override
     public HomeRecommendAdapter.HomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_hot_recommended, parent, false);
-        return new HomeHolder(rootView);
+        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_hot_recommended, parent, false);
+        return new HomeHolder(mRootView);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
         return mListSong.size();
     }
 
-    class HomeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HomeHolder extends RecyclerView.ViewHolder{
 
         private TextView txtName;
 
@@ -62,16 +63,16 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
         }
 
         private void initView(){
-
-            imgBackground = itemView.findViewById(R.id.img_card);
-
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtAuthor = itemView.findViewById(R.id.txt_author_card);
+            imgBackground = itemView.findViewById(R.id.img_card);
+
+            itemView.setOnClickListener(v -> {
+                Bundle bSong = new Bundle();
+                bSong.putSerializable("song", mListSong.get(getAdapterPosition()));
+                Navigation.findNavController(mRootView).navigate(R.id.action_play_song, bSong);
+            });
         }
 
-        @Override
-        public void onClick(View v) {
-            Log.d("TAG", "Song name: " + mListSong.get(getAdapterPosition()));
-        }
     }
 }

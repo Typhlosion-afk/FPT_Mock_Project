@@ -1,26 +1,51 @@
 package com.dore.myapplication.activity;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
+import androidx.navigation.NavDestination;
+import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import android.graphics.Color;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
     private EditText mEdtSearch;
+
     private ImageView mBtnDrawer;
+
     private ImageView mBtnSearch;
 
+    private Boolean isDrawerShowing = false;
+
+    private NavController mNavController;
+
+    private NavigationView mDrawerNavigationView;
+
+    private DrawerLayout mDrawerLayout;
+
+    private MusicService mMusicService;
+
+    private boolean mBound = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +56,33 @@ public class MainActivity extends AppCompatActivity {
 
         initView();
         handleAction();
-        initBottomNav();
+        initNav();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        Intent iStartService = new Intent(this, MusicService.class);
+
+        startService(iStartService);
+        bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        unbindService(connection);
+        mBound = false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(mDrawerNavigationView.isShown()){
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        else {
+            super.onBackPressed();
+        }
     }
 
     private void initView() {
@@ -44,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void handleAction(){
+    private void handleAction() {
         mBtnSearch.setOnClickListener(v -> {
             mBtnSearch.setVisibility(View.INVISIBLE);
             mEdtSearch.setVisibility(View.VISIBLE);
@@ -55,16 +106,42 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void initBottomNav() {
+    private void initNav() {
         BottomNavigationView bottomNavigationView = this.findViewById(R.id.bottom_nav);
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        mDrawerNavigationView = this.findViewById(R.id.drawer_nav);
+        mDrawerLayout = this.findViewById(R.id.layout_drawer);
 
-        bottomNavigationView.setItemIconTintList(null);
+        NavHostFragment navHostFragment = (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            mNavController = navHostFragment.getNavController();
 
-        navController.addOnDestinationChangedListener((navController1, navDestination, bundle) -> {
-            mEdtSearch.setVisibility(View.GONE);
-            mBtnSearch.setVisibility(View.VISIBLE);
-        });
-        NavigationUI.setupWithNavController(bottomNavigationView, navController);
+            bottomNavigationView.setItemIconTintList(null);
+            mDrawerNavigationView.setItemIconTintList(null);
+
+            mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+                        mEdtSearch.setVisibility(View.GONE);
+                        mBtnSearch.setVisibility(View.VISIBLE);
+
+                    }
+            );
+
+            NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
+            NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
+        }
     }
+
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
+            mMusicService = binder.getService();
+            mBound = true;
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
+
 }

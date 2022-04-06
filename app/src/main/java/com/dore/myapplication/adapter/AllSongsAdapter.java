@@ -1,5 +1,6 @@
 package com.dore.myapplication.adapter;
 
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -7,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
@@ -58,6 +60,11 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
             txtSongName = itemView.findViewById(R.id.txt_name_song);
             txtSongAuthor = itemView.findViewById(R.id.txt_author);
 
+            itemView.setOnClickListener(v -> {
+                Bundle bSong = new Bundle();
+                bSong.putSerializable("song", mListSong.get(getAdapterPosition()));
+                Navigation.findNavController(mRootView).navigate(R.id.action_play_song, bSong);
+            });
         }
 
         @Override

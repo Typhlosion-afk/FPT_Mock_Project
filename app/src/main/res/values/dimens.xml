@@ -3,4 +3,5 @@
     <dimen name="nav_item">18dp</dimen>
     <dimen name="normal_text_size">13sp</dimen>
     <dimen name="margin_screen">20dp</dimen>
+    <dimen name="icon_playing_space">24dp</dimen>
 </resources>

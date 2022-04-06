@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/nav_theme"
+        android:icon="@drawable/selector_home_ic"
+        android:title="@string/themes" />
+
+    <item
+        android:id="@+id/nav_ringtone"
+        android:icon="@drawable/selector_songs_ic"
+        android:title="@string/ringtone" />
+
+    <item
+        android:id="@+id/nav_sleep"
+        android:icon="@drawable/selector_setting_ic"
+        android:title="@string/sleep_timer" />
+
+    <item
+        android:id="@+id/nav_equliser"
+        android:icon="@drawable/selector_setting_ic"
+        android:title="@string/equliser" />
+
+    <item
+        android:id="@+id/nav_drive"
+        android:icon="@drawable/selector_setting_ic"
+        android:title="@string/drive_mode" />
+
+    <item
+        android:id="@+id/nav_hidden"
+        android:icon="@drawable/selector_setting_ic"
+        android:title="@string/hidden_folders" />
+
+    <item
+        android:id="@+id/nav_scan"
+        android:icon="@drawable/selector_setting_ic"
+        android:title="@string/scan_media" />
+</menu>

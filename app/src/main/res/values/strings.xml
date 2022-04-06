@@ -49,4 +49,12 @@
     <string name="top_albums">Top Albums</string>
     <string name="time_default">4:12</string>
     <string name="top_songs">Top Songs</string>
+    <string name="themes">Themes</string>
+    <string name="ringtone">Ringtone Cutter</string>
+    <string name="equliser">Equliser</string>
+    <string name="drive_mode">Drive Mode</string>
+    <string name="hidden_folders">Hidden Folders</string>
+    <string name="scan_media">Scan Media</string>
+    <string name="albums">Albums</string>
+    <string name="artists">Artists</string>
 </resources>
