@@ -30,9 +30,7 @@
     <color name="search_bg_color">#292E4B</color>
     <color name="text_hint_color">#707070</color>
     <color name="dark_background_color">#181A24</color>
-
-
-
+    <color name="seek_bar_background_color">#A2A2A2</color>
 
 
 </resources>

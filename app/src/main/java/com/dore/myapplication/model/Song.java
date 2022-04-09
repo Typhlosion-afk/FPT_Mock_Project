@@ -11,13 +11,13 @@ public class Song extends AbsObject implements Serializable {
     public String path;
     public int res;
 
-    public Song(String name, String author, String path){
+    public Song(String name, String author, String path) {
         this.name = name;
         this.author = author;
         this.path = path;
     }
 
-    public Song(String name, String author, int res){
+    public Song(String name, String author, int res) {
         this.name = name;
         this.author = author;
         this.res = res;

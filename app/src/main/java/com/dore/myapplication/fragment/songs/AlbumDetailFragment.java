@@ -17,6 +17,7 @@ import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.AlbumDetailAdapter;
 import com.dore.myapplication.adapter.ArtistAlbumAdapter;
 import com.dore.myapplication.adapter.ArtistSongAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 import com.dore.myapplication.model.Song;
@@ -24,7 +25,7 @@ import com.dore.myapplication.model.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumDetailFragment extends Fragment {
+public class AlbumDetailFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -48,18 +49,18 @@ public class AlbumDetailFragment extends Fragment {
 
     private List<Song> mListSong = new ArrayList<>();
 
+    @Override
+    public int getLayoutID() {
+        return R.layout.fragment_album_detail;
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-
-        mRootView = inflater.inflate(R.layout.fragment_album_detail, container, false);
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
 
         initData();
         initView();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {
@@ -80,7 +81,7 @@ public class AlbumDetailFragment extends Fragment {
 
         album = new Album("Album custom", "Ca si 1", mListSong, "1998");
 
-        if (getArguments()!= null){
+        if (getArguments() != null) {
             album = (Album) getArguments().getSerializable("album");
         }
 
@@ -106,7 +107,9 @@ public class AlbumDetailFragment extends Fragment {
         mRecyclerView.setAdapter(mAlbumDetailAdapter);
     }
 
-    private String strAlbumDetails(String year, int sizeAlbum, int timeAlbum){
+    private String strAlbumDetails(String year, int sizeAlbum, int timeAlbum) {
         return year + " . " + sizeAlbum + " Songs . " + timeAlbum + " min";
     }
+
+
 }

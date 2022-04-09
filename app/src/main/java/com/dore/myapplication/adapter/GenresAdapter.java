@@ -26,7 +26,7 @@ public class GenresAdapter extends RecyclerView.Adapter<GenresAdapter.GenresHold
         this.mMusicStyleList = mMusicStyleList;
     }
 
-    private String strNumSong(int num){
+    private String strNumSong(int num) {
         return num + " Songs";
     }
 

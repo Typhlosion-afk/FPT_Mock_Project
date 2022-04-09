@@ -12,12 +12,13 @@ import android.view.ViewGroup;
 
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.AllSongsAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AllSongsFragment extends Fragment {
+public class AllSongsFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -32,15 +33,16 @@ public class AllSongsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_all_songs;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_all_songs, container, false);
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
 
         initData();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {
@@ -83,9 +85,9 @@ public class AllSongsFragment extends Fragment {
         mRecycleView = mRootView.findViewById(R.id.recycle_all_song);
 
         mRecycleView.setLayoutManager(new LinearLayoutManager(
-                        mRootView.getContext(),
-                        RecyclerView.VERTICAL,
-                        false));
+                mRootView.getContext(),
+                RecyclerView.VERTICAL,
+                false));
 
         mRecycleView.setAdapter(mAllSongsAdapter);
     }

@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 
 import com.dore.myapplication.R;
 
-public class SettingsFragment extends Fragment {
+public class SettingsFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -31,16 +31,18 @@ public class SettingsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_settings;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_settings, container, false);
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
+
         iniView();
         initAction();
-
-        return mRootView;
-
     }
+
 
     private void initAction() {
         cardDisplay.setOnClickListener(v -> {

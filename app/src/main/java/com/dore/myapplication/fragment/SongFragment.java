@@ -16,7 +16,7 @@ import com.dore.myapplication.adapter.SongsPagerAdapter;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
-public class SongFragment extends Fragment {
+public class SongFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -30,15 +30,14 @@ public class SongFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_song;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_song, container, false);
-
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
         initView();
-
-        return mRootView;
     }
 
     private void initView() {

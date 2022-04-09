@@ -13,20 +13,18 @@ import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
 
+import com.dore.myapplication.minterface.OnMediaRunning;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.notification.MusicNotificationManager;
-import com.dore.myapplication.utilities.Constants;
 
-public class MusicService extends Service implements
-        MediaPlayer.OnPreparedListener,
-        MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener {
+public class MusicService extends Service {
 
     private MusicNotificationManager mMusicNotiManager;
 
@@ -38,61 +36,11 @@ public class MusicService extends Service implements
 
     private final IBinder binder = new MusicBinder();
 
-    private void initNotification(){
-        mMusicNotiManager = new MusicNotificationManager(this);
-        mPlayerNotification = mMusicNotiManager.getPlayerNotification();
+    public boolean isPlaying = false;
 
-    }
+    private int mCurPosition = 0;
 
-    private void handleActionNotification(int action) {
-        switch (action) {
-            case ACTION_PLAY: {
-                Log.d("TAG", "onStartCommand: play");
-                break;
-            }
-            case ACTION_CLOSE: {
-                Log.d("TAG", "onStartCommand: close");
-                stop();
-                break;
-            }
-            case ACTION_NEXT: {
-                Log.d("TAG", "onStartCommand: next");
-                break;
-            }
-            case ACTION_PREV: {
-                Log.d("TAG", "onStartCommand: prev");
-                break;
-            }
-            default: {
-                Log.d("TAG", "onStartCommand: unknown");
-
-            }
-        }
-    }
-
-    private void initMediaPlayer(){
-        if(mMediaPlayer == null){
-            mMediaPlayer = new MediaPlayer();
-        }
-        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
-        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-        mMediaPlayer.setOnPreparedListener(this);
-        mMediaPlayer.setOnCompletionListener(this);
-        mMediaPlayer.setOnErrorListener(this);
-    }
-
-    private void playSong(){
-        mMediaPlayer.release();
-        mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
-        mMediaPlayer.start();
-    }
-
-    private void stop() {
-        mMediaPlayer.stop();
-        mMediaPlayer.release();
-        stopSelf();
-
-    }
+    private OnMediaRunning onMediaRunning;
 
     @Override
     public void onCreate() {
@@ -101,13 +49,21 @@ public class MusicService extends Service implements
         initMediaPlayer();
         initNotification();
 
-        if(mSong != null){
-            startForeground();
+        if (mSong != null) {
+            startForeground(mSong);
         }
-    }
 
-    private void startForeground(){
-        startForeground(ONGOING_NOTIFICATION_ID, mPlayerNotification);
+        Handler h = new Handler();
+        Runnable r = new Runnable() {
+            @Override
+            public void run() {
+                if(mMediaPlayer != null && onMediaRunning != null){
+                    onMediaRunning.sendPos(mMediaPlayer.getCurrentPosition());
+                }
+                h.postDelayed(this, 100);
+            }
+        };
+        r.run();
     }
 
     @Override
@@ -115,18 +71,47 @@ public class MusicService extends Service implements
         Log.d("TAG", "service onStartCommand");
 
         if (intent != null) {
-            handleActionNotification(intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1));
+            int action = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
+            Log.d("TAG", "onStartCommand: " + action);
+            switch (action) {
+                case ACTION_PLAY: {
+                    if (!isPlaying) {
+                        resumeSong();
+                        Log.d("TAG", "onStartCommand: resume");
+
+                    } else {
+                        pauseSong();
+                        Log.d("TAG", "onStartCommand: pause");
+
+                    }
+                    break;
+                }
+                case ACTION_CLOSE: {
+                    Log.d("TAG", "onStartCommand: close");
+                    stop();
+                    break;
+                }
+                case ACTION_NEXT: {
+                    Log.d("TAG", "onStartCommand: next");
+                    break;
+                }
+                case ACTION_PREV: {
+                    Log.d("TAG", "onStartCommand: prev");
+                    break;
+                }
+                default: {
+                    Log.d("TAG", "onStartCommand: unknown");
+
+                }
+            }
 
             if (intent.getSerializableExtra("song") != null) {
                 mSong = (Song) intent.getSerializableExtra("song");
                 playSong();
-                mMusicNotiManager.updateViewNotification(mSong);
             }
         }
-
         return START_NOT_STICKY;
     }
-
 
     @Override
     public void onDestroy() {
@@ -134,25 +119,113 @@ public class MusicService extends Service implements
         super.onDestroy();
     }
 
-    @Override
-    public void onCompletion(MediaPlayer mp) {
+
+    private void initNotification() {
+        mMusicNotiManager = new MusicNotificationManager(this);
+        mPlayerNotification = mMusicNotiManager.getPlayerNotification();
 
     }
 
-    @Override
-    public boolean onError(MediaPlayer mp, int what, int extra) {
-        return false;
-    }
-
-    @Override
-    public void onPrepared(MediaPlayer mp) {
+    private void handleActionNotification(int action) {
 
     }
 
-    public class MusicBinder extends Binder{
+    private void initMediaPlayer() {
+        if (mMediaPlayer == null) {
+            mMediaPlayer = new MediaPlayer();
+        }
+        mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
+        mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+//        mMediaPlayer.setOnPreparedListener(this);
+//        mMediaPlayer.setOnCompletionListener(this);
+//        mMediaPlayer.setOnErrorListener(this);
+    }
 
-        public MusicService getService(){
-             return MusicService.this;
+    public void playSong() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
+            mMediaPlayer.start();
+            isPlaying = true;
+            updateNotification();
+        }
+    }
+
+    public void pauseSong() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.pause();
+            mCurPosition = mMediaPlayer.getCurrentPosition();
+            isPlaying = false;
+            updateNotification();
+        }
+
+    }
+
+    public void resumeSong() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.seekTo(mCurPosition);
+            mMediaPlayer.start();
+            isPlaying = true;
+            updateNotification();
+        }
+
+    }
+
+    public void stop() {
+        if (mMediaPlayer != null) {
+            mMediaPlayer.release();
+            mCurPosition = 0;
+            isPlaying = false;
+        }
+        mMusicNotiManager.setIsForeRunning(false);
+        mMusicNotiManager.updateViewNotification(mSong);
+        mMusicNotiManager.removeNotification();
+        this.stopSelf();
+    }
+
+    private void updateNotification() {
+        mMusicNotiManager.setIsMediaPlaying(mMediaPlayer.isPlaying());
+        mMusicNotiManager.setIsMediaPlaying(isPlaying);
+        mMusicNotiManager.updateViewNotification(mSong);
+    }
+
+
+    public void startForeground(Song song) {
+        mSong = song;
+        startForeground(ONGOING_NOTIFICATION_ID, mPlayerNotification);
+    }
+
+    public void setCurPosListener(OnMediaRunning listener){
+        this.onMediaRunning = listener;
+    }
+
+    public int getSongDur(){
+        return mMediaPlayer == null ? 0 : mMediaPlayer.getDuration();
+    }
+
+    public void seekTo(int mSes) {
+        mMediaPlayer.seekTo(mSes);
+    }
+
+
+//    @Override
+//    public void onCompletion(MediaPlayer mp) {
+//
+//    }
+//
+//    @Override
+//    public boolean onError(MediaPlayer mp, int what, int extra) {
+//        return false;
+//    }
+//
+//    @Override
+//    public void onPrepared(MediaPlayer mp) {
+//
+//    }
+
+    public class MusicBinder extends Binder {
+        public MusicService getService() {
+            return MusicService.this;
         }
     }
 
@@ -168,7 +241,4 @@ public class MusicService extends Service implements
         Log.d("TAG", "service onUnbind");
         return super.onUnbind(intent);
     }
-
-
-
 }

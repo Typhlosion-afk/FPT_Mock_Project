@@ -46,7 +46,7 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
         return mListPlaylist.size();
     }
 
-    private String getStrSize(int size){
+    private String getStrSize(int size) {
         return "Total " + size;
     }
 
@@ -65,7 +65,7 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
 
         }
 
-        private void initView(){
+        private void initView() {
             imgBackground = itemView.findViewById(R.id.img_card);
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtAuthor = itemView.findViewById(R.id.txt_size);

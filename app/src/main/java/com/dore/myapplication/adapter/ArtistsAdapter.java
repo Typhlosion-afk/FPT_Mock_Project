@@ -27,7 +27,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     private View mRootView;
 
     private List<Author> mListAuthor;
-    
+
     private Context mContext;
 
 
@@ -37,11 +37,11 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         this.mContext = context;
     }
 
-    private String strNumSong(int num){
+    private String strNumSong(int num) {
         return num + " Songs";
     }
 
-    private String strNumAlbum(int num){
+    private String strNumAlbum(int num) {
         return num + " Albums";
     }
 
@@ -60,7 +60,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         holder.img.setImageResource(R.drawable.img_bg_playlist_default);
         holder.txtName.setText(author.getName());
         holder.txtNumSong.setText(strNumSong(author.getSongs().size()));
-        holder.txtNumAlbum.setText(strNumAlbum( author.getAlbums().size()));
+        holder.txtNumAlbum.setText(strNumAlbum(author.getAlbums().size()));
 
     }
 
@@ -90,7 +90,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
             imgDotMenu = itemView.findViewById(R.id.img_menu);
 
             handleMenu();
-            
+
             itemView.setOnClickListener(v -> {
                 Bundle authorBundle = new Bundle();
                 authorBundle.putSerializable("author", mListAuthor.get(getAdapterPosition()));
@@ -99,48 +99,48 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         }
 
         @SuppressLint("NonConstantResourceId")
-        private void handleMenu(){
+        private void handleMenu() {
             imgDotMenu.setOnClickListener(v -> {
                 Author author = mListAuthor.get(getAdapterPosition());
 
                 Context wrapper = new ContextThemeWrapper(mContext, R.style.PopupMenu);
-                PopupMenu popupMenu = new PopupMenu(wrapper,imgDotMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper, imgDotMenu);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_album, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()){
-                        case R.id.pop_play:{
+                    switch (item.getItemId()) {
+                        case R.id.pop_play: {
                             play(author);
                             break;
                         }
-                        case R.id.pop_play_next:{
+                        case R.id.pop_play_next: {
                             playNext(author);
                             break;
                         }
-                        case R.id.pop_add_to_playing_queue:{
+                        case R.id.pop_add_to_playing_queue: {
                             addToPlayingQueue(author);
                             break;
                         }
-                        case R.id.pop_add_to_playlist:{
+                        case R.id.pop_add_to_playlist: {
                             addToPlaylist(author);
                             break;
                         }
-                        case R.id.pop_rename:{
+                        case R.id.pop_rename: {
                             rename(author);
                             break;
                         }
-                        case R.id.pop_tag_editor:{
+                        case R.id.pop_tag_editor: {
                             tagEditor(author);
                             break;
                         }
-                        case R.id.pop_go_to_artist:{
+                        case R.id.pop_go_to_artist: {
                             goToArtist(author);
                             break;
                         }
-                        case R.id.pop_delete_from_device:{
+                        case R.id.pop_delete_from_device: {
                             deleteFromDevice(author);
                             break;
                         }
-                        case R.id.pop_details:{
+                        case R.id.pop_details: {
                             details(author);
                             break;
                         }

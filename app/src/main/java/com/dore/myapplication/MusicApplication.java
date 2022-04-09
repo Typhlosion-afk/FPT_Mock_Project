@@ -17,13 +17,14 @@ public class MusicApplication extends Application {
     }
 
     private void createChannelNotification() {
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             NotificationChannel channel = new NotificationChannel(
                     Constants.NOTIFICATION_CHANNEL_ID,
                     "Muzic Player",
                     NotificationManager.IMPORTANCE_DEFAULT
             );
 
+            channel.setSound(null, null);
             NotificationManager manager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             manager.createNotificationChannel(channel);
         }

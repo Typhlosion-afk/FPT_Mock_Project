@@ -20,7 +20,7 @@ public class ArtistSongAdapter extends RecyclerView.Adapter<ArtistSongAdapter.Ar
 
     private Context mContext;
 
-    private List<Song> mListSong ;
+    private List<Song> mListSong;
 
     private View mRootView;
 

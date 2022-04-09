@@ -7,20 +7,21 @@
     android:background="@color/background_color"
     tools:context=".fragment.NowPlayingFragment">
 
+
     <com.google.android.material.imageview.ShapeableImageView
         android:id="@+id/img_playing"
-        android:layout_width="238dp"
-        android:layout_height="238dp"
+        android:layout_width="@dimen/disc_size"
+        android:layout_height="@dimen/disc_size"
         android:layout_marginVertical="20dp"
         android:background="@drawable/img_bg_playlist_default"
-        android:padding="5dp"
+        android:padding="2dp"
         android:scaleType="centerInside"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:shapeAppearanceOverlay="@style/CornerImage_circle"
-        app:strokeColor="@color/light_peach"
-        app:strokeWidth="5dp" />
+        app:strokeColor="@color/view_line_color"
+        app:strokeWidth="2dp" />
 
     <TextView
         android:id="@+id/txt_time"
@@ -33,16 +34,6 @@
         app:layout_constraintEnd_toEndOf="@+id/img_playing"
         app:layout_constraintStart_toStartOf="@+id/img_playing"
         app:layout_constraintTop_toBottomOf="@+id/img_playing" />
-
-    <SeekBar
-        android:id="@+id/seek_playing"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="20dp"
-        app:layout_constraintBottom_toBottomOf="@+id/img_playing"
-        app:layout_constraintEnd_toEndOf="@+id/img_playing"
-        app:layout_constraintStart_toStartOf="@+id/img_playing"
-        app:layout_constraintTop_toTopOf="@+id/img_playing" />
 
     <TextView
         android:id="@+id/txt_playing_name"
@@ -120,7 +111,7 @@
         app:layout_constraintStart_toEndOf="@+id/btn_eq" />
 
     <ImageButton
-        android:id="@+id/btn_noti_play"
+        android:id="@+id/btn_control_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginVertical="40dp"
@@ -131,28 +122,28 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageButton
-        android:id="@+id/btn_noti_next"
+        android:id="@+id/btn_control_next"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:background="@android:color/transparent"
         android:paddingVertical="10dp"
         android:src="@drawable/ic_control_next"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_noti_play"
-        app:layout_constraintStart_toEndOf="@+id/btn_noti_play"
-        app:layout_constraintTop_toTopOf="@+id/btn_noti_play" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_control_play"
+        app:layout_constraintStart_toEndOf="@+id/btn_control_play"
+        app:layout_constraintTop_toTopOf="@+id/btn_control_play" />
 
     <ImageButton
-        android:id="@+id/btn_noti_prev"
+        android:id="@+id/btn_control_prev"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="40dp"
         android:background="@android:color/transparent"
         android:paddingVertical="10dp"
         android:src="@drawable/ic_control_prev"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_noti_play"
-        app:layout_constraintEnd_toStartOf="@+id/btn_noti_play"
-        app:layout_constraintTop_toTopOf="@+id/btn_noti_play" />
+        app:layout_constraintBottom_toBottomOf="@+id/btn_control_play"
+        app:layout_constraintEnd_toStartOf="@+id/btn_control_play"
+        app:layout_constraintTop_toTopOf="@+id/btn_control_play" />
 
     <ImageView
         android:layout_width="0dp"
@@ -167,12 +158,26 @@
 
     <View
         android:id="@+id/view"
-        android:layout_marginVertical="40dp"
         android:layout_width="match_parent"
-
-        android:background="@color/view_line_color"
         android:layout_height="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/btn_noti_play" />
+        android:layout_marginVertical="40dp"
+        android:background="@color/view_line_color"
+        app:layout_constraintBottom_toTopOf="@+id/btn_control_play" />
+
+
+    <com.dore.myapplication.customview.CirSeekBar
+        android:id="@+id/seek_bar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cir_seek_background_color="@android:color/transparent"
+        app:cir_seek_end_color="@color/hard_peach"
+        app:cir_seek_size="@dimen/disc_size"
+        app:cir_seek_start_color="@color/light_peach"
+        app:cir_seek_stroke="6dp"
+        app:layout_constraintBottom_toBottomOf="@+id/img_playing"
+        app:layout_constraintEnd_toEndOf="@+id/img_playing"
+        app:layout_constraintStart_toStartOf="@+id/img_playing"
+        app:layout_constraintTop_toTopOf="@+id/img_playing" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

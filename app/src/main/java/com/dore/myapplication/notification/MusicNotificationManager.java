@@ -12,6 +12,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
@@ -36,54 +37,61 @@ public class MusicNotificationManager {
     private Notification playerNotification;
 
     private boolean isMediaPlaying = false;
+    private boolean mIsRunning = true;
 
 
-    public MusicNotificationManager(Context context){
+    public MusicNotificationManager(Context context) {
         this.mContext = context;
         isMediaPlaying = true;
         mNotificationManagerCompat = NotificationManagerCompat.from(mContext);
 
         playerNotification = createPlayerNotification();
+        playerNotification.sound = null;
     }
 
-    public Notification getPlayerNotification(){
+    public Notification getPlayerNotification() {
         return playerNotification;
     }
 
-    public void setIsMediaPlaying(boolean isPlaying){
+    public void setIsMediaPlaying(boolean isPlaying) {
         this.isMediaPlaying = isPlaying;
     }
 
-    public void updateViewNotification(Song song){
-        mLargeNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
-        mLargeNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
+    public void updateViewNotification(Song song) {
+        if (song != null) {
+            mLargeNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
+            mLargeNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
+            if(isMediaPlaying) {
+                mLargeNotificationLayout.setImageViewResource(R.id.btn_control_play, R.drawable.ic_control_pause);
+            }else {
+                mLargeNotificationLayout.setImageViewResource(R.id.btn_control_play, R.drawable.ic_control_play);
+            }
 
-        mSmallNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
-        mSmallNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
 
+            mSmallNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
+            mSmallNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
+        }
         mNotificationManagerCompat.notify(1, builder.build());
     }
 
-    private Notification createPlayerNotification(){
-
+    private Notification createPlayerNotification() {
         mLargeNotificationLayout = new RemoteViews(mContext.getPackageName(),
                 R.layout.notification_music_large);
 
         mSmallNotificationLayout = new RemoteViews(mContext.getPackageName(),
                 R.layout.notification_music_small);
 
-        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_noti_prev, getNotiPendingIntent(ACTION_PREV));
-        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_noti_next, getNotiPendingIntent(ACTION_NEXT));
-        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_noti_play, getNotiPendingIntent(ACTION_PLAY));
         mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_noti_close, getNotiPendingIntent(ACTION_CLOSE));
-
+        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_prev, getNotiPendingIntent(ACTION_PREV));
+        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_next, getNotiPendingIntent(ACTION_NEXT));
+        mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_play, getNotiPendingIntent(ACTION_PLAY));
 
         builder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_noti_small)
                 .setCustomContentView(mSmallNotificationLayout)
                 .setCustomBigContentView(mLargeNotificationLayout)
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setOngoing(isMediaPlaying)
+                .setOngoing(mIsRunning)
                 .setOnlyAlertOnce(true);
 
         return builder.build();
@@ -92,8 +100,17 @@ public class MusicNotificationManager {
 
     @SuppressLint("UnspecifiedImmutableFlag")
     private PendingIntent getNotiPendingIntent(int action) {
+        Log.d("TAG", "getNotiPendingIntent: " + action);
         Intent i = new Intent(mContext, MusicService.class);
         i.putExtra(NOTIFICATION_DATA_ACTION, action);
-        return PendingIntent.getService(mContext, 0, i, PendingIntent.FLAG_CANCEL_CURRENT);
+        return PendingIntent.getService(mContext, action, i, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    public void setIsForeRunning(boolean isForeRunning) {
+        mIsRunning = isForeRunning;
+    }
+
+    public void removeNotification() {
+        mNotificationManagerCompat.cancelAll();
     }
 }

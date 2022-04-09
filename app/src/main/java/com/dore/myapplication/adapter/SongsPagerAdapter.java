@@ -26,7 +26,7 @@ public class SongsPagerAdapter extends FragmentStateAdapter {
         initData();
     }
 
-    private void initData(){
+    private void initData() {
         lsFm.add(new AllSongsFragment());
         lsFm.add(new PlaylistsFragment());
         lsFm.add(new AlbumsFragment());

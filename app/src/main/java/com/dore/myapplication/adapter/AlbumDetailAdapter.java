@@ -30,8 +30,8 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
         this.mListSong = mListSong;
     }
 
-    private String strDetail(String year, int numSong, int time){
-        return year + " . " + numSong + " Songs . " + time + " min" ;
+    private String strDetail(String year, int numSong, int time) {
+        return year + " . " + numSong + " Songs . " + time + " min";
     }
 
     @NonNull

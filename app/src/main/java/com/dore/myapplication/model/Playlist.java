@@ -3,12 +3,13 @@ package com.dore.myapplication.model;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Playlist extends AbsObject{
+public class Playlist extends AbsObject {
 
     private String name;
 
     private ArrayList<Song> listSong = new ArrayList<>();
-    public Playlist(String name, List<Song> songList){
+
+    public Playlist(String name, List<Song> songList) {
         this.name = name;
         this.listSong.addAll(songList);
     }

@@ -10,10 +10,12 @@
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/bg_img_card_hot_recommend.xml" value="0.25555555555555554" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/bg_img_card_hotrecommend.xml" value="0.2564814814814815" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/black_hole.xml" value="0.1405" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/cirseek.xml" value="0.1765" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/edit_search_bg.xml" value="0.25435897435897437" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/gradient_peach_bg.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.2101851851851852" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2611111111111111" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/indicator_cir_seekbar.xml" value="0.1765" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_gird_menu.xml" value="0.2205" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_home_nav.xml" value="0.15729166666666666" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/item_nav.xml" value="0.15729166666666666" />
@@ -45,8 +47,8 @@
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_artist_details.xml" value="0.33" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_artists.xml" value="0.26875" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_genres.xml" value="0.26875" />
-        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_home.xml" value="0.2" />
-        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_now_playing.xml" value="0.18" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_home.xml" value="0.25" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_now_playing.xml" value="0.25" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_playlists.xml" value="0.25" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_settings.xml" value="0.25" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_song.xml" value="0.1" />

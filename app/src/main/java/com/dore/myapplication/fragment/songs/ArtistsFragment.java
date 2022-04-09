@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.ArtistsAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 import com.dore.myapplication.model.Song;
@@ -19,7 +20,7 @@ import com.dore.myapplication.model.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistsFragment extends Fragment {
+public class ArtistsFragment extends BaseFragment {
 
 
     private View mRootView;
@@ -38,15 +39,16 @@ public class ArtistsFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_artists;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_artists, container, false);
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
 
         initData();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {

@@ -43,7 +43,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
 
     }
 
-    private String getStrSizeAlbum(int num){
+    private String getStrSizeAlbum(int num) {
         return num + " Song(s)";
     }
 
@@ -87,11 +87,11 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
             itemView.setOnClickListener(v -> {
                 Bundle b = new Bundle();
                 b.putSerializable("album", mAlbumList.get(getAdapterPosition()));
-                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_album,b);
+                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_album, b);
             });
         }
 
-        private void initView(){
+        private void initView() {
             img = itemView.findViewById(R.id.img_card);
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtAuthor = itemView.findViewById(R.id.txt_author_card);
@@ -100,55 +100,55 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
 
         }
 
-        private void handleAction(){
+        private void handleAction() {
 
         }
 
 
         @SuppressLint("NonConstantResourceId")
-        private void handleMenu(){
+        private void handleMenu() {
             imgDotMenu.setOnClickListener(v -> {
                 Log.d(TAG, "handleMenu: click");
                 Album album = mAlbumList.get(getAdapterPosition());
 
                 Context wrapper = new ContextThemeWrapper(mContext, R.style.PopupMenu);
-                PopupMenu popupMenu = new PopupMenu(wrapper,imgDotMenu);
+                PopupMenu popupMenu = new PopupMenu(wrapper, imgDotMenu);
                 popupMenu.getMenuInflater().inflate(R.menu.popup_album, popupMenu.getMenu());
                 popupMenu.setOnMenuItemClickListener(item -> {
-                    switch (item.getItemId()){
-                        case R.id.pop_play:{
+                    switch (item.getItemId()) {
+                        case R.id.pop_play: {
                             play(album);
                             break;
                         }
-                        case R.id.pop_play_next:{
+                        case R.id.pop_play_next: {
                             playNext(album);
                             break;
                         }
-                        case R.id.pop_add_to_playing_queue:{
+                        case R.id.pop_add_to_playing_queue: {
                             addToPlayingQueue(album);
                             break;
                         }
-                        case R.id.pop_add_to_playlist:{
+                        case R.id.pop_add_to_playlist: {
                             addToPlaylist(album);
                             break;
                         }
-                        case R.id.pop_rename:{
+                        case R.id.pop_rename: {
                             rename(album);
                             break;
                         }
-                        case R.id.pop_tag_editor:{
+                        case R.id.pop_tag_editor: {
                             tagEditor(album);
                             break;
                         }
-                        case R.id.pop_go_to_artist:{
+                        case R.id.pop_go_to_artist: {
                             goToArtist(album);
                             break;
                         }
-                        case R.id.pop_delete_from_device:{
+                        case R.id.pop_delete_from_device: {
                             deleteFromDevice(album);
                             break;
                         }
-                        case R.id.pop_details:{
+                        case R.id.pop_details: {
                             details(album);
                             break;
                         }

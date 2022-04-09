@@ -10,6 +10,7 @@ import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -52,11 +53,10 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Log.d("TAG", "onCreate: ");
-
         initView();
         handleAction();
         initNav();
+
     }
 
     @Override
@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
         startService(iStartService);
         bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     @Override
@@ -77,10 +78,9 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        if(mDrawerNavigationView.isShown()){
+        if (mDrawerNavigationView.isShown()) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        }
-        else {
+        } else {
             super.onBackPressed();
         }
     }
@@ -143,5 +143,13 @@ public class MainActivity extends AppCompatActivity {
             mBound = false;
         }
     };
+
+    public MusicService getBoundService(){
+        return mMusicService;
+    }
+
+    public boolean isBound(){
+        return mBound;
+    }
 
 }

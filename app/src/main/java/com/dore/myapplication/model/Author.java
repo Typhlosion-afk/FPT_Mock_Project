@@ -9,7 +9,7 @@ public class Author extends AbsObject implements Serializable {
     private List<Album> albums;
     private List<Song> songs;
 
-    public Author(String name, List<Album> albums, List<Song> songs){
+    public Author(String name, List<Album> albums, List<Song> songs) {
         this.name = name;
         this.albums = albums;
         this.songs = songs;

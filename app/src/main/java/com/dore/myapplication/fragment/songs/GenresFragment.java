@@ -16,13 +16,14 @@ import android.view.ViewGroup;
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.AllSongsAdapter;
 import com.dore.myapplication.adapter.GenresAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.MusicStyle;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class GenresFragment extends Fragment {
+public class GenresFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -34,18 +35,19 @@ public class GenresFragment extends Fragment {
 
     private RecyclerView mRecyclerView;
 
-    public GenresFragment() {}
+    public GenresFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_genres;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_genres, container, false);
-
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
         initData();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {

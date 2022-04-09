@@ -49,7 +49,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
         return mListSong.size();
     }
 
-    class HomeHolder extends RecyclerView.ViewHolder{
+    class HomeHolder extends RecyclerView.ViewHolder {
 
         private TextView txtName;
 
@@ -62,7 +62,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
             initView();
         }
 
-        private void initView(){
+        private void initView() {
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtAuthor = itemView.findViewById(R.id.txt_author_card);
             imgBackground = itemView.findViewById(R.id.img_card);

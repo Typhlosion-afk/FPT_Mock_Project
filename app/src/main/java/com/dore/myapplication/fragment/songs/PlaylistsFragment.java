@@ -13,13 +13,14 @@ import android.widget.GridView;
 
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.MyPlaylistAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Playlist;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class PlaylistsFragment extends Fragment {
+public class PlaylistsFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -31,19 +32,19 @@ public class PlaylistsFragment extends Fragment {
 
     private MyPlaylistAdapter mMyPlaylistAdapter;
 
-    public PlaylistsFragment() {}
+    public PlaylistsFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_playlists;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_playlists, container, false);
-
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
         initData();
-        handleMenu();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {
@@ -66,7 +67,7 @@ public class PlaylistsFragment extends Fragment {
         mListPlaylist.add(new Playlist("Playlist 7", mListSong));
     }
 
-    private void handleMenu(){
+    private void handleMenu() {
 
 
     }

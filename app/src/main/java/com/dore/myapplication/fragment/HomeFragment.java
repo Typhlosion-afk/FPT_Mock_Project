@@ -19,7 +19,7 @@ import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 
-public class HomeFragment extends Fragment {
+public class HomeFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -43,16 +43,16 @@ public class HomeFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_home;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_home, container, false);
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
 
         initData();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {

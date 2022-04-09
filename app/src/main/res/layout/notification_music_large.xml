@@ -28,8 +28,8 @@
         android:weightSum="4">
 
 
-        <ImageButton
-            android:id="@+id/btn_noti_prev"
+        <ImageView
+            android:id="@+id/btn_control_prev"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -37,8 +37,8 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_control_prev" />
 
-        <ImageButton
-            android:id="@+id/btn_noti_play"
+        <ImageView
+            android:id="@+id/btn_control_play"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -47,8 +47,8 @@
             android:src="@drawable/ic_control_play" />
 
 
-        <ImageButton
-            android:id="@+id/btn_noti_next"
+        <ImageView
+            android:id="@+id/btn_control_next"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
@@ -56,14 +56,14 @@
             android:scaleType="centerInside"
             android:src="@drawable/ic_control_next" />
 
-        <ImageButton
+        <ImageView
             android:id="@+id/btn_noti_close"
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
             android:background="@android:color/transparent"
-            android:scaleType="fitCenter"
-            android:src="@drawable/ic_close" />
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_close_notification" />
 
     </LinearLayout>
 

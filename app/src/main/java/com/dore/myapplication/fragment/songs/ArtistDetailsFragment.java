@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.ArtistAlbumAdapter;
 import com.dore.myapplication.adapter.ArtistSongAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 import com.dore.myapplication.model.Song;
@@ -24,7 +25,7 @@ import com.dore.myapplication.model.Song;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ArtistDetailsFragment extends Fragment {
+public class ArtistDetailsFragment extends BaseFragment {
 
     private View mRootView;
 
@@ -59,6 +60,16 @@ public class ArtistDetailsFragment extends Fragment {
     }
 
     @Override
+    public int getLayoutID() {
+        return R.layout.fragment_artist_details;
+    }
+
+    @Override
+    public void onViewReady(View rootView) {
+
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
@@ -71,10 +82,11 @@ public class ArtistDetailsFragment extends Fragment {
         return mRootView;
     }
 
-    private void initData(){
-        if (getArguments()!= null) {
+    private void initData() {
+        if (getArguments() != null) {
             mAuthor = (Author) getArguments().getSerializable("author");
             Log.d("TAG", "initData: " + mAuthor.getName());
+
         }
 
         mListSong.clear();
@@ -105,16 +117,16 @@ public class ArtistDetailsFragment extends Fragment {
 
     }
 
-    private void initView(){
+    private void initView() {
         img = mRootView.findViewById(R.id.img_cover);
 
         img.setImageResource(R.drawable.img_bg_recommend_default);
     }
 
-    private void initAdapter(){
+    private void initAdapter() {
         mTopAlbumRecyclerView = mRootView.findViewById(R.id.artist_album_container);
         mArtistAlbumAdapter = new ArtistAlbumAdapter(mRootView.getContext(), mListAlbums);
-        mTopAlbumRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext(),RecyclerView.HORIZONTAL, false));
+        mTopAlbumRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.HORIZONTAL, false));
         mTopAlbumRecyclerView.setAdapter(mArtistAlbumAdapter);
 
         mTopSongRecyclerView = mRootView.findViewById(R.id.artist_songs_container);

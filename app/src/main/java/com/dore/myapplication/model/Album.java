@@ -14,7 +14,7 @@ public class Album implements Serializable {
 
     private String year;
 
-    public Album(String name, String author ,List<Song> songList, String year){
+    public Album(String name, String author, List<Song> songList, String year) {
         this.name = name;
         this.listSong.addAll(songList);
         this.author = author;

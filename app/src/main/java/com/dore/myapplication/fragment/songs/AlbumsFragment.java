@@ -14,13 +14,14 @@ import android.view.ViewGroup;
 import com.dore.myapplication.R;
 import com.dore.myapplication.adapter.AlbumsAdapter;
 import com.dore.myapplication.adapter.AllSongsAdapter;
+import com.dore.myapplication.fragment.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AlbumsFragment extends Fragment {
+public class AlbumsFragment extends BaseFragment {
 
 
     private View mRootView;
@@ -34,18 +35,20 @@ public class AlbumsFragment extends Fragment {
     private RecyclerView mRecyclerView;
 
 
-    public AlbumsFragment() {}
+    public AlbumsFragment() {
+    }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
+    public int getLayoutID() {
+        return R.layout.fragment_albums;
+    }
 
-        mRootView = inflater.inflate(R.layout.fragment_albums, container, false);
+    @Override
+    public void onViewReady(View rootView) {
+        mRootView = rootView;
 
         initData();
         initAdapter();
-
-        return mRootView;
     }
 
     private void initData() {

@@ -26,7 +26,7 @@ public class MyPlaylistAdapter extends RecyclerView.Adapter<MyPlaylistAdapter.Pl
 
     public MyPlaylistAdapter(List<Playlist> ls, Context context) {
         this.mContext = context;
-        if(ls.size()!=0) {
+        if (ls.size() != 0) {
             mListPlaylist = ls;
         }
     }
