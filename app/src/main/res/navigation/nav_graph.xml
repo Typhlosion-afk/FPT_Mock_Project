@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dore.myapplication.fragment.HomeFragment"
+        android:name="com.dore.myapplication.activity.screen.home.view.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/songsFragment"
-        android:name="com.dore.myapplication.fragment.SongFragment"
+        android:name="com.dore.myapplication.activity.screen.songs.SongFragment"
         android:label="song"
         tools:layout="@layout/fragment_song" >
         <action
@@ -33,7 +33,7 @@
     <fragment
 
         android:id="@+id/settingsFragment"
-        android:name="com.dore.myapplication.fragment.SettingsFragment"
+        android:name="com.dore.myapplication.activity.screen.settings.SettingsFragment"
         android:label="setting"
         tools:layout="@layout/fragment_settings" >
         <action
@@ -43,7 +43,7 @@
 
     <fragment
         android:id="@+id/artistDetailsFragment"
-        android:name="com.dore.myapplication.fragment.songs.ArtistDetailsFragment"
+        android:name="com.dore.myapplication.activity.screen.artistdetail.view.ArtistDetailsFragment"
         android:label="fragment_artist_details"
         tools:layout="@layout/fragment_artist_details" >
         <action
@@ -52,7 +52,7 @@
     </fragment>
     <fragment
         android:id="@+id/albumDetailFragment"
-        android:name="com.dore.myapplication.fragment.songs.AlbumDetailFragment"
+        android:name="com.dore.myapplication.activity.screen.albumdetail.view.AlbumDetailFragment"
         android:label="fragment_album_detail"
         tools:layout="@layout/fragment_album_detail" >
         <action
@@ -61,7 +61,7 @@
     </fragment>
     <fragment
         android:id="@+id/nowPlayingFragment"
-        android:name="com.dore.myapplication.fragment.NowPlayingFragment"
+        android:name="com.dore.myapplication.activity.screen.nowplaying.NowPlayingFragment"
         android:label="fragment_now_playing"
         tools:layout="@layout/fragment_now_playing" />
 

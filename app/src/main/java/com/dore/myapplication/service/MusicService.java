@@ -24,7 +24,10 @@ import com.dore.myapplication.minterface.OnMediaRunning;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.notification.MusicNotificationManager;
 
-public class MusicService extends Service {
+public class MusicService extends Service implements
+        MediaPlayer.OnPreparedListener,
+        MediaPlayer.OnCompletionListener,
+        MediaPlayer.OnErrorListener {
 
     private MusicNotificationManager mMusicNotiManager;
 
@@ -42,6 +45,8 @@ public class MusicService extends Service {
 
     private OnMediaRunning onMediaRunning;
 
+    private Handler h = new Handler();
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -53,17 +58,28 @@ public class MusicService extends Service {
             startForeground(mSong);
         }
 
-        Handler h = new Handler();
+
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                if(mMediaPlayer != null && onMediaRunning != null){
+//                Log.d("onMediaRunning", "run: " + onMediaRunning);
+//                if(onMediaRunning != null){
+//
+//                    onMediaRunning.sendPos(mCurPosition);
+//                    onMediaRunning.sendDur(1000);
+//                    mCurPosition += 1;
+//                }
+//                h.postDelayed(this, 100);
+
+                if(mMediaPlayer != null && onMediaRunning != null && isPlaying){
+
                     onMediaRunning.sendPos(mMediaPlayer.getCurrentPosition());
+                    onMediaRunning.sendDur(mMediaPlayer.getDuration());
                 }
                 h.postDelayed(this, 100);
             }
         };
-        r.run();
+        new Thread(r).start();
     }
 
     @Override
@@ -116,6 +132,7 @@ public class MusicService extends Service {
     @Override
     public void onDestroy() {
         Log.d("TAG", "service onDestroy");
+
         super.onDestroy();
     }
 
@@ -136,9 +153,9 @@ public class MusicService extends Service {
         }
         mMediaPlayer.setWakeMode(getApplicationContext(), PowerManager.PARTIAL_WAKE_LOCK);
         mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-//        mMediaPlayer.setOnPreparedListener(this);
-//        mMediaPlayer.setOnCompletionListener(this);
-//        mMediaPlayer.setOnErrorListener(this);
+        mMediaPlayer.setOnPreparedListener(this);
+        mMediaPlayer.setOnCompletionListener(this);
+        mMediaPlayer.setOnErrorListener(this);
     }
 
     public void playSong() {
@@ -176,6 +193,9 @@ public class MusicService extends Service {
             mMediaPlayer.release();
             mCurPosition = 0;
             isPlaying = false;
+
+            onMediaRunning.sendPos(mMediaPlayer.getCurrentPosition());
+
         }
         mMusicNotiManager.setIsForeRunning(false);
         mMusicNotiManager.updateViewNotification(mSong);
@@ -207,21 +227,20 @@ public class MusicService extends Service {
         mMediaPlayer.seekTo(mSes);
     }
 
+    @Override
+    public void onCompletion(MediaPlayer mp) {
 
-//    @Override
-//    public void onCompletion(MediaPlayer mp) {
-//
-//    }
-//
-//    @Override
-//    public boolean onError(MediaPlayer mp, int what, int extra) {
-//        return false;
-//    }
-//
-//    @Override
-//    public void onPrepared(MediaPlayer mp) {
-//
-//    }
+    }
+
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        return false;
+    }
 
     public class MusicBinder extends Binder {
         public MusicService getService() {

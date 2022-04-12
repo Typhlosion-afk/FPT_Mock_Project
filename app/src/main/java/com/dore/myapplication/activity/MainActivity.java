@@ -1,16 +1,14 @@
 package com.dore.myapplication.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import android.app.Service;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -18,17 +16,18 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.minterface.OnMediaRunning;
 import com.dore.myapplication.service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements OnMediaRunning{
 
     private EditText mEdtSearch;
 
@@ -46,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
 
     private MusicService mMusicService;
 
+    private SeekBar mSeekBar;
+
+    private View mControllerView;
+
+    private int mSongCur = 0;
+
+    private int mSongDur = MAX_SEEKBAR_VALUE;
+
     private boolean mBound = false;
 
     @Override
@@ -53,27 +60,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        bindService();
         initView();
         handleAction();
         initNav();
 
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Intent iStartService = new Intent(this, MusicService.class);
-
-        startService(iStartService);
-        bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
-
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        unbindService(connection);
-        mBound = false;
     }
 
     @Override
@@ -85,10 +76,30 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onStop();
+        unbindService(connection);
+        mBound = false;
+        super.onDestroy();
+    }
+
+    private void bindService(){
+        Intent iStartService = new Intent(this, MusicService.class);
+        startService(iStartService);
+        bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
+    }
+
     private void initView() {
         mEdtSearch = findViewById(R.id.edt_searcher);
         mBtnSearch = findViewById(R.id.btn_searcher);
         mBtnDrawer = findViewById(R.id.btn_nav_drawer);
+        mSeekBar = findViewById(R.id.seek_bar);
+        mControllerView = findViewById(R.id.media_controller_view);
+
+        mSeekBar.setMax(MAX_SEEKBAR_VALUE);
+        mSeekBar.setVisibility(View.GONE);
+        mControllerView.setVisibility(View.GONE);
 
         mBtnSearch.setVisibility(View.VISIBLE);
         mEdtSearch.setVisibility(View.INVISIBLE);
@@ -121,13 +132,14 @@ public class MainActivity extends AppCompatActivity {
             mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
-
                     }
             );
 
             NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
             NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
         }
+
+
     }
 
     private final ServiceConnection connection = new ServiceConnection() {
@@ -136,6 +148,8 @@ public class MainActivity extends AppCompatActivity {
             MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
             mMusicService = binder.getService();
             mBound = true;
+
+            mMusicService.setCurPosListener(MainActivity.this);
         }
 
         @Override
@@ -152,4 +166,24 @@ public class MainActivity extends AppCompatActivity {
         return mBound;
     }
 
+    @Override
+    public void sendPos(int pos) {
+        Log.d("TAG", "sendPos: " + pos);
+    }
+
+    @Override
+    public void sendDur(int duration) {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.d("TAG", "onPause: ");
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+    }
 }

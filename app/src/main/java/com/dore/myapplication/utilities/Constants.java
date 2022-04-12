@@ -7,6 +7,8 @@ public class Constants {
 
     public static final String NOTIFICATION_DATA_ACTION = "noti_event_action";
 
+    public static final int MAX_SEEKBAR_VALUE = 1000;
+
     public static final int ACTION_PLAY = 0;
 
     public static final int ACTION_PAUSE = 1;

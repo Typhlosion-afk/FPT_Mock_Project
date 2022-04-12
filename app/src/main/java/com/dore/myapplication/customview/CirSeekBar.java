@@ -21,9 +21,8 @@ import com.dore.myapplication.R;
 
 public class CirSeekBar extends View {
 
-    private Rect mRectSquare;
     private final int mRadius;
-    private Paint mPaintProcess;
+    private Paint mPaintProgress;
     private Paint mPaintIndicator;
     private Paint mPaintBackGround;
     private final int mStrokeSize;
@@ -66,7 +65,7 @@ public class CirSeekBar extends View {
         super.onDraw(canvas);
 
         paintBackGround(canvas);
-        paintProcess(canvas);
+        paintProgress(canvas);
         paintIndicator(canvas);
     }
 
@@ -131,12 +130,12 @@ public class CirSeekBar extends View {
         mPaintBackGround.setStrokeWidth(mStrokeSize);
         mPaintBackGround.setColor(mBackGroundColor);
 
-        mPaintProcess = new Paint();
-        mPaintProcess.setStyle(Paint.Style.STROKE);
-        mPaintProcess.setStrokeWidth(mStrokeSize);
-        mPaintProcess.setShader(gradient);
-        mPaintProcess.setAntiAlias(true);
-        mPaintProcess.setColor(Color.WHITE);
+        mPaintProgress = new Paint();
+        mPaintProgress.setStyle(Paint.Style.STROKE);
+        mPaintProgress.setStrokeWidth(mStrokeSize);
+        mPaintProgress.setShader(gradient);
+        mPaintProgress.setAntiAlias(true);
+        mPaintProgress.setColor(Color.WHITE);
 
         mPaintIndicator = new Paint();
         mPaintIndicator.setShader(gradient);
@@ -150,8 +149,8 @@ public class CirSeekBar extends View {
 
     }
 
-    private void paintProcess(Canvas canvas) {
-        canvas.drawArc(mRing, 270, mPos, false, mPaintProcess);
+    private void paintProgress(Canvas canvas) {
+        canvas.drawArc(mRing, 270, mPos, false, mPaintProgress);
     }
 
     private void paintIndicator(Canvas canvas) {
@@ -175,7 +174,7 @@ public class CirSeekBar extends View {
         this.listener = listener;
     }
 
-    public void setProcess(float pos) {
+    public void setProgress(float pos) {
         if (!isOnTouching) {
             this.mPos = pos / 100 * 360;
             invalidate();

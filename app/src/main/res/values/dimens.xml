@@ -5,4 +5,5 @@
     <dimen name="margin_screen">20dp</dimen>
     <dimen name="icon_playing_space">24dp</dimen>
     <dimen name="disc_size">238dp</dimen>
+    <dimen name="controller_view_height">70dp</dimen>
 </resources>

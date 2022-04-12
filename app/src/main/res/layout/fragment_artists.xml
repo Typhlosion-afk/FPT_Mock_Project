@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragment.songs.ArtistsFragment">
+    tools:context=".activity.screen.songs.artists.view.ArtistsFragment">
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/artists_container"
