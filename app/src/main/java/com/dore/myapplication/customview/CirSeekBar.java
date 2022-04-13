@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.util.AttributeSet;
@@ -83,16 +82,18 @@ public class CirSeekBar extends View {
             case MotionEvent.ACTION_DOWN: {
                 isOnTouching = true;
                 mPos = XYtoDegree(event.getX(), event.getY());
+                listener.onChangingPos(mPos / 360 * 100);
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
                 mPos = XYtoDegree(event.getX(), event.getY());
+                listener.onChangingPos(mPos / 360 * 100);
                 break;
             }
             case MotionEvent.ACTION_UP: {
                 mPos = XYtoDegree(event.getX(), event.getY());
                 if (listener != null) {
-                    listener.onChangePos(mPos / 360 * 100);
+                    listener.onChangedPos(mPos / 360 * 100);
                 }
                 isOnTouching = false;
                 break;
@@ -182,7 +183,8 @@ public class CirSeekBar extends View {
     }
 
     public interface OnChangeIndicatorPosition {
-        void onChangePos(float percent);
+        void onChangingPos(float percent);
+        void onChangedPos(float percent);
     }
 
 }

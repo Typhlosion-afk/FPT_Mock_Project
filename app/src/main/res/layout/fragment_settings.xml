@@ -12,8 +12,8 @@
         android:id="@+id/setting_display"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView1"
@@ -29,7 +29,7 @@
             android:id="@+id/textView1"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/display"
             android:textColor="@color/white"
@@ -49,8 +49,8 @@
         android:id="@+id/setting_audio"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView2"
@@ -66,7 +66,7 @@
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/audio"
             android:textColor="@color/white"
@@ -86,8 +86,8 @@
         android:id="@+id/setting_headset"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView3"
@@ -103,7 +103,7 @@
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/headset"
             android:textColor="@color/white"
@@ -123,8 +123,8 @@
         android:id="@+id/setting_lockscreen"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView4"
@@ -140,7 +140,7 @@
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/lockscreen"
             android:textColor="@color/white"
@@ -160,8 +160,8 @@
         android:id="@+id/setting_advanced"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView5"
@@ -177,7 +177,7 @@
             android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/advanced"
             android:textColor="@color/white"
@@ -197,8 +197,8 @@
         android:id="@+id/setting_other"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:paddingHorizontal="20dp"
-        android:paddingTop="20dp">
+        android:paddingHorizontal="@dimen/default_margin_20"
+        android:paddingTop="@dimen/default_margin_20">
 
         <ImageView
             android:id="@+id/imageView6"
@@ -214,7 +214,7 @@
             android:id="@+id/textView6"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
+            android:layout_marginHorizontal="@dimen/default_margin_20"
             android:fontFamily="@font/circular_std_medium"
             android:text="@string/other"
             android:textColor="@color/white"

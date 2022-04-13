@@ -18,16 +18,22 @@ import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.minterface.OnMediaRunning;
+import com.dore.myapplication.minterface.OnMediaStateController;
+import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
 
-public class MainActivity extends AppCompatActivity implements OnMediaRunning{
+import java.util.ArrayList;
+import java.util.List;
+
+public class MainActivity extends AppCompatActivity implements OnMediaStateController {
 
     private EditText mEdtSearch;
 
@@ -49,11 +55,45 @@ public class MainActivity extends AppCompatActivity implements OnMediaRunning{
 
     private View mControllerView;
 
+    private ImageButton btnPrev;
+
+    private ImageButton btnNext;
+
+    private ImageButton btnPlay;
+
+    private TextView txtSongName;
+
+    private TextView txtSongAuthor;
+
     private int mSongCur = 0;
 
     private int mSongDur = MAX_SEEKBAR_VALUE;
 
+    private int mSongPos = 0;
+
     private boolean mBound = false;
+
+    private boolean mIsPlaying = false;
+
+    private Song mSong;
+
+    private List<Song> mListSong = new ArrayList<>();
+
+    private final ServiceConnection connection = new ServiceConnection() {
+        @Override
+        public void onServiceConnected(ComponentName name, IBinder service) {
+            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
+            mMusicService = binder.getService();
+            mBound = true;
+
+            mMusicService.setCurPosListener(MainActivity.this);
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName name) {
+            mBound = false;
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,27 +107,12 @@ public class MainActivity extends AppCompatActivity implements OnMediaRunning{
 
     }
 
-    @Override
-    public void onBackPressed() {
-        if (mDrawerNavigationView.isShown()) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
 
-    @Override
-    protected void onDestroy() {
-        super.onStop();
-        unbindService(connection);
-        mBound = false;
-        super.onDestroy();
-    }
-
-    private void bindService(){
+    private void bindService() {
         Intent iStartService = new Intent(this, MusicService.class);
         startService(iStartService);
         bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
+
     }
 
     private void initView() {
@@ -95,15 +120,29 @@ public class MainActivity extends AppCompatActivity implements OnMediaRunning{
         mBtnSearch = findViewById(R.id.btn_searcher);
         mBtnDrawer = findViewById(R.id.btn_nav_drawer);
         mSeekBar = findViewById(R.id.seek_bar);
-        mControllerView = findViewById(R.id.media_controller_view);
 
+        txtSongName = findViewById(R.id.txt_name);
+        txtSongAuthor = findViewById(R.id.txt_author);
+
+        btnPlay = findViewById(R.id.btn_control_play);
+        btnNext = findViewById(R.id.btn_control_next);
+        btnPrev = findViewById(R.id.btn_control_prev);
+
+        mControllerView = findViewById(R.id.media_controller_view);
         mSeekBar.setMax(MAX_SEEKBAR_VALUE);
-        mSeekBar.setVisibility(View.GONE);
-        mControllerView.setVisibility(View.GONE);
 
         mBtnSearch.setVisibility(View.VISIBLE);
         mEdtSearch.setVisibility(View.INVISIBLE);
+    }
 
+    private void setHideController() {
+        mSeekBar.setVisibility(View.GONE);
+        mControllerView.setVisibility(View.GONE);
+    }
+
+    private void setShowController() {
+        mSeekBar.setVisibility(View.VISIBLE);
+        mControllerView.setVisibility(View.VISIBLE);
     }
 
     private void handleAction() {
@@ -132,6 +171,11 @@ public class MainActivity extends AppCompatActivity implements OnMediaRunning{
             mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
+                        if (navDestination.getId() == R.id.nowPlayingFragment || mSong == null) {
+                            setHideController();
+                        } else {
+                            setShowController();
+                        }
                     }
             );
 
@@ -142,48 +186,68 @@ public class MainActivity extends AppCompatActivity implements OnMediaRunning{
 
     }
 
-    private final ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
-            mMusicService = binder.getService();
-            mBound = true;
-
-            mMusicService.setCurPosListener(MainActivity.this);
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-        }
-    };
-
-    public MusicService getBoundService(){
+    public MusicService getBoundService() {
         return mMusicService;
     }
 
-    public boolean isBound(){
+    public boolean isBound() {
         return mBound;
     }
 
+
     @Override
-    public void sendPos(int pos) {
-        Log.d("TAG", "sendPos: " + pos);
+    public void onBackPressed() {
+        if (mDrawerNavigationView.isShown()) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
-    public void sendDur(int duration) {
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.d("TAG", "onPause: ");
-    }
-
-    @Override
-    protected void onStop() {
+    protected void onDestroy() {
         super.onStop();
+        unbindService(connection);
+        mBound = false;
+        super.onDestroy();
     }
+
+
+    @Override
+    public void onChangeListSong(List<Song> songs) {
+        mListSong = songs;
+    }
+
+    @Override
+    public void onPlayNewSong(Song song, int pos) {
+        mSong = song;
+        mSongPos = pos;
+
+        txtSongName.setText(mSong.getName());
+        txtSongAuthor.setText(mSong.getAuthor());
+    }
+
+    @Override
+    public void onPlayingStateChange(boolean isPlaying) {
+        mIsPlaying = isPlaying;
+
+        if(mIsPlaying){
+            btnPlay.setImageResource(R.drawable.ic_control_pause_small);
+        }else{
+            btnPlay.setImageResource(R.drawable.ic_control_play_small);
+        }
+    }
+
+    @Override
+    public void onRunning(int cur) {
+        mSongCur = cur;
+        mSeekBar.setProgress(mSongCur);
+    }
+
+    @Override
+    public void onDurationChange(int duration) {
+        mSongDur = duration;
+        mSeekBar.setMax(mSongDur);
+    }
+
 }

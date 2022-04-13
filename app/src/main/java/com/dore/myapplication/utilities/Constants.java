@@ -9,6 +9,10 @@ public class Constants {
 
     public static final int MAX_SEEKBAR_VALUE = 1000;
 
+    public static final String KEY_SONG_POSITION = "key_for_song_pos";
+
+    public static final String KEY_SONG_LIST = "key_for_list_song";
+
     public static final int ACTION_PLAY = 0;
 
     public static final int ACTION_PAUSE = 1;

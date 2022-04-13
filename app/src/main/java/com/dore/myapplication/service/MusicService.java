@@ -4,6 +4,9 @@ import static com.dore.myapplication.utilities.Constants.ACTION_CLOSE;
 import static com.dore.myapplication.utilities.Constants.ACTION_NEXT;
 import static com.dore.myapplication.utilities.Constants.ACTION_PLAY;
 import static com.dore.myapplication.utilities.Constants.ACTION_PREV;
+import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
+import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
+import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 import static com.dore.myapplication.utilities.Constants.NOTIFICATION_DATA_ACTION;
 import static com.dore.myapplication.utilities.Constants.ONGOING_NOTIFICATION_ID;
 
@@ -20,14 +23,21 @@ import android.util.Log;
 
 import androidx.annotation.Nullable;
 
-import com.dore.myapplication.minterface.OnMediaRunning;
+import com.dore.myapplication.minterface.OnMediaStateController;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.notification.MusicNotificationManager;
+import com.dore.myapplication.utilities.LogUtils;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener {
+        MediaPlayer.OnErrorListener{
+
+    private final IBinder binder = new MusicBinder();
 
     private MusicNotificationManager mMusicNotiManager;
 
@@ -37,15 +47,17 @@ public class MusicService extends Service implements
 
     private Song mSong;
 
-    private final IBinder binder = new MusicBinder();
+    private List<Song> mListSong = new ArrayList<>();
+
+    private int mSongPos = 0;
+
+    private int mCurrent = 0;
 
     public boolean isPlaying = false;
 
-    private int mCurPosition = 0;
+    private final List<OnMediaStateController> onMediaStateController = new ArrayList<>();
 
-    private OnMediaRunning onMediaRunning;
-
-    private Handler h = new Handler();
+    private final Handler h = new Handler();
 
     @Override
     public void onCreate() {
@@ -62,19 +74,10 @@ public class MusicService extends Service implements
         Runnable r = new Runnable() {
             @Override
             public void run() {
-//                Log.d("onMediaRunning", "run: " + onMediaRunning);
-//                if(onMediaRunning != null){
-//
-//                    onMediaRunning.sendPos(mCurPosition);
-//                    onMediaRunning.sendDur(1000);
-//                    mCurPosition += 1;
-//                }
-//                h.postDelayed(this, 100);
-
-                if(mMediaPlayer != null && onMediaRunning != null && isPlaying){
-
-                    onMediaRunning.sendPos(mMediaPlayer.getCurrentPosition());
-                    onMediaRunning.sendDur(mMediaPlayer.getDuration());
+                if(mMediaPlayer != null && onMediaStateController.size() != 0 && isPlaying){
+                    for (OnMediaStateController listen : onMediaStateController) {
+                        listen.onRunning(mMediaPlayer.getCurrentPosition());
+                    }
                 }
                 h.postDelayed(this, 100);
             }
@@ -88,54 +91,20 @@ public class MusicService extends Service implements
 
         if (intent != null) {
             int action = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
-            Log.d("TAG", "onStartCommand: " + action);
-            switch (action) {
-                case ACTION_PLAY: {
-                    if (!isPlaying) {
-                        resumeSong();
-                        Log.d("TAG", "onStartCommand: resume");
 
-                    } else {
-                        pauseSong();
-                        Log.d("TAG", "onStartCommand: pause");
+            handleActionNotification(action);
 
-                    }
-                    break;
-                }
-                case ACTION_CLOSE: {
-                    Log.d("TAG", "onStartCommand: close");
-                    stop();
-                    break;
-                }
-                case ACTION_NEXT: {
-                    Log.d("TAG", "onStartCommand: next");
-                    break;
-                }
-                case ACTION_PREV: {
-                    Log.d("TAG", "onStartCommand: prev");
-                    break;
-                }
-                default: {
-                    Log.d("TAG", "onStartCommand: unknown");
+            if (intent.getSerializableExtra(KEY_SONG_POSITION) != null
+                    && intent.getIntExtra(KEY_SONG_POSITION,-1) != -1) {
 
-                }
-            }
-
-            if (intent.getSerializableExtra("song") != null) {
-                mSong = (Song) intent.getSerializableExtra("song");
+                mListSong.addAll((List<Song>) intent.getSerializableExtra(KEY_SONG_LIST));
+                mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
+                mSong = mListSong.get(mSongPos);
                 playSong();
             }
         }
         return START_NOT_STICKY;
     }
-
-    @Override
-    public void onDestroy() {
-        Log.d("TAG", "service onDestroy");
-
-        super.onDestroy();
-    }
-
 
     private void initNotification() {
         mMusicNotiManager = new MusicNotificationManager(this);
@@ -144,7 +113,31 @@ public class MusicService extends Service implements
     }
 
     private void handleActionNotification(int action) {
-
+        switch (action) {
+            case ACTION_PLAY: {
+                if (!isPlaying) {
+                    resumeSong();
+                } else {
+                    pauseSong();
+                }
+                break;
+            }
+            case ACTION_CLOSE: {
+                stopSong();
+                break;
+            }
+            case ACTION_NEXT: {
+                nextSong();
+                break;
+            }
+            case ACTION_PREV: {
+                prevSong();
+                break;
+            }
+            default: {
+                Log.d("TAG", "onStartCommand: unknown");
+            }
+        }
     }
 
     private void initMediaPlayer() {
@@ -160,10 +153,24 @@ public class MusicService extends Service implements
 
     public void playSong() {
         if (mMediaPlayer != null) {
+            isPlaying = false;
             mMediaPlayer.release();
             mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
-            mMediaPlayer.start();
+
+            initMediaPlayer();
+
             isPlaying = true;
+
+            LogUtils.d("Song: " + mSongPos);
+            LogUtils.d("Song: " + mSong.getName());
+
+            for (OnMediaStateController listen : onMediaStateController) {
+                listen.onPlayNewSong(mSong, mSongPos);
+                listen.onPlayingStateChange(isPlaying);
+                listen.onDurationChange(mMediaPlayer.getDuration());
+                listen.onPlayingStateChange(isPlaying);
+            }
+
             updateNotification();
         }
     }
@@ -171,8 +178,13 @@ public class MusicService extends Service implements
     public void pauseSong() {
         if (mMediaPlayer != null) {
             mMediaPlayer.pause();
-            mCurPosition = mMediaPlayer.getCurrentPosition();
+            mCurrent = mMediaPlayer.getCurrentPosition();
             isPlaying = false;
+
+            for (OnMediaStateController listen : onMediaStateController) {
+                listen.onPlayingStateChange(isPlaying);
+            }
+
             updateNotification();
         }
 
@@ -180,27 +192,59 @@ public class MusicService extends Service implements
 
     public void resumeSong() {
         if (mMediaPlayer != null) {
-            mMediaPlayer.seekTo(mCurPosition);
+            mMediaPlayer.seekTo(mCurrent);
             mMediaPlayer.start();
             isPlaying = true;
+
+            for (OnMediaStateController listen : onMediaStateController) {
+                listen.onPlayingStateChange(isPlaying);
+            }
+
             updateNotification();
         }
 
     }
 
-    public void stop() {
+    public void nextSong() {
+        if(mSongPos < mListSong.size() - 1) {
+            mSongPos++;
+        }else {
+            mSongPos = 0;
+        }
+        mSong = mListSong.get(mSongPos);
+        playSong();
+    }
+
+    public void prevSong(){
+        if(mSongPos > 0) {
+            mSongPos --;
+        }else {
+            mSongPos = mListSong.size() - 1;
+        }
+        mSong = mListSong.get(mSongPos);
+        playSong();
+    }
+
+    public void stopSong() {
         if (mMediaPlayer != null) {
-            mMediaPlayer.release();
-            mCurPosition = 0;
             isPlaying = false;
-
-            onMediaRunning.sendPos(mMediaPlayer.getCurrentPosition());
-
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+            mCurrent = 0;
         }
         mMusicNotiManager.setIsForeRunning(false);
         mMusicNotiManager.updateViewNotification(mSong);
         mMusicNotiManager.removeNotification();
         this.stopSelf();
+    }
+
+    public int getSongDur(){
+        return mMediaPlayer == null ? MAX_SEEKBAR_VALUE : mMediaPlayer.getDuration();
+    }
+
+    public void seekTo(int mSes) {
+        mMediaPlayer.seekTo(mSes);
+        mCurrent = mSes;
     }
 
     private void updateNotification() {
@@ -209,32 +253,59 @@ public class MusicService extends Service implements
         mMusicNotiManager.updateViewNotification(mSong);
     }
 
-
     public void startForeground(Song song) {
         mSong = song;
         startForeground(ONGOING_NOTIFICATION_ID, mPlayerNotification);
     }
 
-    public void setCurPosListener(OnMediaRunning listener){
-        this.onMediaRunning = listener;
+    public void setCurPosListener(OnMediaStateController listener){
+        this.onMediaStateController.add(listener);
     }
 
-    public int getSongDur(){
-        return mMediaPlayer == null ? 0 : mMediaPlayer.getDuration();
+    public Song getPlayingSong(){
+        return mSong;
     }
 
-    public void seekTo(int mSes) {
-        mMediaPlayer.seekTo(mSes);
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        Log.d("TAG", "onBind: ");
+        return binder;
     }
 
     @Override
-    public void onCompletion(MediaPlayer mp) {
+    public void onRebind(Intent intent) {
+        Log.d("TAG", "reBind: ");
 
+        super.onRebind(intent);
+    }
+
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.d("TAG", "unBind: ");
+        return super.onUnbind(intent);
+    }
+
+
+    @Override
+    public void onDestroy() {
+        if(mMediaPlayer != null){
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+        super.onDestroy();
+    }
+
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+        nextSong();
     }
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-
+        LogUtils.d("on pre");
+        mp.start();
     }
 
     @Override
@@ -248,16 +319,4 @@ public class MusicService extends Service implements
         }
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        Log.d("TAG", "service onBind");
-        return binder;
-    }
-
-    @Override
-    public boolean onUnbind(Intent intent) {
-        Log.d("TAG", "service onUnbind");
-        return super.onUnbind(intent);
-    }
 }

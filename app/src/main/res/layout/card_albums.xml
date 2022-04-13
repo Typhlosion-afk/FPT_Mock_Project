@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingTop="20dp"
-    android:paddingHorizontal="20dp">
+    android:paddingTop="@dimen/default_margin_20"
+    android:paddingHorizontal="@dimen/default_margin_20">
 
     <ImageView
         android:id="@+id/img_card"
@@ -59,7 +59,7 @@
 
     <androidx.appcompat.widget.AppCompatImageButton
         android:layout_width="wrap_content"
-        android:layout_height="20dp"
+        android:layout_height="@dimen/default_margin_20"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_dot"
         app:layout_constraintBottom_toBottomOf="@+id/txt_num_song_card"

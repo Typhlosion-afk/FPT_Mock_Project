@@ -52,14 +52,12 @@ public class HomeFragment extends BaseFragment {
     }
 
     private void initData() {
-        mListSong.clear();
-        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
-        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
-        mListSong.add(new Song("Bai hat so 3", "Ca si 2", "path 3"));
-        mListSong.add(new Song("Bai hat so 4", "Ca si 2", "path 4"));
-        mListSong.add(new Song("Bai hat so 5", "Ca si 2", "path 5"));
-        mListSong.add(new Song("Bai hat so 6", "Ca si 3", "path 6"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
+
+        mListSong.add(new Song("Đế vương", "Đình Dũng", R.raw.de_vuong));
+        mListSong.add(new Song("Hãy trao cho anh", "Sơn Tùng - MTP", R.raw.hay_trao_cho_anh));
+        mListSong.add(new Song("Lạc trôi", "Sơn Tùng - MTP", R.raw.lac_troi));
+        mListSong.add(new Song("Nắng ấm xa dần", "Sơn Tùng - MTP", R.raw.nang_am_xa_dan));
+        mListSong.add(new Song("Thức giấc", "DA LAB", R.raw.thuc_giac));
 
         mListPlaylist.clear();
         mListPlaylist.add(new Playlist("Playlist 1", mListSong));

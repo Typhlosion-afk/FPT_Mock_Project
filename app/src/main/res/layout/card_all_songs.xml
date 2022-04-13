@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:paddingHorizontal="20dp"
+    android:paddingHorizontal="@dimen/default_margin_20"
     android:paddingVertical="10dp"
     android:layout_height="wrap_content">
 
@@ -35,7 +35,7 @@
         android:id="@+id/txt_name_song"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/default_margin_20"
         android:fontFamily="@font/circular_std_medium"
         android:text="@string/txt_long_example"
         android:textSize="13sp"

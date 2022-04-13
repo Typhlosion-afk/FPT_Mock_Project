@@ -55,4 +55,10 @@
         <item name="android:listPreferredItemHeightSmall">40dp</item>
     </style>
 
+    <style name="ControlSeekBar" parent="Widget.AppCompat.SeekBar">
+        <item name="android:progressBackgroundTint">@color/view_line_color</item>
+        <item name="android:progressTint">@color/hard_peach</item>
+        <item name="android:thumbTint">@color/hard_peach</item>
+    </style>
+
 </resources>

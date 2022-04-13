@@ -12,7 +12,7 @@
         android:id="@+id/img_playing"
         android:layout_width="@dimen/disc_size"
         android:layout_height="@dimen/disc_size"
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="@dimen/default_margin_20"
         android:background="@drawable/img_bg_playlist_default"
         android:padding="2dp"
         android:scaleType="centerInside"
@@ -29,17 +29,42 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:fontFamily="@font/circular_std_medium_book"
-        android:text="@string/num_default"
+        android:text="@string/operator_per"
         android:textSize="12sp"
         app:layout_constraintEnd_toEndOf="@+id/img_playing"
         app:layout_constraintStart_toStartOf="@+id/img_playing"
         app:layout_constraintTop_toBottomOf="@+id/img_playing" />
 
     <TextView
+        android:id="@+id/txt_playing_dur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium_book"
+        android:paddingHorizontal="8dp"
+        android:text="@string/time_default"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_time"
+        app:layout_constraintStart_toEndOf="@+id/txt_time"
+        app:layout_constraintTop_toTopOf="@+id/txt_time" />
+
+    <TextView
+        android:id="@+id/txt_playing_cur"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/circular_std_medium_book"
+        android:paddingHorizontal="8dp"
+        android:text="@string/time_default"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toBottomOf="@+id/txt_time"
+        app:layout_constraintEnd_toStartOf="@+id/txt_time"
+        app:layout_constraintTop_toTopOf="@+id/txt_time" />
+
+
+    <TextView
         android:id="@+id/txt_playing_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="@dimen/default_margin_20"
         android:fontFamily="@font/circular_std_medium"
         android:text="@string/songs"
         android:textSize="18sp"
@@ -59,65 +84,70 @@
         app:layout_constraintStart_toStartOf="@+id/img_playing"
         app:layout_constraintTop_toBottomOf="@+id/txt_playing_name" />
 
-    <ImageButton
-        android:id="@+id/btn_repeat"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_control_repeat"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
-    <ImageButton
-        android:id="@+id/btn_shuffle"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/icon_playing_space"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_control_shuffle"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_repeat"
-        app:layout_constraintEnd_toStartOf="@+id/btn_repeat" />
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:paddingVertical="@dimen/default_margin_20"
+        android:layout_marginHorizontal="40dp"
+        android:weightSum="5"
+        app:layout_constraintBottom_toBottomOf="parent">
 
-    <ImageButton
-        android:id="@+id/btn_eq"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/icon_playing_space"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_control_eq"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_repeat"
-        app:layout_constraintStart_toEndOf="@+id/btn_repeat" />
+        <ImageButton
+            android:id="@+id/btn_playlist"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_control_playlist" />
 
-    <ImageButton
-        android:id="@+id/btn_playlist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/icon_playing_space"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_control_repeat"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_repeat"
-        app:layout_constraintEnd_toStartOf="@+id/btn_shuffle" />
+        <ImageButton
+            android:id="@+id/btn_shuffle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_control_shuffle" />
 
-    <ImageButton
-        android:id="@+id/btn_favourite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/icon_playing_space"
-        android:background="@android:color/transparent"
-        android:src="@drawable/ic_control_favourites"
-        app:layout_constraintBottom_toBottomOf="@+id/btn_repeat"
-        app:layout_constraintStart_toEndOf="@+id/btn_eq" />
+
+        <ImageButton
+            android:id="@+id/btn_repeat"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_control_repeat" />
+
+        <ImageButton
+            android:id="@+id/btn_eq"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_control_eq" />
+
+
+
+        <ImageButton
+            android:id="@+id/btn_favourite"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_control_favourites" />
+    </LinearLayout>
 
     <ImageButton
         android:id="@+id/btn_control_play"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginVertical="40dp"
+        android:layout_marginVertical="@dimen/default_margin_20"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_control_play"
-        app:layout_constraintBottom_toTopOf="@+id/btn_repeat"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -148,7 +178,7 @@
     <ImageView
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginVertical="20dp"
+        android:layout_marginVertical="@dimen/default_margin_20"
         android:scaleType="fitXY"
         android:src="@drawable/eq_display"
         app:layout_constraintBottom_toTopOf="@+id/view"
