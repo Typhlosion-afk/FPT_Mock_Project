@@ -23,5 +23,8 @@ public class Constants {
 
     public static final int ACTION_PREV = 4;
 
+    public static final int ACTION_OPEN_APP = 5;
+
+
 
 }

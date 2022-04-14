@@ -1,5 +1,9 @@
 package com.dore.myapplication.activity.screen.home.adapter;
 
+import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
+import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.service.MusicService;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -45,6 +51,7 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
         return mListSong.size();
     }
 
+
     class HomeHolder extends RecyclerView.ViewHolder {
 
         private final TextView txtName;
@@ -58,9 +65,14 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
             txtAuthor = itemView.findViewById(R.id.txt_author_card);
 
             itemView.setOnClickListener(v -> {
-                Bundle bSong = new Bundle();
-                bSong.putSerializable("song", mListSong.get(getAdapterPosition()));
-                Navigation.findNavController(mRootView).navigate(R.id.action_play_song, bSong);
+
+                Intent i = new Intent(mRootView.getContext(), MusicService.class);
+                i.putExtra(KEY_SONG_LIST, (Serializable) mListSong);
+                i.putExtra(KEY_SONG_POSITION, getAdapterPosition());
+
+                mRootView.getContext().startService(i);
+
+                Navigation.findNavController(mRootView).navigate(R.id.action_play_song);
             });
         }
 

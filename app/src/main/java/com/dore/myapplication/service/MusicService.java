@@ -63,6 +63,8 @@ public class MusicService extends Service implements
     public void onCreate() {
         super.onCreate();
 
+        LogUtils.d("On Create");
+
         initMediaPlayer();
         initNotification();
 
@@ -85,19 +87,24 @@ public class MusicService extends Service implements
         new Thread(r).start();
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.d("TAG", "service onStartCommand");
 
         if (intent != null) {
             int action = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
 
             handleActionNotification(action);
 
-            if (intent.getSerializableExtra(KEY_SONG_POSITION) != null
+            if (intent.getSerializableExtra(KEY_SONG_LIST) != null
                     && intent.getIntExtra(KEY_SONG_POSITION,-1) != -1) {
 
-                mListSong.addAll((List<Song>) intent.getSerializableExtra(KEY_SONG_LIST));
+                if(mListSong != (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST)) {
+                    mListSong = (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST);
+                    for (OnMediaStateController listen : onMediaStateController) {
+                        listen.onChangeListSong(mListSong);
+                    }
+                }
                 mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
                 mSong = mListSong.get(mSongPos);
                 playSong();
@@ -135,7 +142,7 @@ public class MusicService extends Service implements
                 break;
             }
             default: {
-                Log.d("TAG", "onStartCommand: unknown");
+                LogUtils.d("onStartCommand: unknown");
             }
         }
     }
@@ -211,6 +218,9 @@ public class MusicService extends Service implements
         }else {
             mSongPos = 0;
         }
+        LogUtils.d("pos" + mSongPos);
+        LogUtils.d("list size" + mListSong.size());
+
         mSong = mListSong.get(mSongPos);
         playSong();
     }
@@ -258,12 +268,20 @@ public class MusicService extends Service implements
         startForeground(ONGOING_NOTIFICATION_ID, mPlayerNotification);
     }
 
-    public void setCurPosListener(OnMediaStateController listener){
+    public void setMediaControllerListener(OnMediaStateController listener){
         this.onMediaStateController.add(listener);
     }
 
     public Song getPlayingSong(){
         return mSong;
+    }
+
+    public List<Song> getListSong(){
+        return mListSong;
+    }
+
+    public int getPlayingSongPos(){
+        return mSongPos;
     }
 
     @Nullable
@@ -310,6 +328,7 @@ public class MusicService extends Service implements
 
     @Override
     public boolean onError(MediaPlayer mp, int what, int extra) {
+//        nextSong();
         return false;
     }
 

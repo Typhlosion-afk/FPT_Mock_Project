@@ -1,10 +1,6 @@
 package com.dore.myapplication.activity.screen.nowplaying;
 
-import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
-import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
-
-import android.content.Intent;
 
 import android.view.View;
 import android.widget.ImageButton;
@@ -18,7 +14,6 @@ import com.dore.myapplication.minterface.OnMediaStateController;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -46,16 +41,16 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
 
     private MusicService mService;
 
-    private int mCurrent = 0;
+    private int mSongCur = 0;
 
     private boolean isSeekBarTouching = false;
 
     private int mSongDur = MAX_SEEKBAR_VALUE;
 
     private CirSeekBar seekBar;
-    
+
     private int mSongPos = 0;
-    
+
     private List<Song> mListSong = new ArrayList<>();
 
     public NowPlayingFragment() {
@@ -70,39 +65,21 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
     public void onViewReady(View rootView) {
         mRootView = rootView;
 
-        initBoundService();
-        initData();
+        initDataService();
         initView();
         initAction();
-        if(mSong != null){
-            startService();
-        }
     }
 
-    private void initBoundService() {
+    private void initDataService() {
         MainActivity mainActivity = (MainActivity) getActivity();
-        if (mainActivity != null && mainActivity.isBound()) {
+        if (mainActivity != null) {
             this.mService = mainActivity.getBoundService();
-        }
-    }
 
-    private void initData() {
-        mSong = null;
-        if (getArguments() != null && (List<Song>) getArguments().getSerializable(KEY_SONG_LIST) != null) {
-            mListSong = (List<Song>) getArguments().getSerializable(KEY_SONG_LIST);
-            mSongPos = getArguments().getInt(KEY_SONG_POSITION);
-            mSong = mListSong.get(mSongPos);
-        }
-    }
-
-    private void startService() {
-        if (mSong != null) {
-            Intent i = new Intent(mRootView.getContext(), MusicService.class);
-            i.putExtra(KEY_SONG_LIST, (Serializable) mListSong);
-            i.putExtra(KEY_SONG_POSITION, mSongPos);
-
-            mRootView.getContext().startService(i);
-            btnPlay.setImageResource(R.drawable.ic_control_pause);
+            mSong = mService.getPlayingSong();
+            mListSong = mService.getListSong();
+            mIsPlaying = mService.isPlaying;
+            mSongPos = mService.getPlayingSongPos();
+            mSongDur = mService.getSongDur();
         }
     }
 
@@ -117,6 +94,17 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
         txtDurTime = mRootView.findViewById(R.id.txt_playing_dur);
 
         seekBar = mRootView.findViewById(R.id.seek_bar);
+
+        // first state when create view for fragment
+        if (mService != null && mSong != null) {
+            txtSongName.setText(mSong.getName());
+            txtSongAuthor.setText(mSong.getAuthor());
+
+            btnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause : R.drawable.ic_control_play);
+
+            updateUiWithCur();
+        }
+
     }
 
     private void initAction() {
@@ -148,7 +136,7 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
             }
         });
 
-        mService.setCurPosListener(this);
+        mService.setMediaControllerListener(this);
     }
 
     private void play() {
@@ -171,11 +159,12 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
 
     private void updateUiWithCur() {
         if (mSongDur != 0) {
-            seekBar.setProgress((mCurrent * 1.0f / mSongDur) * 100);
+            seekBar.setProgress((mSongCur * 1.0f / mSongDur) * 100);
+            txtCurTime.setText(posToTime(mSongCur));
         }
     }
 
-    private String posToTime(int pos){
+    private String posToTime(int pos) {
         int m = pos / 1000 / 60;
         int s = pos / 1000 % 60;
         String min = m < 10 ? "0" + m : "" + m;
@@ -196,19 +185,18 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
 
     @Override
     public void onPlayingStateChange(boolean isPlaying) {
-        if(isPlaying){
+        if (isPlaying) {
             btnPlay.setImageResource(R.drawable.ic_control_pause);
-        }else {
+        } else {
             btnPlay.setImageResource(R.drawable.ic_control_play);
         }
     }
 
     @Override
     public void onRunning(int cur) {
-        if(!isSeekBarTouching) {
-            mCurrent = cur;
+        if (!isSeekBarTouching) {
+            mSongCur = cur;
             updateUiWithCur();
-            txtCurTime.setText(posToTime(mCurrent));
         }
     }
 

@@ -1,6 +1,7 @@
 package com.dore.myapplication.notification;
 
 import static com.dore.myapplication.utilities.Constants.ACTION_NEXT;
+import static com.dore.myapplication.utilities.Constants.ACTION_OPEN_APP;
 import static com.dore.myapplication.utilities.Constants.ACTION_PLAY;
 import static com.dore.myapplication.utilities.Constants.ACTION_PREV;
 import static com.dore.myapplication.utilities.Constants.ACTION_CLOSE;
@@ -10,6 +11,7 @@ import static com.dore.myapplication.utilities.Constants.NOTIFICATION_DATA_ACTIO
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -19,6 +21,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.activity.MainActivity;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 
@@ -85,6 +88,7 @@ public class MusicNotificationManager {
         mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_prev, getNotiPendingIntent(ACTION_PREV));
         mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_next, getNotiPendingIntent(ACTION_NEXT));
         mLargeNotificationLayout.setOnClickPendingIntent(R.id.btn_control_play, getNotiPendingIntent(ACTION_PLAY));
+//        mLargeNotificationLayout.setOnClickPendingIntent(R.id.root, getOpenAppIntent());
 
         builder = new NotificationCompat.Builder(mContext, NOTIFICATION_CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_noti_small)
@@ -104,6 +108,15 @@ public class MusicNotificationManager {
         Intent i = new Intent(mContext, MusicService.class);
         i.putExtra(NOTIFICATION_DATA_ACTION, action);
         return PendingIntent.getService(mContext, action, i, PendingIntent.FLAG_UPDATE_CURRENT);
+    }
+
+    @SuppressLint("UnspecifiedImmutableFlag")
+    private PendingIntent getOpenAppIntent() {
+        TaskStackBuilder taskStackBuilder = TaskStackBuilder.create(mContext);
+        taskStackBuilder.addParentStack(MainActivity.class);
+        taskStackBuilder.addNextIntent(new Intent());
+//        taskStackBuilder.addNextIntent()
+        return taskStackBuilder.getPendingIntent(ACTION_OPEN_APP, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
     public void setIsForeRunning(boolean isForeRunning) {
