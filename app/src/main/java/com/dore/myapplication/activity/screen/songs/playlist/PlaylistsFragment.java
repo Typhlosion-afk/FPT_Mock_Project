@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.songs.playlist.view;
+package com.dore.myapplication.activity.screen.songs.playlist;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -10,6 +10,7 @@ import com.dore.myapplication.activity.screen.songs.playlist.adapter.MyPlaylistA
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.Playlist;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.utilities.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,9 +37,41 @@ public class PlaylistsFragment extends BaseFragment {
 
     @Override
     public void onViewReady(View rootView) {
+        LogUtils.d("Create");
+
         mRootView = rootView;
         initData();
         initAdapter();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LogUtils.d("Start");
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        LogUtils.d("Resume");
+    }
+
+    @Override
+    public void onPause() {
+        LogUtils.d("Pause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        LogUtils.d("Resume");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        LogUtils.d("Destroy");
+        super.onDestroy();
     }
 
     private void initData() {

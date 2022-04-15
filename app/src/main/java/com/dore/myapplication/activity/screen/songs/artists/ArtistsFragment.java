@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.songs.artists.view;
+package com.dore.myapplication.activity.screen.songs.artists;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +11,7 @@ import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Author;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.utilities.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,9 +42,34 @@ public class ArtistsFragment extends BaseFragment {
     @Override
     public void onViewReady(View rootView) {
         mRootView = rootView;
+        LogUtils.d("Create");
 
         initData();
         initAdapter();
+    }
+
+    @Override
+    public void onResume() {
+        LogUtils.d("Resume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        LogUtils.d("Pause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        LogUtils.d("Stop");
+        super.onStop();
+    }
+
+    @Override
+    public void onDestroy() {
+        LogUtils.d("Destroy");
+        super.onDestroy();
     }
 
     private void initData() {

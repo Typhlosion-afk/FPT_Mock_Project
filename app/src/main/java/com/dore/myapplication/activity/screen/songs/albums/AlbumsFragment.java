@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.songs.albums.view;
+package com.dore.myapplication.activity.screen.songs.albums;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

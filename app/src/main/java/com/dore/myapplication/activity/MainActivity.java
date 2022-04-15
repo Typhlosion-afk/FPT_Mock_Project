@@ -2,19 +2,23 @@ package com.dore.myapplication.activity;
 
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -28,6 +32,7 @@ import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 import com.dore.myapplication.utilities.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -149,12 +154,12 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
     }
 
 
-    private void hideController() {
+    public void hideController() {
         mSeekBar.setVisibility(View.GONE);
         mControllerView.setVisibility(View.GONE);
     }
 
-    private void showController() {
+    public void showController() {
         mSeekBar.setVisibility(View.VISIBLE);
         mControllerView.setVisibility(View.VISIBLE);
 
@@ -234,6 +239,7 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         });
     }
 
+    @SuppressLint("NonConstantResourceId")
     private void initNav() {
         BottomNavigationView bottomNavigationView = this.findViewById(R.id.bottom_nav);
         mDrawerNavigationView = this.findViewById(R.id.drawer_nav);
@@ -249,16 +255,28 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
             mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
-                        if (navDestination.getId() == R.id.nowPlayingFragment) {
-                            hideController();
-                        } else {
-                            showController();
-                        }
                     }
             );
 
             NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
             NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
+
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                switch (item.getItemId()){
+                    case R.id.homeFragment:
+                        mNavController.navigate(R.id.action_goto_home);
+                        break;
+                    case R.id.songsFragment:
+                        mNavController.navigate(R.id.action_goto_songs);
+
+                        break;
+                    case R.id.settingsFragment:
+                        mNavController.navigate(R.id.action_goto_settings);
+                        break;
+                }
+                return false;
+            });
+
         }
     }
 

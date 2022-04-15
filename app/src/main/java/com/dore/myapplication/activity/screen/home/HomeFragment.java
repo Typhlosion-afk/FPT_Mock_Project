@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.home.view;
+package com.dore.myapplication.activity.screen.home;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -53,6 +53,7 @@ public class HomeFragment extends BaseFragment {
 
     private void initData() {
 
+        mListSong.clear();
         mListSong.add(new Song("Đế vương", "Đình Dũng", R.raw.de_vuong));
         mListSong.add(new Song("Hãy trao cho anh", "Sơn Tùng - MTP", R.raw.hay_trao_cho_anh));
         mListSong.add(new Song("Lạc trôi", "Sơn Tùng - MTP", R.raw.lac_troi));

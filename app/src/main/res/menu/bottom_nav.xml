@@ -3,16 +3,18 @@
     <item
         android:id="@+id/homeFragment"
         android:icon="@drawable/selector_home_ic"
+        android:menuCategory="secondary"
         android:title="@string/home" />
 
     <item
         android:id="@+id/songsFragment"
         android:icon="@drawable/selector_songs_ic"
+        android:menuCategory="secondary"
         android:title="@string/songs" />
 
     <item
-
         android:id="@+id/settingsFragment"
         android:icon="@drawable/selector_setting_ic"
+        android:menuCategory="secondary"
         android:title="@string/setting" />
 </menu>

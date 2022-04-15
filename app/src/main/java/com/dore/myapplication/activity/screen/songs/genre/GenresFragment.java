@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.songs.genre.view;
+package com.dore.myapplication.activity.screen.songs.genre;
 
 import android.graphics.BitmapFactory;
 
@@ -12,6 +12,7 @@ import com.dore.myapplication.activity.screen.songs.genre.adapter.GenresAdapter;
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.MusicStyle;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.utilities.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,9 +39,34 @@ public class GenresFragment extends BaseFragment {
 
     @Override
     public void onViewReady(View rootView) {
+        LogUtils.d("Create");
         mRootView = rootView;
         initData();
         initAdapter();
+    }
+
+    @Override
+    public void onStart() {
+        LogUtils.d("Start");
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        LogUtils.d("Resume");
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        LogUtils.d("Pause");
+        super.onPause();
+    }
+
+    @Override
+    public void onStop() {
+        LogUtils.d("Stop");
+        super.onStop();
     }
 
     private void initData() {

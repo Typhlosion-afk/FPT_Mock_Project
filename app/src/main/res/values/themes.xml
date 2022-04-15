@@ -12,7 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:activityOpenEnterAnimation" >@anim/slide_in_left</item>
+        <item name="android:activityOpenEnterAnimation" >@anim/fade_in</item>
         <item name="backgroundColor">@color/background_color</item>
     </style>
 

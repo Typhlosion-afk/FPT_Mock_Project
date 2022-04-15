@@ -82,6 +82,7 @@
             android:layout_height="@dimen/controller_view_height"
             android:background="@color/controller_player_color"
             android:paddingHorizontal="@dimen/default_margin_20"
+            android:visibility="gone"
             app:layout_constraintBottom_toTopOf="@id/bottom_nav">
 
             <com.google.android.material.imageview.ShapeableImageView
@@ -100,20 +101,23 @@
 
             <TextView
                 android:id="@+id/txt_name"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/default_margin_20"
                 android:layout_marginTop="12dp"
+                android:ellipsize="end"
                 android:fontFamily="@font/circular_std_bold"
+                android:maxLines="1"
                 android:text="@string/songs"
                 android:textColor="@color/white"
                 android:textSize="13sp"
+                app:layout_constraintEnd_toStartOf="@+id/btn_control_prev"
                 app:layout_constraintStart_toEndOf="@+id/img_control_player"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
                 android:id="@+id/txt_author"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginHorizontal="@dimen/default_margin_20"
                 android:layout_marginTop="8dp"
@@ -121,6 +125,7 @@
                 android:text="@string/songs"
                 android:textColor="@color/white"
                 android:textSize="10sp"
+                app:layout_constraintEnd_toStartOf="@+id/btn_control_prev"
                 app:layout_constraintStart_toEndOf="@+id/img_control_player"
                 app:layout_constraintTop_toBottomOf="@+id/txt_name"
                 tools:ignore="SmallSp" />
@@ -128,9 +133,9 @@
             <ImageButton
                 android:id="@+id/btn_control_next"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:padding="5dp"
+                android:paddingHorizontal="@dimen/icon_controller_padding"
                 android:src="@drawable/ic_control_next_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -139,10 +144,9 @@
             <ImageButton
                 android:id="@+id/btn_control_play"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:padding="5dp"
+                android:paddingHorizontal="@dimen/icon_controller_padding"
                 android:src="@drawable/ic_control_play_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_control_next"
@@ -151,10 +155,9 @@
             <ImageButton
                 android:id="@+id/btn_control_prev"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="12dp"
+                android:layout_height="match_parent"
                 android:background="@android:color/transparent"
-                android:padding="5dp"
+                android:paddingHorizontal="@dimen/icon_controller_padding"
                 android:src="@drawable/ic_control_prev_small"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@+id/btn_control_play"
@@ -169,6 +172,7 @@
             android:layout_height="wrap_content"
             android:paddingStart="0dp"
             android:paddingEnd="0dp"
+            android:visibility="gone"
             app:layout_constraintBottom_toBottomOf="@+id/nav_host_fragment"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

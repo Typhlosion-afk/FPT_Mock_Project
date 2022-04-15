@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingTop="@dimen/default_margin_20"
-    tools:context=".activity.screen.songs.playlist.view.PlaylistsFragment">
+    tools:context=".activity.screen.songs.playlist.PlaylistsFragment">
 
     <!--    ////////////My Top Tracks Item///////////  -->
     <ImageView

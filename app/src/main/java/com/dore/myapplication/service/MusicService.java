@@ -29,7 +29,6 @@ import com.dore.myapplication.notification.MusicNotificationManager;
 import com.dore.myapplication.utilities.LogUtils;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MusicService extends Service implements
@@ -57,7 +56,11 @@ public class MusicService extends Service implements
 
     private final List<OnMediaStateController> onMediaStateController = new ArrayList<>();
 
-    private final Handler h = new Handler();
+    private final Handler handler = new Handler();
+
+    private OnMediaStateController smallControlListener;
+
+    private OnMediaStateController nowPlayingListener;
 
     @Override
     public void onCreate() {
@@ -72,7 +75,6 @@ public class MusicService extends Service implements
             startForeground(mSong);
         }
 
-
         Runnable r = new Runnable() {
             @Override
             public void run() {
@@ -81,7 +83,7 @@ public class MusicService extends Service implements
                         listen.onRunning(mMediaPlayer.getCurrentPosition());
                     }
                 }
-                h.postDelayed(this, 100);
+                handler.postDelayed(this, 100);
             }
         };
         new Thread(r).start();
@@ -99,7 +101,7 @@ public class MusicService extends Service implements
             if (intent.getSerializableExtra(KEY_SONG_LIST) != null
                     && intent.getIntExtra(KEY_SONG_POSITION,-1) != -1) {
 
-                if(mListSong != (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST)) {
+                if(mListSong != intent.getSerializableExtra(KEY_SONG_LIST)) {
                     mListSong = (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST);
                     for (OnMediaStateController listen : onMediaStateController) {
                         listen.onChangeListSong(mListSong);
@@ -238,13 +240,19 @@ public class MusicService extends Service implements
     public void stopSong() {
         if (mMediaPlayer != null) {
             isPlaying = false;
-            mMediaPlayer.release();
-            mMediaPlayer = null;
+            mMediaPlayer.stop();
             mCurrent = 0;
         }
         mMusicNotiManager.setIsForeRunning(false);
         mMusicNotiManager.updateViewNotification(mSong);
         mMusicNotiManager.removeNotification();
+        for (OnMediaStateController ls: onMediaStateController){
+            ls.onRunning(mCurrent);
+            ls.onPlayingStateChange(isPlaying);
+        }
+
+        mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
+
         this.stopSelf();
     }
 
@@ -307,6 +315,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onDestroy() {
+        LogUtils.d("Service Destroy");
         if(mMediaPlayer != null){
             mMediaPlayer.release();
             mMediaPlayer = null;
@@ -322,7 +331,7 @@ public class MusicService extends Service implements
 
     @Override
     public void onPrepared(MediaPlayer mp) {
-        LogUtils.d("on pre");
+        LogUtils.d("Prepared");
         mp.start();
     }
 
@@ -337,5 +346,4 @@ public class MusicService extends Service implements
             return MusicService.this;
         }
     }
-
 }

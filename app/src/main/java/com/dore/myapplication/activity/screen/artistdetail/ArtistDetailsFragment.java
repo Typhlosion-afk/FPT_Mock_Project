@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.artistdetail.view;
+package com.dore.myapplication.activity.screen.artistdetail;
 
 import android.os.Bundle;
 

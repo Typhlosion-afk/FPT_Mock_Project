@@ -1,4 +1,4 @@
-package com.dore.myapplication.activity.screen.albumdetail.view;
+package com.dore.myapplication.activity.screen.albumdetail;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

@@ -4,11 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.dore.myapplication.activity.screen.songs.albums.view.AlbumsFragment;
-import com.dore.myapplication.activity.screen.songs.allsong.view.AllSongsFragment;
-import com.dore.myapplication.activity.screen.songs.artists.view.ArtistsFragment;
-import com.dore.myapplication.activity.screen.songs.genre.view.GenresFragment;
-import com.dore.myapplication.activity.screen.songs.playlist.view.PlaylistsFragment;
+import com.dore.myapplication.activity.screen.songs.albums.AlbumsFragment;
+import com.dore.myapplication.activity.screen.songs.allsong.AllSongsFragment;
+import com.dore.myapplication.activity.screen.songs.artists.ArtistsFragment;
+import com.dore.myapplication.activity.screen.songs.genre.GenresFragment;
+import com.dore.myapplication.activity.screen.songs.playlist.PlaylistsFragment;
 
 import java.util.ArrayList;
 import java.util.List;

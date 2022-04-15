@@ -5,14 +5,47 @@
     android:id="@+id/nav_graph"
     app:startDestination="@id/homeFragment">
 
+
+    <action
+        android:id="@+id/action_goto_home"
+        app:destination="@id/homeFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true"
+        app:popUpToSaveState="true" />
+
+    <action
+        android:id="@+id/action_goto_songs"
+        app:destination="@id/songsFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true"
+        app:popUpToSaveState="true" />
+
+    <action
+        android:id="@+id/action_goto_settings"
+        app:destination="@id/settingsFragment"
+        app:launchSingleTop="false"
+        app:popUpTo="@id/nav_graph"
+        app:popUpToInclusive="true"
+        app:popUpToSaveState="true" />
+
+    <action
+        android:id="@+id/action_play_song"
+        app:destination="@id/nowPlayingFragment"
+        app:enterAnim="@anim/move_in_up"
+        app:exitAnim="@anim/fade_out"
+        app:popEnterAnim="@anim/fade_in"
+        app:popExitAnim="@anim/move_out_down" />
+
     <fragment
         android:id="@+id/homeFragment"
-        android:name="com.dore.myapplication.activity.screen.home.view.HomeFragment"
+        android:name="com.dore.myapplication.activity.screen.home.HomeFragment"
         android:label="Home"
         tools:layout="@layout/fragment_home" >
-        <action
-            android:id="@+id/action_play_song"
-            app:destination="@id/nowPlayingFragment" />
+
+
+
     </fragment>
     <fragment
         android:id="@+id/songsFragment"
@@ -25,9 +58,6 @@
         <action
             android:id="@+id/action_show_detail_album"
             app:destination="@id/albumDetailFragment" />
-        <action
-            android:id="@+id/action_play_song"
-            app:destination="@id/nowPlayingFragment" />
     </fragment>
 
     <fragment
@@ -35,30 +65,18 @@
         android:id="@+id/settingsFragment"
         android:name="com.dore.myapplication.activity.screen.settings.SettingsFragment"
         android:label="setting"
-        tools:layout="@layout/fragment_settings" >
-        <action
-            android:id="@+id/action_play_song"
-            app:destination="@id/nowPlayingFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_settings" />
 
     <fragment
         android:id="@+id/artistDetailsFragment"
-        android:name="com.dore.myapplication.activity.screen.artistdetail.view.ArtistDetailsFragment"
+        android:name="com.dore.myapplication.activity.screen.artistdetail.ArtistDetailsFragment"
         android:label="fragment_artist_details"
-        tools:layout="@layout/fragment_artist_details" >
-        <action
-            android:id="@+id/action_play_song"
-            app:destination="@id/nowPlayingFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_artist_details" />
     <fragment
         android:id="@+id/albumDetailFragment"
-        android:name="com.dore.myapplication.activity.screen.albumdetail.view.AlbumDetailFragment"
+        android:name="com.dore.myapplication.activity.screen.albumdetail.AlbumDetailFragment"
         android:label="fragment_album_detail"
-        tools:layout="@layout/fragment_album_detail" >
-        <action
-            android:id="@+id/action_play_song"
-            app:destination="@id/nowPlayingFragment" />
-    </fragment>
+        tools:layout="@layout/fragment_album_detail" />
     <fragment
         android:id="@+id/nowPlayingFragment"
         android:name="com.dore.myapplication.activity.screen.nowplaying.NowPlayingFragment"

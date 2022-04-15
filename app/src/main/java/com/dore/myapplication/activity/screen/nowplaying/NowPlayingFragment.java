@@ -53,6 +53,8 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
 
     private List<Song> mListSong = new ArrayList<>();
 
+    private MainActivity mainActivity;
+
     public NowPlayingFragment() {
     }
 
@@ -71,7 +73,7 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
     }
 
     private void initDataService() {
-        MainActivity mainActivity = (MainActivity) getActivity();
+        mainActivity = (MainActivity) getActivity();
         if (mainActivity != null) {
             this.mService = mainActivity.getBoundService();
 
@@ -80,6 +82,8 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
             mIsPlaying = mService.isPlaying;
             mSongPos = mService.getPlayingSongPos();
             mSongDur = mService.getSongDur();
+
+            mainActivity.hideController();
         }
     }
 
@@ -162,6 +166,12 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
             seekBar.setProgress((mSongCur * 1.0f / mSongDur) * 100);
             txtCurTime.setText(posToTime(mSongCur));
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        mainActivity.showController();
+        super.onDestroy();
     }
 
     private String posToTime(int pos) {
