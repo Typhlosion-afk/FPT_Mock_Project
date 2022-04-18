@@ -1,23 +1,34 @@
 package com.dore.myapplication.activity;
 
+import static com.dore.myapplication.MusicApplication.providerDAO;
+import static com.dore.myapplication.utilities.Constants.LOCAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
@@ -25,20 +36,23 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
-import com.dore.myapplication.minterface.OnMediaStateController;
+import com.dore.myapplication.dialog.CloseAppDialogFragment;
+import com.dore.myapplication.model.ProviderDAO;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 import com.dore.myapplication.utilities.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.android.material.navigation.NavigationBarView;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements OnMediaStateController {
+public class MainActivity extends AppCompatActivity{
 
     private EditText mEdtSearch;
 
@@ -86,6 +100,16 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
 
     private List<Song> mListSong = new ArrayList<>();
 
+    private BroadcastReceiver receiver;
+
+    private FragmentManager.BackStackEntry backStackEntry;
+
+    private NavHostFragment navHostFragment;
+
+    private ImageView mImgSong;
+
+    private int mBackCount = 0;
+
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
         public void onServiceConnected(ComponentName name, IBinder service) {
@@ -93,8 +117,8 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
             mMusicService = binder.getService();
             mBound = true;
 
-            mMusicService.setMediaControllerListener(MainActivity.this);
             mSong = mMusicService.getPlayingSong();
+
             if (mSong != null) {
                 mIsPlaying = mMusicService.isPlaying;
                 mSongDur = mMusicService.getSongDur();
@@ -104,7 +128,6 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
                 hideController();
             }
         }
-
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mBound = false;
@@ -117,12 +140,42 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         setContentView(R.layout.activity_main);
 
         initBindService();
+        initBroadcast();
         initView();
         initNav();
 
         handleAction();
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        LocalBroadcastManager.getInstance(this).registerReceiver(receiver, new IntentFilter(LOCAL_BROADCAST_RECEIVER));
+    }
+
+    @Override
+    protected void onStop() {
+        LocalBroadcastManager.getInstance(this).unregisterReceiver(receiver);
+        super.onStop();
+    }
+
+    @Override
+    protected void onDestroy() {
+        unbindService(connection);
+        providerDAO.closeCursor();
+        super.onDestroy();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (mDrawerNavigationView.isShown()) {
+            mDrawerLayout.closeDrawer(GravityCompat.START);
+        } else if(navHostFragment.getChildFragmentManager().getBackStackEntryCount() == 0){
+            doubleBackPress();
+        }else{
+            super.onBackPressed();
+        }
+    }
 
     private void initBindService() {
 
@@ -130,6 +183,19 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         startService(iStartService);
         bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
 
+    }
+
+    private void initBroadcast(){
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                update((Song) intent.getSerializableExtra("song"),
+                        intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
+                        intent.getIntExtra("cur", 0),
+                        intent.getBooleanExtra("playing", false));
+            }
+        };
     }
 
     private void initView() {
@@ -145,25 +211,81 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         mBtnNext = findViewById(R.id.btn_control_next);
         mBtnPrev = findViewById(R.id.btn_control_prev);
 
+        mImgSong = findViewById(R.id.img_control_player);
+
         mControllerView = findViewById(R.id.media_controller_view);
 
         mBtnSearch.setVisibility(View.VISIBLE);
         mEdtSearch.setVisibility(View.INVISIBLE);
 
         mSeekBar.setMax(mSongDur);
+
     }
 
+    @SuppressLint("NonConstantResourceId")
+    private void initNav() {
+        BottomNavigationView bottomNavigationView = this.findViewById(R.id.bottom_nav);
+        mDrawerNavigationView = this.findViewById(R.id.drawer_nav);
+        mDrawerLayout = this.findViewById(R.id.layout_drawer);
 
-    public void hideController() {
-        mSeekBar.setVisibility(View.GONE);
-        mControllerView.setVisibility(View.GONE);
+        navHostFragment = (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
+        if (navHostFragment != null) {
+            mNavController = navHostFragment.getNavController();
+
+            bottomNavigationView.setItemIconTintList(null);
+            mDrawerNavigationView.setItemIconTintList(null);
+
+            mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+                        mEdtSearch.setVisibility(View.GONE);
+                        mBtnSearch.setVisibility(View.VISIBLE);
+                    }
+            );
+
+            navHostFragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+                @Override
+                public void onBackStackChanged() {
+                }
+            });
+
+            NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
+            NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
+
+            bottomNavigationView.setOnItemSelectedListener(item -> {
+                switch (item.getItemId()){
+                    case R.id.homeFragment:
+                        mNavController.navigate(R.id.action_goto_home);
+                        break;
+
+                    case R.id.songsFragment:
+                        mNavController.navigate(R.id.action_goto_songs);
+                        break;
+
+                    case R.id.settingsFragment:
+                        mNavController.navigate(R.id.action_goto_settings);
+                        break;
+                }
+                return false;
+            });
+
+        }
     }
 
-    public void showController() {
-        mSeekBar.setVisibility(View.VISIBLE);
-        mControllerView.setVisibility(View.VISIBLE);
+    private void update(Song song, int dur, int cur, boolean playing){
+        if(song != mSong){
+            mSong = song;
+            mSongDur = dur;
+            mTxtSongName.setText(mSong.getName());
+            mTxtSongAuthor.setText(mSong.getAuthor());
+            mSeekBar.setMax(mSongDur);
+        }
 
-        updateController();
+        if (mIsPlaying != playing) {
+            mIsPlaying = playing;
+            mBtnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause_small : R.drawable.ic_control_play_small);
+        }
+
+        mSongCur = cur;
+        mSeekBar.setProgress(mSongCur);
     }
 
     private void updateController(){
@@ -176,6 +298,13 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         if(mSong != null) {
             mTxtSongName.setText(mSong.getName());
             mTxtSongAuthor.setText(mSong.getAuthor());
+
+            Glide
+                    .with(this)
+                    .load(mSong.imgPath)
+                    .placeholder(R.drawable.img_bg_playlist_default)
+                    .centerCrop()
+                    .into(mImgSong);
 
             mSeekBar.setProgress(mSongCur);
             mSeekBar.setMax(mSongDur);
@@ -239,105 +368,46 @@ public class MainActivity extends AppCompatActivity implements OnMediaStateContr
         });
     }
 
-    @SuppressLint("NonConstantResourceId")
-    private void initNav() {
-        BottomNavigationView bottomNavigationView = this.findViewById(R.id.bottom_nav);
-        mDrawerNavigationView = this.findViewById(R.id.drawer_nav);
-        mDrawerLayout = this.findViewById(R.id.layout_drawer);
+    private void doubleBackPress() {
+        mBackCount ++;
+        if (mBackCount == 2) {
+            super.onBackPressed();
 
-        NavHostFragment navHostFragment = (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
-        if (navHostFragment != null) {
-            mNavController = navHostFragment.getNavController();
+        }else {
+            Toast.makeText(this, "Press back again to close app", Toast.LENGTH_SHORT).show();
+            new CountDownTimer(2000, 1000){
+                @Override
+                public void onTick(long millisUntilFinished) {
 
-            bottomNavigationView.setItemIconTintList(null);
-            mDrawerNavigationView.setItemIconTintList(null);
-
-            mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
-                        mEdtSearch.setVisibility(View.GONE);
-                        mBtnSearch.setVisibility(View.VISIBLE);
-                    }
-            );
-
-            NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
-            NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
-
-            bottomNavigationView.setOnItemSelectedListener(item -> {
-                switch (item.getItemId()){
-                    case R.id.homeFragment:
-                        mNavController.navigate(R.id.action_goto_home);
-                        break;
-                    case R.id.songsFragment:
-                        mNavController.navigate(R.id.action_goto_songs);
-
-                        break;
-                    case R.id.settingsFragment:
-                        mNavController.navigate(R.id.action_goto_settings);
-                        break;
                 }
-                return false;
-            });
 
+                @Override
+                public void onFinish() {
+                    LogUtils.d("onFinish: ");
+                    mBackCount = 0;
+                }
+            }.start();
         }
+    }
+
+    private void showCloseDialog(){
+        CloseAppDialogFragment closeFm= new CloseAppDialogFragment();
+        closeFm.show(getSupportFragmentManager(), null);
+    }
+
+    public void hideController() {
+        mSeekBar.setVisibility(View.GONE);
+        mControllerView.setVisibility(View.GONE);
+    }
+
+    public void showController() {
+        mSeekBar.setVisibility(View.VISIBLE);
+        mControllerView.setVisibility(View.VISIBLE);
+
+        updateController();
     }
 
     public MusicService getBoundService() {
         return mMusicService;
     }
-
-
-    @Override
-    public void onBackPressed() {
-        if (mDrawerNavigationView.isShown()) {
-            mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
-    }
-
-    @Override
-    protected void onDestroy() {
-        unbindService(connection);
-        super.onDestroy();
-    }
-
-
-    @Override
-    public void onChangeListSong(List<Song> songs) {
-        mListSong = songs;
-    }
-
-    @Override
-    public void onPlayNewSong(Song song, int pos) {
-        mSong = song;
-        mSongPos = pos;
-
-        mTxtSongName.setText(mSong.getName());
-        mTxtSongAuthor.setText(mSong.getAuthor());
-    }
-
-    @Override
-    public void onPlayingStateChange(boolean isPlaying) {
-        mIsPlaying = isPlaying;
-
-        if (mIsPlaying) {
-            mBtnPlay.setImageResource(R.drawable.ic_control_pause_small);
-        } else {
-            mBtnPlay.setImageResource(R.drawable.ic_control_play_small);
-        }
-    }
-
-    @Override
-    public void onRunning(int cur) {
-        if (!isSeekbarTouching) {
-            mSongCur = cur;
-            mSeekBar.setProgress(mSongCur);
-        }
-    }
-
-    @Override
-    public void onDurationChange(int duration) {
-        mSongDur = duration;
-        mSeekBar.setMax(mSongDur);
-    }
-
 }

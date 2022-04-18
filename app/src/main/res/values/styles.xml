@@ -1,0 +1,10 @@
+<resources>
+    <style name="Widget.MyApplication.AppWidget.Container" parent="android:Widget">
+        <item name="android:id">@android:id/background</item>
+        <item name="android:background">@drawable/widget_bg_container</item>
+    </style>
+
+    <style name="Widget.MyApplication.AppWidget.InnerView" parent="android:Widget">
+        <item name="android:background">@drawable/widget_bg_container</item>
+    </style>
+</resources>

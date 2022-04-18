@@ -1,8 +1,14 @@
 package com.dore.myapplication.activity.screen.home;
 
+import static com.dore.myapplication.MusicApplication.providerDAO;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Context;
+import android.database.Cursor;
+import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 
 import com.dore.myapplication.R;
@@ -19,6 +25,8 @@ public class HomeFragment extends BaseFragment {
 
     private View mRootView;
 
+    private Context mContext;
+
     private RecyclerView mRecycleViewRecently;
 
     private RecyclerView mRecycleViewPlaylist;
@@ -31,9 +39,11 @@ public class HomeFragment extends BaseFragment {
 
     private HomeRecommendAdapter mHomeRecommendAdapter;
 
-    private ArrayList<Song> mListSong = new ArrayList();
+    private ArrayList<Song> mListRecommend = new ArrayList<>();
 
     private ArrayList<Playlist> mListPlaylist = new ArrayList<>();
+
+    private ArrayList<Song> mListRecently = new ArrayList<>();
 
     public HomeFragment() {
     }
@@ -46,58 +56,56 @@ public class HomeFragment extends BaseFragment {
     @Override
     public void onViewReady(View rootView) {
         mRootView = rootView;
+        mContext = mRootView.getContext();
 
         initData();
         initAdapter();
     }
 
     private void initData() {
+        mListRecommend.clear();
+        mListRecommend.addAll(providerDAO.getAllSongs());
 
-        mListSong.clear();
-        mListSong.add(new Song("Đế vương", "Đình Dũng", R.raw.de_vuong));
-        mListSong.add(new Song("Hãy trao cho anh", "Sơn Tùng - MTP", R.raw.hay_trao_cho_anh));
-        mListSong.add(new Song("Lạc trôi", "Sơn Tùng - MTP", R.raw.lac_troi));
-        mListSong.add(new Song("Nắng ấm xa dần", "Sơn Tùng - MTP", R.raw.nang_am_xa_dan));
-        mListSong.add(new Song("Thức giấc", "DA LAB", R.raw.thuc_giac));
-
-        mListPlaylist.clear();
-        mListPlaylist.add(new Playlist("Playlist 1", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 2", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 3", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 4", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 5", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 6", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 7", mListSong));
-        mListPlaylist.add(new Playlist("Playlist 8", mListSong));
-
+        mListRecently.clear();
+        mListRecently.addAll(providerDAO.getRecentlySong());
     }
 
     private void initAdapter() {
         LinearLayoutManager layoutRecently =
-                new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.VERTICAL, false);
+                new LinearLayoutManager(
+                        mRootView.getContext(),
+                        LinearLayoutManager.VERTICAL,
+                        false);
 
         LinearLayoutManager layoutPlaylist =
-                new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+                new LinearLayoutManager(
+                        mRootView.getContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false);
 
         LinearLayoutManager layoutHomeRecommend =
-                new LinearLayoutManager(mRootView.getContext(), LinearLayoutManager.HORIZONTAL, false);
+                new LinearLayoutManager(
+                        mRootView.getContext(),
+                        LinearLayoutManager.HORIZONTAL,
+                        false);
 
         mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
         mRecycleViewRecommend.setLayoutManager(layoutHomeRecommend);
         mRecycleViewRecommend.setNestedScrollingEnabled(false);
-        mHomeRecommendAdapter = new HomeRecommendAdapter(mListSong);
+        mHomeRecommendAdapter = new HomeRecommendAdapter(mContext, mListRecommend);
         mRecycleViewRecommend.setAdapter(mHomeRecommendAdapter);
 
         mRecycleViewPlaylist = mRootView.findViewById(R.id.recycle_playlist);
         mRecycleViewPlaylist.setLayoutManager(layoutPlaylist);
-        mHomePlaylistAdapter = new HomePlaylistAdapter(mListPlaylist);
+        mHomePlaylistAdapter = new HomePlaylistAdapter(mContext ,mListPlaylist);
         mRecycleViewPlaylist.setNestedScrollingEnabled(false);
         mRecycleViewPlaylist.setAdapter(mHomePlaylistAdapter);
 
         mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
         mRecycleViewRecently.setNestedScrollingEnabled(false);
         mRecycleViewRecently.setLayoutManager(layoutRecently);
-        mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListSong);
+        mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListRecently);
         mRecycleViewRecently.setAdapter(mHomeRecentlyAdapter);
     }
+
 }

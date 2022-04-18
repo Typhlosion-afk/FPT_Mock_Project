@@ -1,23 +1,31 @@
 package com.dore.myapplication.activity.screen.nowplaying;
 
+import static com.dore.myapplication.utilities.Constants.LOCAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
+
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.MainActivity;
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.customview.CirSeekBar;
-import com.dore.myapplication.minterface.OnMediaStateController;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class NowPlayingFragment extends BaseFragment implements OnMediaStateController {
+public class NowPlayingFragment extends BaseFragment{
 
     private View mRootView;
 
@@ -55,6 +63,10 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
 
     private MainActivity mainActivity;
 
+    private BroadcastReceiver receiver;
+
+    private ImageView mImgSong;
+
     public NowPlayingFragment() {
     }
 
@@ -67,9 +79,65 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
     public void onViewReady(View rootView) {
         mRootView = rootView;
 
+        initBroadcast();
         initDataService();
         initView();
         initAction();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        LocalBroadcastManager
+                .getInstance(mRootView.getContext())
+                .registerReceiver(receiver, new IntentFilter(LOCAL_BROADCAST_RECEIVER));
+
+    }
+
+    @Override
+    public void onStop() {
+        LocalBroadcastManager.getInstance(mRootView.getContext()).unregisterReceiver(receiver);
+        super.onStop();
+    }
+
+    private void initBroadcast(){
+        receiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+
+                update((Song) intent.getSerializableExtra("song"),
+                        intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
+                        intent.getIntExtra("cur", 0),
+                        intent.getBooleanExtra("playing", false));
+            }
+        };
+    }
+
+    private void update(Song song, int dur, int cur, boolean playing){
+        if(song != mSong){
+            mSong = song;
+            txtSongName.setText(mSong.getName());
+            txtSongAuthor.setText(mSong.getAuthor());
+            mSongDur = dur;
+            txtDurTime.setText(posToTime(mSongDur));
+
+            Glide
+                    .with(mRootView.getContext())
+                    .load(mSong.imgPath)
+                    .placeholder(R.drawable.img_bg_playlist_default)
+                    .centerCrop()
+                    .into(mImgSong);
+        }
+
+        if (mIsPlaying != playing) {
+            mIsPlaying = playing;
+            btnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause : R.drawable.ic_control_play);
+        }
+
+        if (!isSeekBarTouching) {
+            mSongCur = cur;
+            updateUiWithCur();
+        }
     }
 
     private void initDataService() {
@@ -97,12 +165,21 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
         txtCurTime = mRootView.findViewById(R.id.txt_playing_cur);
         txtDurTime = mRootView.findViewById(R.id.txt_playing_dur);
 
+        mImgSong = mRootView.findViewById(R.id.img_playing);
+
         seekBar = mRootView.findViewById(R.id.seek_bar);
 
         // first state when create view for fragment
         if (mService != null && mSong != null) {
             txtSongName.setText(mSong.getName());
             txtSongAuthor.setText(mSong.getAuthor());
+
+            Glide
+                    .with(mRootView.getContext())
+                    .load(mSong.imgPath)
+                    .placeholder(R.drawable.img_bg_playlist_default)
+                    .centerCrop()
+                    .into(mImgSong);
 
             btnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause : R.drawable.ic_control_play);
 
@@ -140,7 +217,6 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
             }
         });
 
-        mService.setMediaControllerListener(this);
     }
 
     private void play() {
@@ -181,39 +257,4 @@ public class NowPlayingFragment extends BaseFragment implements OnMediaStateCont
         String sec = s < 10 ? "0" + s : "" + s;
         return min + ":" + sec;
     }
-
-    @Override
-    public void onChangeListSong(List<Song> songs) {
-        mListSong = songs;
-    }
-
-    @Override
-    public void onPlayNewSong(Song song, int pos) {
-        txtSongName.setText(song.getName());
-        txtSongAuthor.setText(song.getAuthor());
-    }
-
-    @Override
-    public void onPlayingStateChange(boolean isPlaying) {
-        if (isPlaying) {
-            btnPlay.setImageResource(R.drawable.ic_control_pause);
-        } else {
-            btnPlay.setImageResource(R.drawable.ic_control_play);
-        }
-    }
-
-    @Override
-    public void onRunning(int cur) {
-        if (!isSeekBarTouching) {
-            mSongCur = cur;
-            updateUiWithCur();
-        }
-    }
-
-    @Override
-    public void onDurationChange(int duration) {
-        mSongDur = duration;
-        txtDurTime.setText(posToTime(mSongDur));
-    }
-
 }

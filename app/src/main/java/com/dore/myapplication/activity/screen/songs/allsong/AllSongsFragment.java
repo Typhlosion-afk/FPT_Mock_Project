@@ -1,5 +1,7 @@
 package com.dore.myapplication.activity.screen.songs.allsong;
 
+import static com.dore.myapplication.MusicApplication.providerDAO;
+
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -67,41 +69,11 @@ public class AllSongsFragment extends BaseFragment {
 
     private void initData() {
         mListSong.clear();
-        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
-        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
-        mListSong.add(new Song("Bai hat so 3", "Ca si 2", "path 3"));
-        mListSong.add(new Song("Bai hat so 4", "Ca si 2", "path 4"));
-        mListSong.add(new Song("Bai hat so 5", "Ca si 2", "path 5"));
-        mListSong.add(new Song("Bai hat so 6", "Ca si 3", "path 6"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 7", "Ca si 3", "path 7"));
-        mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
+        mListSong.addAll(providerDAO.getAllSongs());
     }
 
     private void initAdapter() {
-        mAllSongsAdapter = new AllSongsAdapter(mListSong);
+        mAllSongsAdapter = new AllSongsAdapter(mRootView.getContext(), mListSong);
         mRecycleView = mRootView.findViewById(R.id.recycle_all_song);
 
         mRecycleView.setLayoutManager(new LinearLayoutManager(

@@ -9,4 +9,12 @@
     <dimen name="margin_screen">@dimen/default_margin_20</dimen>
     <dimen name="icon_controller_padding">8dp</dimen>
 
+    <!--
+Refer to App Widget Documentation for margin information
+http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
+    -->
+    <dimen name="widget_margin">0dp</dimen>
+    <dimen name="widget_width">250dp</dimen>
+    <dimen name="widget_height">110dp</dimen>
+
 </resources>

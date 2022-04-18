@@ -4,14 +4,20 @@ import static com.dore.myapplication.utilities.Constants.ACTION_CLOSE;
 import static com.dore.myapplication.utilities.Constants.ACTION_NEXT;
 import static com.dore.myapplication.utilities.Constants.ACTION_PLAY;
 import static com.dore.myapplication.utilities.Constants.ACTION_PREV;
+import static com.dore.myapplication.utilities.Constants.GLOBAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
+import static com.dore.myapplication.utilities.Constants.LOCAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 import static com.dore.myapplication.utilities.Constants.NOTIFICATION_DATA_ACTION;
 import static com.dore.myapplication.utilities.Constants.ONGOING_NOTIFICATION_ID;
+import static com.dore.myapplication.utilities.Constants.WIDGET_DATA_ACTION;
 
 import android.app.Notification;
 import android.app.Service;
+import android.appwidget.AppWidgetManager;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -22,11 +28,12 @@ import android.os.PowerManager;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import com.dore.myapplication.minterface.OnMediaStateController;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.notification.MusicNotificationManager;
 import com.dore.myapplication.utilities.LogUtils;
+import com.dore.myapplication.widget.MuzicAppWidget;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,19 +61,21 @@ public class MusicService extends Service implements
 
     public boolean isPlaying = false;
 
-    private final List<OnMediaStateController> onMediaStateController = new ArrayList<>();
-
     private final Handler handler = new Handler();
 
-    private OnMediaStateController smallControlListener;
+    private MuzicAppWidget mMuzicAppWidget;
 
-    private OnMediaStateController nowPlayingListener;
+    private LocalBroadcastManager mBroadcaster;
+
+    private Intent mSongDataIntent = new Intent(LOCAL_BROADCAST_RECEIVER);
 
     @Override
     public void onCreate() {
         super.onCreate();
 
         LogUtils.d("On Create");
+
+        mBroadcaster = LocalBroadcastManager.getInstance(this);
 
         initMediaPlayer();
         initNotification();
@@ -78,10 +87,9 @@ public class MusicService extends Service implements
         Runnable r = new Runnable() {
             @Override
             public void run() {
-                if(mMediaPlayer != null && onMediaStateController.size() != 0 && isPlaying){
-                    for (OnMediaStateController listen : onMediaStateController) {
-                        listen.onRunning(mMediaPlayer.getCurrentPosition());
-                    }
+                if(mMediaPlayer != null && isPlaying){
+                    mSongDataIntent.putExtra("cur", mMediaPlayer.getCurrentPosition());
+                    mBroadcaster.sendBroadcast(mSongDataIntent);
                 }
                 handler.postDelayed(this, 100);
             }
@@ -94,19 +102,26 @@ public class MusicService extends Service implements
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         if (intent != null) {
-            int action = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
+            int notificationAction = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
+            int widgetAction = intent.getIntExtra(WIDGET_DATA_ACTION, -1);
 
-            handleActionNotification(action);
+            LogUtils.d("" + intent);
+
+            if(notificationAction != - 1) {
+                handleAction(notificationAction);
+            }
+
+            if(widgetAction != -1){
+                handleAction(widgetAction);
+            }
 
             if (intent.getSerializableExtra(KEY_SONG_LIST) != null
                     && intent.getIntExtra(KEY_SONG_POSITION,-1) != -1) {
 
                 if(mListSong != intent.getSerializableExtra(KEY_SONG_LIST)) {
                     mListSong = (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST);
-                    for (OnMediaStateController listen : onMediaStateController) {
-                        listen.onChangeListSong(mListSong);
-                    }
                 }
+
                 mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
                 mSong = mListSong.get(mSongPos);
                 playSong();
@@ -115,13 +130,21 @@ public class MusicService extends Service implements
         return START_NOT_STICKY;
     }
 
+    private void sendSongData(){
+        mSongDataIntent.putExtra("song", mSong);
+        mSongDataIntent.putExtra("dur", mMediaPlayer.getDuration());
+        mSongDataIntent.putExtra("playing", isPlaying);
+        mSongDataIntent.putExtra("cur", mMediaPlayer.getCurrentPosition());
+
+        mBroadcaster.sendBroadcast(mSongDataIntent);
+    }
+
     private void initNotification() {
         mMusicNotiManager = new MusicNotificationManager(this);
         mPlayerNotification = mMusicNotiManager.getPlayerNotification();
-
     }
 
-    private void handleActionNotification(int action) {
+    private void handleAction(int action) {
         switch (action) {
             case ACTION_PLAY: {
                 if (!isPlaying) {
@@ -164,7 +187,7 @@ public class MusicService extends Service implements
         if (mMediaPlayer != null) {
             isPlaying = false;
             mMediaPlayer.release();
-            mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
+            mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
 
             initMediaPlayer();
 
@@ -173,14 +196,10 @@ public class MusicService extends Service implements
             LogUtils.d("Song: " + mSongPos);
             LogUtils.d("Song: " + mSong.getName());
 
-            for (OnMediaStateController listen : onMediaStateController) {
-                listen.onPlayNewSong(mSong, mSongPos);
-                listen.onPlayingStateChange(isPlaying);
-                listen.onDurationChange(mMediaPlayer.getDuration());
-                listen.onPlayingStateChange(isPlaying);
-            }
-
             updateNotification();
+            updateWidget();
+            sendSongData();
+
         }
     }
 
@@ -190,11 +209,9 @@ public class MusicService extends Service implements
             mCurrent = mMediaPlayer.getCurrentPosition();
             isPlaying = false;
 
-            for (OnMediaStateController listen : onMediaStateController) {
-                listen.onPlayingStateChange(isPlaying);
-            }
-
             updateNotification();
+            updateWidget();
+            sendSongData();
         }
 
     }
@@ -205,13 +222,10 @@ public class MusicService extends Service implements
             mMediaPlayer.start();
             isPlaying = true;
 
-            for (OnMediaStateController listen : onMediaStateController) {
-                listen.onPlayingStateChange(isPlaying);
-            }
-
             updateNotification();
+            updateWidget();
+            sendSongData();
         }
-
     }
 
     public void nextSong() {
@@ -246,10 +260,6 @@ public class MusicService extends Service implements
         mMusicNotiManager.setIsForeRunning(false);
         mMusicNotiManager.updateViewNotification(mSong);
         mMusicNotiManager.removeNotification();
-        for (OnMediaStateController ls: onMediaStateController){
-            ls.onRunning(mCurrent);
-            ls.onPlayingStateChange(isPlaying);
-        }
 
         mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
 
@@ -271,13 +281,23 @@ public class MusicService extends Service implements
         mMusicNotiManager.updateViewNotification(mSong);
     }
 
+    private void updateWidget(){
+        Intent mSongDataWidgetIntent = new Intent(this, MuzicAppWidget.class);
+        mSongDataWidgetIntent.setAction(GLOBAL_BROADCAST_RECEIVER);
+
+        mSongDataWidgetIntent.putExtra("song", mSong);
+        mSongDataWidgetIntent.putExtra("playing", isPlaying);
+
+        int[] ids = AppWidgetManager.getInstance(getApplicationContext())
+                .getAppWidgetIds(new ComponentName(getApplicationContext(), MuzicAppWidget.class));
+        mSongDataWidgetIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, ids);
+
+        sendBroadcast(mSongDataWidgetIntent);
+    }
+
     public void startForeground(Song song) {
         mSong = song;
         startForeground(ONGOING_NOTIFICATION_ID, mPlayerNotification);
-    }
-
-    public void setMediaControllerListener(OnMediaStateController listener){
-        this.onMediaStateController.add(listener);
     }
 
     public Song getPlayingSong(){

@@ -3,7 +3,9 @@ package com.dore.myapplication.activity.screen.home.adapter;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,9 +17,11 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.LogUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -29,7 +33,10 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
 
     private ArrayList<Song> mListSong;
 
-    public HomeRecommendAdapter(List<Song> listPlaylist) {
+    private Context mContext;
+
+    public HomeRecommendAdapter(Context context, List<Song> listPlaylist) {
+        this.mContext = context;
         this.mListSong = new ArrayList<>();
         this.mListSong.addAll(listPlaylist);
     }
@@ -37,14 +44,24 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @NonNull
     @Override
     public HomeRecommendAdapter.HomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_hot_recommended, parent, false);
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_hot_recommended, parent, false);
         return new HomeHolder(mRootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomeRecommendAdapter.HomeHolder holder, int position) {
 
-        holder.imgBackground.setImageResource(R.drawable.img_bg_recommend_default);
+        LogUtils.d(mListSong.get(position).getImgPath());
+
+        Glide
+                .with(mContext)
+                .load(mListSong.get(position).getImgPath())
+                .centerCrop()
+                .placeholder(R.drawable.img_bg_recommend_default)
+                .error(R.drawable.img_bg_recommend_default)
+                .centerCrop()
+                .into(holder.imgBackground);
+
 
         holder.txtName.setText(mListSong.get(position).getName());
         holder.txtAuthor.setText(mListSong.get(position).getAuthor());
@@ -75,7 +92,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
 
             itemView.setOnClickListener(v -> {
                 Intent i = new Intent(mRootView.getContext(), MusicService.class);
-                i.putExtra(KEY_SONG_LIST, (Serializable) mListSong);
+                i.putExtra(KEY_SONG_LIST, mListSong);
                 i.putExtra(KEY_SONG_POSITION, getAdapterPosition());
 
                 mRootView.getContext().startService(i);

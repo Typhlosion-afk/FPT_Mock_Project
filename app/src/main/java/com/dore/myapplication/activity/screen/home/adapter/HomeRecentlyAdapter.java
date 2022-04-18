@@ -67,7 +67,7 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
             itemView.setOnClickListener(v -> {
 
                 Intent i = new Intent(mRootView.getContext(), MusicService.class);
-                i.putExtra(KEY_SONG_LIST, (Serializable) mListSong);
+                i.putExtra(KEY_SONG_LIST, mListSong);
                 i.putExtra(KEY_SONG_POSITION, getAdapterPosition());
 
                 mRootView.getContext().startService(i);

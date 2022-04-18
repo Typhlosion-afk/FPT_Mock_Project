@@ -1,11 +1,13 @@
 package com.dore.myapplication.activity.screen.home.adapter;
 
+import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,7 +22,10 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
 
     private final ArrayList<Playlist> mListPlaylist;
 
-    public HomePlaylistAdapter(List<Playlist> listPlaylist) {
+    private final Context mContext;
+
+    public HomePlaylistAdapter(Context context, List<Playlist> listPlaylist) {
+        this.mContext = context;
         this.mListPlaylist = new ArrayList<>();
         this.mListPlaylist.addAll(listPlaylist);
     }
@@ -28,29 +33,37 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
     @NonNull
     @Override
     public HomePlaylistAdapter.HomeHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View rootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_playlist, parent, false);
+        View rootView = LayoutInflater.from(mContext).inflate(R.layout.card_playlist, parent, false);
         return new HomeHolder(rootView);
     }
 
     @Override
     public void onBindViewHolder(@NonNull HomePlaylistAdapter.HomeHolder holder, int position) {
 
-        holder.imgBackground.setImageResource(R.drawable.img_bg_playlist_default);
+        if(mListPlaylist.size() == 0){
+            holder.imgBackground.setImageResource(R.drawable.add_playlist_bg);
 
-        holder.txtName.setText(mListPlaylist.get(position).getName());
-        holder.txtAuthor.setText(getStrSize(mListPlaylist.get(position).getListSong().size()));
+            holder.txtName.setVisibility(View.INVISIBLE);
+            holder.txtAuthor.setVisibility(View.INVISIBLE);
+
+        }else {
+            holder.imgBackground.setImageResource(R.drawable.img_bg_playlist_default);
+
+            holder.txtName.setText(mListPlaylist.get(position).getName());
+            holder.txtAuthor.setText(getStrSize(mListPlaylist.get(position).getListSong().size()));
+        }
     }
 
     @Override
     public int getItemCount() {
-        return mListPlaylist.size();
+        return mListPlaylist.size() == 0 ? 1 : mListPlaylist.size();
     }
 
     private String getStrSize(int size) {
         return "Total " + size;
     }
 
-    class HomeHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class HomeHolder extends RecyclerView.ViewHolder{
 
         private TextView txtName;
 
@@ -62,6 +75,7 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
             super(itemView);
 
             initView();
+            initAction();
 
         }
 
@@ -69,11 +83,19 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
             imgBackground = itemView.findViewById(R.id.img_card);
             txtName = itemView.findViewById(R.id.txt_name_card);
             txtAuthor = itemView.findViewById(R.id.txt_size);
+
         }
 
-        @Override
-        public void onClick(View v) {
-            Log.d("TAG", "Song name: " + mListPlaylist.get(getAdapterPosition()));
+        private void initAction(){
+            itemView.setOnClickListener(v -> {
+                if(mListPlaylist.size() == 0){
+                    Toast.makeText(mContext, "Dialog add playlist is showing", Toast.LENGTH_SHORT).show();
+                }
+
+                else {
+                    //
+                }
+            });
         }
     }
 }
