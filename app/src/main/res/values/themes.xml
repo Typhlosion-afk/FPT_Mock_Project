@@ -12,7 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
-        <item name="android:activityOpenEnterAnimation" >@anim/fade_in</item>
+        <item name="android:activityOpenEnterAnimation">@anim/fade_in</item>
         <item name="backgroundColor">@color/background_color</item>
     </style>
 
@@ -59,6 +59,20 @@
         <item name="android:progressBackgroundTint">@color/view_line_color</item>
         <item name="android:progressTint">@color/hard_peach</item>
         <item name="android:thumbTint">@color/hard_peach</item>
+    </style>
+
+    <style name="Theme.MuzicTheme.AppWidgetContainerParent" parent="@android:style/Theme.DeviceDefault">
+        <!-- Radius of the outer bound of widgets to make the rounded corners -->
+        <item name="appWidgetRadius">16dp</item>
+        <!--
+        Radius of the inner view's bound of widgets to make the rounded corners.
+        It needs to be 8dp or less than the value of appWidgetRadius
+        -->
+        <item name="appWidgetInnerRadius">0dp</item>
+    </style>
+
+    <style name="Theme.MuzicTheme.AppWidgetContainer" parent="Theme.MuzicTheme.AppWidgetContainerParent">
+        <item name="appWidgetPadding">0dp</item>
     </style>
 
 </resources>

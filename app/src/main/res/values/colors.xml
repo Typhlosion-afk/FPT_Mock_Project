@@ -33,6 +33,12 @@
     <color name="seek_bar_background_color">#A2A2A2</color>
 
     <color name="controller_player_color">#0B0E1F</color>
+    <color name="light_blue_50">#FFE1F5FE</color>
+    <color name="light_blue_200">#FF81D4FA</color>
+    <color name="light_blue_600">#FF039BE5</color>
+    <color name="light_blue_900">#FF01579B</color>
+
+    <color name="widget_bg_color">#050814</color>
 
 
 </resources>

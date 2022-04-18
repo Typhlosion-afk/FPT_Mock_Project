@@ -4,8 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="48dp"
-    android:paddingHorizontal="@dimen/default_margin_20"
-    android:background="@color/background_color">
+    android:background="@color/background_color"
+    android:paddingHorizontal="@dimen/default_margin_20">
 
     <ImageView
         android:id="@+id/img_play"
@@ -21,13 +21,13 @@
         android:id="@+id/txt_song_name_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="13sp"
-        android:fontFamily="@font/circular_std_medium"
-        android:text="@string/songs"
         android:layout_marginHorizontal="40dp"
         android:ellipsize="end"
-        android:maxLines="1"
         android:ems="12"
+        android:fontFamily="@font/circular_std_medium"
+        android:maxLines="1"
+        android:text="@string/songs"
+        android:textSize="13sp"
         app:layout_constraintStart_toEndOf="@+id/img_play"
         app:layout_constraintTop_toTopOf="@+id/img_play" />
 
@@ -35,11 +35,11 @@
         android:id="@+id/txt_author_card"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
         android:fontFamily="@font/circular_std_medium"
         android:text="@string/author"
-        android:textSize="10sp"
         android:textColor="@color/text_hint_color"
-        android:layout_marginHorizontal="40dp"
+        android:textSize="10sp"
         app:layout_constraintStart_toEndOf="@+id/img_play"
         app:layout_constraintTop_toBottomOf="@+id/txt_song_name_card"
         tools:ignore="SmallSp" />
@@ -59,10 +59,11 @@
         android:id="@+id/rating_bar"
         android:layout_width="wrap_content"
         android:layout_height="10dp"
-        android:rating="0"
         android:numStars="5"
-        android:stepSize="1"
         android:progressDrawable="@drawable/rating_bar"
+        android:rating="0"
+        android:stepSize="1"
+        android:max="5"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

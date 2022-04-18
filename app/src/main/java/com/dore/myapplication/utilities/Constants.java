@@ -1,11 +1,16 @@
 package com.dore.myapplication.utilities;
 
 public class Constants {
+
+    public static final String LOCAL_BROADCAST_RECEIVER = "com.dore.myapplication.service.RECEIVER";
+
     public static final String NOTIFICATION_CHANNEL_ID = "muzic_app_channel_id";
 
     public static final int ONGOING_NOTIFICATION_ID = 99;
 
     public static final String NOTIFICATION_DATA_ACTION = "noti_event_action";
+
+    public static final String WIDGET_DATA_ACTION = "widget_event_action";
 
     public static final int MAX_SEEKBAR_VALUE = 1000;
 
