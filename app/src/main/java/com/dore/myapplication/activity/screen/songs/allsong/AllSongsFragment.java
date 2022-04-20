@@ -27,7 +27,6 @@ public class AllSongsFragment extends BaseFragment {
     private RecyclerView mRecycleView;
 
     public AllSongsFragment() {
-        // Required empty public constructor
     }
 
     @Override
