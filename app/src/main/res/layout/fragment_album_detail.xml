@@ -12,11 +12,11 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_cover"
+            android:id="@+id/img_album_cover"
             android:layout_width="match_parent"
             android:layout_height="172dp"
             android:layout_margin="@dimen/default_margin_20"
-            android:alpha="0.7"
+            android:alpha="0.6"
             android:scaleType="centerCrop"
             android:src="@drawable/img_bg_recommend_default"
             app:layout_constraintEnd_toEndOf="parent"
@@ -35,8 +35,8 @@
             android:layout_margin="@dimen/default_margin_20"
             android:scaleType="centerCrop"
             android:src="@drawable/img_bg_playlist_default"
-            app:layout_constraintStart_toStartOf="@+id/img_cover"
-            app:layout_constraintTop_toTopOf="@+id/img_cover"
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover"
+            app:layout_constraintTop_toTopOf="@+id/img_album_cover"
             app:shapeAppearanceOverlay="@style/CornerImage_4"
             app:strokeColor="@color/view_line_color"
             app:strokeWidth="0dp"
@@ -84,7 +84,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@drawable/bg_btn_play"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
             app:layout_constraintStart_toStartOf="@+id/img_album_avatar"
             app:layout_constraintTop_toBottomOf="@+id/img_album_avatar"
             tools:ignore="ContentDescription" />
@@ -95,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_20"
             android:background="@drawable/bg_btn_shape"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
             app:layout_constraintEnd_toStartOf="@+id/btn_share_album"
             app:layout_constraintStart_toEndOf="@+id/btn_play_albums"
             app:layout_constraintTop_toBottomOf="@+id/img_album_avatar"
@@ -107,8 +107,8 @@
             android:layout_height="wrap_content"
             android:layout_marginHorizontal="@dimen/default_margin_20"
             android:background="@drawable/bg_btn_favorites"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
             app:layout_constraintTop_toBottomOf="@+id/img_album_avatar"
             tools:ignore="ContentDescription" />
 
@@ -120,7 +120,7 @@
             android:nestedScrollingEnabled="false"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/img_cover" />
+            app:layout_constraintTop_toBottomOf="@+id/img_album_cover" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

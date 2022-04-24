@@ -1,5 +1,7 @@
 package com.dore.myapplication.activity.screen.songs.artists.adapter;
 
+import static com.dore.myapplication.activity.MainActivity.mainNavController;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -16,7 +18,7 @@ import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
-import com.dore.myapplication.model.Author;
+import com.dore.myapplication.model.Artist;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,14 +27,14 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 
     private View mRootView;
 
-    private List<Author> mListAuthor;
+    private List<Artist> mListArtist;
 
     private Context mContext;
 
 
-    public ArtistsAdapter(List<Author> mListAuthor, Context context) {
-        this.mListAuthor = new ArrayList<>();
-        this.mListAuthor = mListAuthor;
+    public ArtistsAdapter(List<Artist> mListArtist, Context context) {
+        this.mListArtist = new ArrayList<>();
+        this.mListArtist = mListArtist;
         this.mContext = context;
     }
 
@@ -55,17 +57,17 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 
     @Override
     public void onBindViewHolder(@NonNull ArtistsViewHolder holder, int position) {
-        Author author = mListAuthor.get(position);
+        Artist artist = mListArtist.get(position);
         holder.img.setImageResource(R.drawable.img_bg_playlist_default);
-        holder.txtName.setText(author.getName());
-        holder.txtNumSong.setText(strNumSong(author.getSongs().size()));
-        holder.txtNumAlbum.setText(strNumAlbum(author.getAlbums().size()));
+        holder.txtName.setText(artist.getName());
+//        holder.txtNumSong.setText(strNumSong(artist.getSongs().size()));
+        holder.txtNumAlbum.setText(strNumAlbum(artist.getAlbums().size()));
 
     }
 
     @Override
     public int getItemCount() {
-        return mListAuthor.size();
+        return mListArtist.size();
     }
 
     class ArtistsViewHolder extends RecyclerView.ViewHolder {
@@ -91,16 +93,16 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
             handleMenu();
 
             itemView.setOnClickListener(v -> {
-                Bundle authorBundle = new Bundle();
-                authorBundle.putSerializable("author", mListAuthor.get(getAdapterPosition()));
-                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_artist, authorBundle);
+                Bundle artistBundle = new Bundle();
+                artistBundle.putSerializable("artist", mListArtist.get(getAdapterPosition()));
+                mainNavController.navigate(R.id.action_show_detail_artist, artistBundle);
             });
         }
 
         @SuppressLint("NonConstantResourceId")
         private void handleMenu() {
             imgDotMenu.setOnClickListener(v -> {
-                Author author = mListAuthor.get(getAdapterPosition());
+                Artist artist = mListArtist.get(getAdapterPosition());
 
                 Context wrapper = new ContextThemeWrapper(mContext, R.style.PopupMenu);
                 PopupMenu popupMenu = new PopupMenu(wrapper, imgDotMenu);
@@ -108,39 +110,39 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
                 popupMenu.setOnMenuItemClickListener(item -> {
                     switch (item.getItemId()) {
                         case R.id.pop_play: {
-                            play(author);
+                            play(artist);
                             break;
                         }
                         case R.id.pop_play_next: {
-                            playNext(author);
+                            playNext(artist);
                             break;
                         }
                         case R.id.pop_add_to_playing_queue: {
-                            addToPlayingQueue(author);
+                            addToPlayingQueue(artist);
                             break;
                         }
                         case R.id.pop_add_to_playlist: {
-                            addToPlaylist(author);
+                            addToPlaylist(artist);
                             break;
                         }
                         case R.id.pop_rename: {
-                            rename(author);
+                            rename(artist);
                             break;
                         }
                         case R.id.pop_tag_editor: {
-                            tagEditor(author);
+                            tagEditor(artist);
                             break;
                         }
                         case R.id.pop_go_to_artist: {
-                            goToArtist(author);
+                            goToArtist(artist);
                             break;
                         }
                         case R.id.pop_delete_from_device: {
-                            deleteFromDevice(author);
+                            deleteFromDevice(artist);
                             break;
                         }
                         case R.id.pop_details: {
-                            details(author);
+                            details(artist);
                             break;
                         }
                     }
@@ -152,37 +154,37 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
             });
         }
 
-        private void play(Author author) {
+        private void play(Artist artist) {
 
         }
 
-        private void playNext(Author author) {
+        private void playNext(Artist artist) {
 
         }
 
-        private void addToPlayingQueue(Author author) {
+        private void addToPlayingQueue(Artist artist) {
 
         }
 
-        private void addToPlaylist(Author author) {
+        private void addToPlaylist(Artist artist) {
 
         }
 
-        private void rename(Author author) {
+        private void rename(Artist artist) {
         }
 
-        private void tagEditor(Author author) {
+        private void tagEditor(Artist artist) {
         }
 
-        private void goToArtist(Author author) {
-
-        }
-
-        private void deleteFromDevice(Author author) {
+        private void goToArtist(Artist artist) {
 
         }
 
-        private void details(Author author) {
+        private void deleteFromDevice(Artist artist) {
+
+        }
+
+        private void details(Artist artist) {
 
         }
     }

@@ -4,10 +4,7 @@ import static com.dore.myapplication.MusicApplication.providerDAO;
 import static com.dore.myapplication.utilities.Constants.LOCAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.FragmentManager;
@@ -16,7 +13,6 @@ import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -24,12 +20,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
-import android.util.Log;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -47,7 +40,6 @@ import com.dore.myapplication.service.MusicService;
 import com.dore.myapplication.utilities.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +54,7 @@ public class MainActivity extends AppCompatActivity{
 
     private Boolean isDrawerShowing = false;
 
-    private NavController mNavController;
+    public static NavController mainNavController;
 
     private NavigationView mDrawerNavigationView;
 
@@ -139,6 +131,7 @@ public class MainActivity extends AppCompatActivity{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        initDAO();
         initBindService();
         initBroadcast();
         initView();
@@ -189,7 +182,6 @@ public class MainActivity extends AppCompatActivity{
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-
                 update((Song) intent.getSerializableExtra("song"),
                         intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
                         intent.getIntExtra("cur", 0),
@@ -230,38 +222,32 @@ public class MainActivity extends AppCompatActivity{
 
         navHostFragment = (NavHostFragment) this.getSupportFragmentManager().findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
-            mNavController = navHostFragment.getNavController();
+            mainNavController = navHostFragment.getNavController();
 
             bottomNavigationView.setItemIconTintList(null);
             mDrawerNavigationView.setItemIconTintList(null);
 
-            mNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
+            mainNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
                     }
             );
 
-            navHostFragment.getChildFragmentManager().addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-                @Override
-                public void onBackStackChanged() {
-                }
-            });
-
-            NavigationUI.setupWithNavController(bottomNavigationView, mNavController);
-            NavigationUI.setupWithNavController(mDrawerNavigationView, mNavController);
+            NavigationUI.setupWithNavController(bottomNavigationView, mainNavController);
+            NavigationUI.setupWithNavController(mDrawerNavigationView, mainNavController);
 
             bottomNavigationView.setOnItemSelectedListener(item -> {
                 switch (item.getItemId()){
                     case R.id.homeFragment:
-                        mNavController.navigate(R.id.action_goto_home);
+                        mainNavController.navigate(R.id.action_goto_home);
                         break;
 
                     case R.id.songsFragment:
-                        mNavController.navigate(R.id.action_goto_songs);
+                        mainNavController.navigate(R.id.action_goto_songs);
                         break;
 
                     case R.id.settingsFragment:
-                        mNavController.navigate(R.id.action_goto_settings);
+                        mainNavController.navigate(R.id.action_goto_settings);
                         break;
                 }
                 return false;
@@ -277,6 +263,13 @@ public class MainActivity extends AppCompatActivity{
             mTxtSongName.setText(mSong.getName());
             mTxtSongAuthor.setText(mSong.getAuthor());
             mSeekBar.setMax(mSongDur);
+
+            Glide
+                    .with(this)
+                    .load(mSong.imgPath)
+                    .placeholder(R.drawable.img_bg_playlist_default)
+                    .centerCrop()
+                    .into(mImgSong);
         }
 
         if (mIsPlaying != playing) {
@@ -323,7 +316,7 @@ public class MainActivity extends AppCompatActivity{
         });
 
         mControllerView.setOnClickListener(v -> {
-            mNavController.navigate(R.id.action_play_song);
+            mainNavController.navigate(R.id.action_play_song);
         });
 
         mBtnPlay.setOnClickListener(v -> {
@@ -405,6 +398,10 @@ public class MainActivity extends AppCompatActivity{
         mControllerView.setVisibility(View.VISIBLE);
 
         updateController();
+    }
+
+        private void initDAO(){
+        providerDAO = new ProviderDAO(this);
     }
 
     public MusicService getBoundService() {

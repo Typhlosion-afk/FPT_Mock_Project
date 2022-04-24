@@ -11,34 +11,23 @@ public class Song extends AbsObject implements Serializable {
     public String name;
     public String author;
     public String path;
-    public int res;
     public String imgPath;
+    public String album;
+    public String dur;
+//
+//    public Song(String name, String author, String path) {
+//        this.name = name;
+//        this.author = author;
+//        this.path = path;
+//    }
 
-    public Song(String name, String author, String path) {
-        this.name = name;
-        this.author = author;
-        this.path = path;
-    }
-
-    public Song(String name, String author, int res) {
-        this.name = name;
-        this.author = author;
-        this.res = res;
-    }
-
-    public Song(String imgPath,String name, String author, String path) {
+    public Song(String imgPath,String name, String author, String path, String album, String dur) {
         this.imgPath = imgPath;
         this.name = name;
         this.author = author;
         this.path = path;
-    }
-
-    public int getRes() {
-        return res;
-    }
-
-    public void setRes(int res) {
-        this.res = res;
+        this.album = album;
+        this.dur = dur;
     }
 
     public String getName() {
@@ -83,5 +72,13 @@ public class Song extends AbsObject implements Serializable {
 
     public void setImgPath(String imgPath) {
         this.imgPath = imgPath;
+    }
+
+    public String getAlbumName() {
+        return album;
+    }
+
+    public String getStrDurTime() {
+        return dur;
     }
 }

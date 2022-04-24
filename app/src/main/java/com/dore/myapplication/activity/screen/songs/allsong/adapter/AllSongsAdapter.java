@@ -1,5 +1,6 @@
 package com.dore.myapplication.activity.screen.songs.allsong.adapter;
 
+import static com.dore.myapplication.activity.MainActivity.mainNavController;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
@@ -13,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -54,7 +56,6 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
         Glide
                 .with(mContext)
                 .load(mListSong.get(position).getImgPath())
-                .centerCrop()
                 .placeholder(R.drawable.img_bg_recommend_default)
                 .error(R.drawable.img_bg_recommend_default)
                 .centerCrop()
@@ -66,7 +67,7 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
         return mListSong.size();
     }
 
-    class SongHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class SongHolder extends RecyclerView.ViewHolder {
 
         ImageView imgSong;
 
@@ -87,14 +88,10 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
 
                 mRootView.getContext().startService(i);
 
-                Navigation.findNavController(mRootView).navigate(R.id.action_play_song);
+                mainNavController.navigate(R.id.action_play_song);
             });
         }
 
-        @Override
-        public void onClick(View v) {
-
-        }
     }
 
 }

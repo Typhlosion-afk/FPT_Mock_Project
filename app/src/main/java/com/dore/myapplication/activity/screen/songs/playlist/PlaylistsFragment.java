@@ -76,12 +76,12 @@ public class PlaylistsFragment extends BaseFragment {
 
     private void initData() {
         mListSong.clear();
-        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
-        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
-        mListSong.add(new Song("Bai hat so 3", "Ca si 2", "path 3"));
-        mListSong.add(new Song("Bai hat so 4", "Ca si 2", "path 4"));
-        mListSong.add(new Song("Bai hat so 5", "Ca si 2", "path 5"));
-        mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
+//        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
+//        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
+//        mListSong.add(new Song("Bai hat so 3", "Ca si 2", "path 3"));
+//        mListSong.add(new Song("Bai hat so 4", "Ca si 2", "path 4"));
+//        mListSong.add(new Song("Bai hat so 5", "Ca si 2", "path 5"));
+//        mListSong.add(new Song("Bai hat so 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", "Ca si 3", "path 7"));
 
         mListPlaylist.clear();
         mListPlaylist.add(new Playlist("Playlist 1 2 3 4 5 6 7 8 9 0 1 2 3 4 5 6 7", mListSong));

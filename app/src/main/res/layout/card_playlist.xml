@@ -40,7 +40,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:fontFamily="@font/circular_std_medium"
-        tools:text="@string/author"
+        tools:text="@string/artist"
         android:textColor="@color/text_hint_color"
         android:textSize="10sp"
         app:layout_constraintStart_toStartOf="@+id/img_card"

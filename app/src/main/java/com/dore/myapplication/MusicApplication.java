@@ -26,38 +26,12 @@ import java.sql.Connection;
 
 public class MusicApplication extends Application {
 
-    private boolean mBound = false;
-
-    private MusicService mMusicService;
-
     public static ProviderDAO providerDAO;
-
-
-    public final ServiceConnection connection = new ServiceConnection() {
-        @Override
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            MusicService.MusicBinder binder = (MusicService.MusicBinder) service;
-            mMusicService = binder.getService();
-            mBound = true;
-            LogUtils.d("connected");
-        }
-
-        @Override
-        public void onServiceDisconnected(ComponentName name) {
-            mBound = false;
-        }
-    };
 
     @Override
     public void onCreate() {
         super.onCreate();
         createChannelNotification();
-        initDAO();
-//        bindService();
-    }
-
-    private void initDAO(){
-        providerDAO = new ProviderDAO(this);
     }
 
     private void createChannelNotification() {
@@ -74,20 +48,4 @@ public class MusicApplication extends Application {
         }
     }
 
-
-//
-//    private void bindService() {
-//        Intent iStartService = new Intent(this, MusicService.class);
-//        startService(iStartService);
-//        bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
-//
-//    }
-//
-//    public MusicService getBoundService(){
-//        return mMusicService;
-//    }
-//
-//    public ServiceConnection getConnection(){
-//        return connection;
-//    }
 }

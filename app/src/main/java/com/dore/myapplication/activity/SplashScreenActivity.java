@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,6 +26,9 @@ public class SplashScreenActivity extends Activity {
 
     private void requestPermission(){
         String[] listPms = {Manifest.permission.READ_EXTERNAL_STORAGE};
+
+        Log.d("TAG", "requestPermission: " + ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE));
+        Log.d("TAG", "requestPermission: " + PackageManager.PERMISSION_GRANTED);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
 

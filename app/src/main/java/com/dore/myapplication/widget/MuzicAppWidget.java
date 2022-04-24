@@ -106,8 +106,10 @@ public class MuzicAppWidget extends AppWidgetProvider {
         LogUtils.d((mSong == null) ? "null" : mSong.name);
         LogUtils.d((mIds == null) ? "null" : Arrays.toString(mIds));
 
-        for (int appWidgetId : mIds) {
-            updateAppWidget(context, manager, appWidgetId);
+        if(mIds != null) {
+            for (int appWidgetId : mIds) {
+                updateAppWidget(context, manager, appWidgetId);
+            }
         }
     }
 }

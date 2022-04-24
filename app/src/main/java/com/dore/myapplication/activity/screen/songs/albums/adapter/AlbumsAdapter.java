@@ -1,5 +1,7 @@
 package com.dore.myapplication.activity.screen.songs.albums.adapter;
 
+import static com.dore.myapplication.activity.MainActivity.mainNavController;
+
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Bundle;
@@ -84,7 +86,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
             itemView.setOnClickListener(v -> {
                 Bundle b = new Bundle();
                 b.putSerializable("album", mAlbumList.get(getAdapterPosition()));
-                Navigation.findNavController(mRootView).navigate(R.id.action_show_detail_album, b);
+                mainNavController.navigate(R.id.action_show_detail_album, b);
             });
         }
 
@@ -152,7 +154,6 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
                     }
                     return true;
                 });
-
                 popupMenu.show();
 
             });

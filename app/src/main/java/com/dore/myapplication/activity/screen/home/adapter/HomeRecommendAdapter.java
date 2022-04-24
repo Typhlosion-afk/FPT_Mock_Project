@@ -1,5 +1,6 @@
 package com.dore.myapplication.activity.screen.home.adapter;
 
+import static com.dore.myapplication.activity.MainActivity.mainNavController;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
@@ -97,7 +98,7 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
 
                 mRootView.getContext().startService(i);
 
-                Navigation.findNavController(mRootView).navigate(R.id.action_play_song);
+                mainNavController.navigate(R.id.action_play_song);
             });
         }
 

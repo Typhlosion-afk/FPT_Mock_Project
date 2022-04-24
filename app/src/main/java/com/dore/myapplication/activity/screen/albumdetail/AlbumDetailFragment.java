@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.screen.albumdetail.adapter.AlbumDetailAdapter;
 import com.dore.myapplication.base.BaseFragment;
@@ -21,7 +22,9 @@ public class AlbumDetailFragment extends BaseFragment {
 
     private View mRootView;
 
-    private ImageView img;
+    private ImageView mImgAvatar;
+
+    private ImageView mImgCover;
 
     private TextView mTxtName;
 
@@ -57,24 +60,9 @@ public class AlbumDetailFragment extends BaseFragment {
 
     private void initData() {
 
-        mListSong.clear();
-        mListSong.add(new Song("Bai hat so 1", "Ca si 1", "path 1"));
-        mListSong.add(new Song("Bai hat so 2", "Ca si 1", "path 2"));
-        mListSong.add(new Song("Bai hat so 3", "Ca si 1", "path 3"));
-        mListSong.add(new Song("Bai hat so 4", "Ca si 1", "path 4"));
-        mListSong.add(new Song("Bai hat so 5", "Ca si 1", "path 5"));
-        mListSong.add(new Song("Bai hat so 6", "Ca si 1", "path 6"));
-        mListSong.add(new Song("Bai hat so 12", "Ca si 1", "path 1"));
-        mListSong.add(new Song("Bai hat so 22", "Ca si 1", "path 2"));
-        mListSong.add(new Song("Bai hat so 32", "Ca si 1", "path 3"));
-        mListSong.add(new Song("Bai hat so 42", "Ca si 1", "path 4"));
-        mListSong.add(new Song("Bai hat so 52", "Ca si 1", "path 5"));
-        mListSong.add(new Song("Bai hat so 62", "Ca si 1", "path 6"));
-
-        album = new Album("Album custom", "Ca si 1", mListSong, "1998");
-
-        if (getArguments() != null) {
+        if(getArguments() != null) {
             album = (Album) getArguments().getSerializable("album");
+            mListSong = album.getListSong();
         }
 
     }
@@ -84,11 +72,29 @@ public class AlbumDetailFragment extends BaseFragment {
         mTxtAuthor = mRootView.findViewById(R.id.txt_album_author);
         mTxtDetail = mRootView.findViewById(R.id.txt_album_detail);
 
+        mImgAvatar = mRootView.findViewById(R.id.img_album_avatar);
+        mImgCover = mRootView.findViewById(R.id.img_album_cover);
+
         int time = 32;
 
         mTxtName.setText(album.getName());
         mTxtAuthor.setText(album.getAuthor());
         mTxtDetail.setText(strAlbumDetails(album.getYear(), album.getListSong().size(), time));
+        Glide
+                .with(mRootView.getContext())
+                .load(album.getListSong().get(0).getImgPath())
+                .placeholder(R.drawable.img_bg_recommend_default)
+                .error(R.drawable.img_bg_recommend_default)
+                .centerCrop()
+                .into(mImgAvatar);
+
+        Glide
+                .with(mRootView.getContext())
+                .load(album.getListSong().get(0).getImgPath())
+                .placeholder(R.drawable.img_bg_recommend_default)
+                .error(R.drawable.img_bg_recommend_default)
+                .centerCrop()
+                .into(mImgCover);
 
     }
 

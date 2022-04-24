@@ -261,7 +261,10 @@ public class MusicService extends Service implements
         mMusicNotiManager.updateViewNotification(mSong);
         mMusicNotiManager.removeNotification();
 
-        mMediaPlayer = MediaPlayer.create(this, mSong.getRes());
+        mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
+        updateWidget();
+        sendSongData();
+
 
         this.stopSelf();
     }

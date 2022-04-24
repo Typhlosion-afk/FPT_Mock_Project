@@ -12,7 +12,7 @@
         android:layout_height="match_parent">
 
         <com.google.android.material.imageview.ShapeableImageView
-            android:id="@+id/img_cover"
+            android:id="@+id/img_album_cover"
             android:layout_width="match_parent"
             android:layout_height="172dp"
             android:layout_margin="@dimen/default_margin_20"
@@ -37,8 +37,8 @@
             android:textColor="@color/color_text_50"
             android:textSize="18sp"
             app:layout_constraintBottom_toTopOf="@+id/txt_artist_type"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
-            app:layout_constraintStart_toStartOf="@+id/img_cover" />
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover" />
 
         <TextView
             android:id="@+id/txt_artist_type"
@@ -48,10 +48,10 @@
             android:text="@string/songs"
             android:textColor="@color/color_text_50"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
-            app:layout_constraintStart_toStartOf="@+id/img_cover"
-            app:layout_constraintTop_toTopOf="@+id/img_cover" />
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover"
+            app:layout_constraintTop_toTopOf="@+id/img_album_cover" />
 
         <TextView
             android:id="@+id/txt_artist_follow_num"
@@ -73,8 +73,8 @@
             android:text="@string/followers"
             android:textColor="@color/color_text_50"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
-            app:layout_constraintStart_toStartOf="@+id/img_cover" />
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover" />
 
 
         <TextView
@@ -97,7 +97,7 @@
             android:text="@string/listeners"
             android:textColor="@color/color_text_50"
             android:textSize="13sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
             app:layout_constraintEnd_toStartOf="@+id/btn_play_albums"
             app:layout_constraintStart_toEndOf="@+id/txt_artist_follow" />
 
@@ -112,8 +112,8 @@
             android:textAllCaps="false"
             android:textColor="@color/white"
             android:textSize="8sp"
-            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
+            app:layout_constraintBottom_toBottomOf="@+id/img_album_cover"
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
             tools:ignore="SmallSp" />
 
         <TextView
@@ -124,8 +124,8 @@
             android:text="@string/top_albums"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/img_cover"
-            app:layout_constraintTop_toBottomOf="@+id/img_cover" />
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover"
+            app:layout_constraintTop_toBottomOf="@+id/img_album_cover" />
 
         <TextView
             android:id="@+id/txt_view_all_albums"
@@ -135,7 +135,7 @@
             android:textColor="@color/light_peach"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/top_albums"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
             app:layout_constraintTop_toTopOf="@+id/top_albums"
             tools:ignore="SmallSp" />
 
@@ -156,7 +156,7 @@
             android:text="@string/top_songs"
             android:textColor="@color/white"
             android:textSize="15sp"
-            app:layout_constraintStart_toStartOf="@+id/img_cover"
+            app:layout_constraintStart_toStartOf="@+id/img_album_cover"
             app:layout_constraintTop_toBottomOf="@+id/artist_album_container" />
 
         <TextView
@@ -167,7 +167,7 @@
             android:textColor="@color/light_peach"
             android:textSize="11sp"
             app:layout_constraintBottom_toBottomOf="@+id/top_songs"
-            app:layout_constraintEnd_toEndOf="@+id/img_cover"
+            app:layout_constraintEnd_toEndOf="@+id/img_album_cover"
             app:layout_constraintTop_toTopOf="@+id/top_songs"
             tools:ignore="SmallSp" />
 
