@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Album;
 
@@ -57,10 +58,16 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
     public void onBindViewHolder(@NonNull AlbumsHolder holder, int position) {
         Album album = mAlbumList.get(position);
 
-        holder.img.setImageResource(R.drawable.img_bg_playlist_default);
         holder.txtName.setText(album.getName());
         holder.txtAuthor.setText(album.getAuthor());
         holder.txtNumSong.setText(getStrSizeAlbum(album.getListSong().size()));
+
+        Glide
+                .with(mContext)
+                .load(album.getListSong().get(0).getImgPath())
+                .placeholder(R.drawable.img_bg_recommend_default)
+                .error(R.drawable.img_bg_recommend_default)
+                .into(holder.img);
     }
 
     @Override

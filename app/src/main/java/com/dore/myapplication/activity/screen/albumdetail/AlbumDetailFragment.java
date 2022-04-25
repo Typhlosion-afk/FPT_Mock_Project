@@ -68,7 +68,7 @@ public class AlbumDetailFragment extends BaseFragment {
     }
 
     private void initView() {
-        mTxtName = mRootView.findViewById(R.id.txt_album_name);
+        mTxtName = mRootView.findViewById(R.id.txt_artist_name);
         mTxtAuthor = mRootView.findViewById(R.id.txt_album_author);
         mTxtDetail = mRootView.findViewById(R.id.txt_album_detail);
 

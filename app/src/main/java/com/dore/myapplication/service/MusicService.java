@@ -30,6 +30,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
+import com.bumptech.glide.Glide;
+import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.notification.MusicNotificationManager;
 import com.dore.myapplication.utilities.LogUtils;
@@ -69,6 +71,8 @@ public class MusicService extends Service implements
 
     private Intent mSongDataIntent = new Intent(LOCAL_BROADCAST_RECEIVER);
 
+    private boolean isBinding = false;
+
     @Override
     public void onCreate() {
         super.onCreate();
@@ -100,12 +104,9 @@ public class MusicService extends Service implements
     @SuppressWarnings("unchecked")
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
         if (intent != null) {
             int notificationAction = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
             int widgetAction = intent.getIntExtra(WIDGET_DATA_ACTION, -1);
-
-            LogUtils.d("" + intent);
 
             if(notificationAction != - 1) {
                 handleAction(notificationAction);
@@ -124,6 +125,9 @@ public class MusicService extends Service implements
 
                 mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
                 mSong = mListSong.get(mSongPos);
+
+
+
                 playSong();
             }
         }
@@ -199,7 +203,6 @@ public class MusicService extends Service implements
             updateNotification();
             updateWidget();
             sendSongData();
-
         }
     }
 
@@ -255,18 +258,21 @@ public class MusicService extends Service implements
         if (mMediaPlayer != null) {
             isPlaying = false;
             mMediaPlayer.stop();
+            mMediaPlayer.release();
             mCurrent = 0;
         }
         mMusicNotiManager.setIsForeRunning(false);
         mMusicNotiManager.updateViewNotification(mSong);
         mMusicNotiManager.removeNotification();
 
-        mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
-        updateWidget();
-        sendSongData();
-
-
-        this.stopSelf();
+        stopForeground(true);
+        if(!isBinding){
+            stopSelf();
+        }else {
+            mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
+            updateWidget();
+            sendSongData();
+        }
     }
 
     public int getSongDur(){
@@ -282,6 +288,7 @@ public class MusicService extends Service implements
         mMusicNotiManager.setIsMediaPlaying(mMediaPlayer.isPlaying());
         mMusicNotiManager.setIsMediaPlaying(isPlaying);
         mMusicNotiManager.updateViewNotification(mSong);
+
     }
 
     private void updateWidget(){
@@ -319,6 +326,7 @@ public class MusicService extends Service implements
     @Override
     public IBinder onBind(Intent intent) {
         Log.d("TAG", "onBind: ");
+        isBinding = true;
         return binder;
     }
 
@@ -332,9 +340,9 @@ public class MusicService extends Service implements
     @Override
     public boolean onUnbind(Intent intent) {
         Log.d("TAG", "unBind: ");
+        isBinding = false;
         return super.onUnbind(intent);
     }
-
 
     @Override
     public void onDestroy() {

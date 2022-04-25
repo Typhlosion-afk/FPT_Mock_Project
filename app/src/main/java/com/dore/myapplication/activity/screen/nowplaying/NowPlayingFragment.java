@@ -7,6 +7,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -21,6 +22,7 @@ import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.customview.CirSeekBar;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.LogUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -109,6 +111,7 @@ public class NowPlayingFragment extends BaseFragment{
                         intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
                         intent.getIntExtra("cur", 0),
                         intent.getBooleanExtra("playing", false));
+
             }
         };
     }
@@ -182,6 +185,7 @@ public class NowPlayingFragment extends BaseFragment{
                     .into(mImgSong);
 
             btnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause : R.drawable.ic_control_play);
+            txtDurTime.setText(posToTime(mSongDur));
 
             updateUiWithCur();
         }
@@ -189,17 +193,11 @@ public class NowPlayingFragment extends BaseFragment{
     }
 
     private void initAction() {
-        btnNext.setOnClickListener(v -> {
-            next();
-        });
+        btnNext.setOnClickListener(v -> next());
 
-        btnPlay.setOnClickListener(v -> {
-            play();
-        });
+        btnPlay.setOnClickListener(v -> play());
 
-        btnPrev.setOnClickListener(v -> {
-            prev();
-        });
+        btnPrev.setOnClickListener(v -> prev());
 
         seekBar.onChangeIndicatorPosition(new CirSeekBar.OnChangeIndicatorPosition() {
             @Override

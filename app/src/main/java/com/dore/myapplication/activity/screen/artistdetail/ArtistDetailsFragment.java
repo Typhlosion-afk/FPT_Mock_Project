@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.screen.artistdetail.adapter.ArtistAlbumAdapter;
 import com.dore.myapplication.activity.screen.artistdetail.adapter.ArtistSongAdapter;
@@ -95,8 +96,18 @@ public class ArtistDetailsFragment extends BaseFragment {
 
     private void initView() {
         img = mRootView.findViewById(R.id.img_album_cover);
+        mTxtArtistName = mRootView.findViewById(R.id.txt_artist_name);
+        mTxtMusicTypes = mRootView.findViewById(R.id.txt_artist_type);
 
-        img.setImageResource(R.drawable.img_bg_recommend_default);
+        mTxtArtistName.setText(mArtist.getName());
+        mTxtMusicTypes.setText("");
+
+        Glide
+                .with(mRootView.getContext())
+                .load(mListAlbums.get(0).getListSong().get(0).getImgPath())
+                .placeholder(R.drawable.img_bg_recommend_default)
+                .error(R.drawable.img_bg_recommend_default)
+                .into(img);
     }
 
     private void initAdapter() {

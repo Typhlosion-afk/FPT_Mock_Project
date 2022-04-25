@@ -16,9 +16,9 @@ public class ProviderDAO {
 
     private final Cursor cursor;
 
-    private List<Song> allSongs = new ArrayList<>();
+    private List<Song> mAllSongs = new ArrayList<>();
 
-    private List<Album> allAlbum = new ArrayList<>();
+    private List<Album> mAllAlbum = new ArrayList<>();
 
 
     int idColumn;
@@ -58,7 +58,7 @@ public class ProviderDAO {
     }
 
     public List<Song> getAllSongs() {
-        allSongs.clear();
+        mAllSongs.clear();
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String uriSong = ContentUris
@@ -76,22 +76,22 @@ public class ProviderDAO {
                         cursor.getString(durColumn));
 
                 if (song.getExtension().equals(".mp3")) {
-                    allSongs.add(song);
+                    mAllSongs.add(song);
                 }
 
             } while (cursor.moveToNext());
         }
-        return allSongs;
+        return mAllSongs;
     }
 
     public List<Artist> getAllArtist() {
         List<Artist> artists = new ArrayList<>();
 
-        if (allAlbum.size() == 0){
-            allAlbum = getAllAlbum();
+        if (mAllAlbum.size() == 0){
+            mAllAlbum = getAllAlbum();
         }
 
-        for (Album album: allAlbum) {
+        for (Album album: mAllAlbum) {
             boolean isExist = false;
             for (Artist a : artists) {
                 if (a.getName().equals(album.getAuthor())) {
@@ -138,15 +138,15 @@ public class ProviderDAO {
     }
 
     public List<Album> getAllAlbum() {
-        if (allSongs.size() == 0) {
-            allSongs = getAllSongs();
+        if (mAllSongs.size() == 0) {
+            mAllSongs = getAllSongs();
         }
 
-        allAlbum.clear();
+        mAllAlbum.clear();
 
-        for (Song song: allSongs) {
+        for (Song song: mAllSongs) {
             boolean isExist = false;
-            for (Album a : allAlbum) {
+            for (Album a : mAllAlbum) {
                 if (a.getName().equals(song.getAlbumName())) {
                     isExist = true;
                     a.getListSong().add(song);
@@ -155,10 +155,10 @@ public class ProviderDAO {
             if (!isExist) {
                 List<Song> songs = new ArrayList<>();
                 songs.add(song);
-                allAlbum.add(new Album(song.getAlbumName(), song.getAuthor(), songs, ""));
+                mAllAlbum.add(new Album(song.getAlbumName(), song.getAuthor(), songs, ""));
             }
         }
-        return allAlbum;
+        return mAllAlbum;
     }
 
     private List<Album> addSongToAlbum(Song song, List<Album> album) {

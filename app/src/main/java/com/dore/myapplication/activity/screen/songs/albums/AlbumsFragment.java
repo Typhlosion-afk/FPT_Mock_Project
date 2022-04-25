@@ -11,7 +11,6 @@ import com.dore.myapplication.R;
 import com.dore.myapplication.activity.screen.songs.albums.adapter.AlbumsAdapter;
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.Album;
-import com.dore.myapplication.model.ProviderDAO;
 import com.dore.myapplication.model.Song;
 
 import java.util.ArrayList;

@@ -79,6 +79,10 @@ public class Song extends AbsObject implements Serializable {
     }
 
     public String getStrDurTime() {
-        return dur;
+        int time = Integer.parseInt(dur);
+        String min = time/1000/60 > 9 ? "" + time/1000/60 : "0" + time/1000/60;
+        String sec = time/1000%60 > 9 ? "" + time/1000%60 : "0" + time/1000%60;
+
+        return min + ":" + sec ;
     }
 }

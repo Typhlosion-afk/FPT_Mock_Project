@@ -49,7 +49,7 @@ public class ArtistSongAdapter extends RecyclerView.Adapter<ArtistSongAdapter.Ar
     @Override
     public void onBindViewHolder(@NonNull ArtistHolder holder, int position) {
         holder.txtName.setText(mListSong.get(position).getName());
-        holder.txtTime.setText(mListSong.get(position).getAuthor());
+        holder.txtTime.setText(mListSong.get(position).getStrDurTime());
     }
 
     @Override

@@ -36,7 +36,6 @@ public class SongsPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-
         return lsFm.get(position);
     }
 

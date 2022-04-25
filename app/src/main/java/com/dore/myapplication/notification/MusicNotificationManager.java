@@ -14,16 +14,33 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.RemoteViews;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.BitmapImageViewTarget;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.target.NotificationTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.MainActivity;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.util.concurrent.ExecutionException;
 
 public class MusicNotificationManager {
 
@@ -39,8 +56,10 @@ public class MusicNotificationManager {
 
     private Notification playerNotification;
 
-    private boolean isMediaPlaying = false;
+    private boolean isMediaPlaying;
     private boolean mIsRunning = true;
+
+    private NotificationTarget imgTarget;
 
 
     public MusicNotificationManager(Context context) {
@@ -64,17 +83,24 @@ public class MusicNotificationManager {
         if (song != null) {
             mLargeNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
             mLargeNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
-            if(isMediaPlaying) {
+            if (isMediaPlaying) {
                 mLargeNotificationLayout.setImageViewResource(R.id.btn_control_play, R.drawable.ic_control_pause);
-            }else {
+            } else {
                 mLargeNotificationLayout.setImageViewResource(R.id.btn_control_play, R.drawable.ic_control_play);
             }
 
+            try {
+                Bitmap bm = MediaStore.Images.Media.getBitmap(mContext.getApplicationContext().getContentResolver(), Uri.parse(song.getImgPath()));
+                mLargeNotificationLayout.setImageViewBitmap(R.id.notification_song_img, bm);
+            } catch (IOException e) {
+                mLargeNotificationLayout.setImageViewResource(R.id.notification_song_img, R.drawable.img_bg_playlist_default);
 
-            mSmallNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
-            mSmallNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
+            } finally {
+                mSmallNotificationLayout.setTextViewText(R.id.txt_noti_song_name, song.getName());
+                mSmallNotificationLayout.setTextViewText(R.id.txt_noti_author, song.getAuthor());
+                mNotificationManagerCompat.notify(1, builder.build());
+            }
         }
-        mNotificationManagerCompat.notify(1, builder.build());
     }
 
     private Notification createPlayerNotification() {

@@ -35,7 +35,7 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
     private Context mContext;
 
     public AllSongsAdapter(Context context, List<Song> songs) {
-        this.mContext = context;
+        mContext = context;
         mListSong = new ArrayList<>();
         mListSong.addAll(songs);
     }
@@ -49,7 +49,6 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
 
     @Override
     public void onBindViewHolder(@NonNull AllSongsAdapter.SongHolder holder, int position) {
-//        holder.imgSong.setImageResource(R.drawable.img_bg_playlist_default);
         holder.txtSongName.setText(mListSong.get(position).name);
         holder.txtSongAuthor.setText(mListSong.get(position).author);
 
