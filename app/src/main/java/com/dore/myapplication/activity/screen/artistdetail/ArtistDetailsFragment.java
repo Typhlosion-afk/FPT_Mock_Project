@@ -120,7 +120,5 @@ public class ArtistDetailsFragment extends BaseFragment {
         mTopSongRecyclerView.setLayoutManager(new LinearLayoutManager(mRootView.getContext(), RecyclerView.VERTICAL, false));
         mArtistSongAdapter = new ArtistSongAdapter(mRootView.getContext(), mListSong);
         mTopSongRecyclerView.setAdapter(mArtistSongAdapter);
-
     }
-
 }

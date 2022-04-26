@@ -2,7 +2,8 @@
 <resources>
     <declare-styleable name="CirSeekBar">
         <attr name="cir_seek_size" format="dimension" />
-        <attr name="cir_seek_stroke" format="dimension" />
+        <attr name="cir_progress_stroke_width" format="dimension" />
+        <attr name="cir_background_stroke_width" format="dimension" />
         <attr name="cir_seek_start_color" format="color" />
         <attr name="cir_seek_end_color" format="color" />
         <attr name="cir_seek_background_color" format="color" />

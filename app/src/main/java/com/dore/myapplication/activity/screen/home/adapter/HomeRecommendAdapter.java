@@ -52,8 +52,6 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @Override
     public void onBindViewHolder(@NonNull HomeRecommendAdapter.HomeHolder holder, int position) {
 
-        LogUtils.d(mListSong.get(position).getImgPath());
-
         Glide
                 .with(mContext)
                 .load(mListSong.get(position).getImgPath())

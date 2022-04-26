@@ -17,46 +17,80 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 
 import com.dore.myapplication.R;
+import com.dore.myapplication.utilities.LogUtils;
 
 public class CirSeekBar extends View {
 
     private final int mRadius;
+
     private Paint mPaintProgress;
+
     private Paint mPaintIndicator;
+
     private Paint mPaintBackGround;
-    private final int mStrokeSize;
+
+    private final int mProgressWidth;
+
+    private final int mBackgroundWidth;
+
     private @ColorInt
     final int mStartColor;
+
     private @ColorInt
     final int mEndColor;
+
     private @ColorInt
     final int mBackGroundColor;
+
     private float mPos;
+
     private float cx;
+
     private float cy;
+
+    private float cInX;
+
+    private float cInY;
+
     private int mMaxX;
+
     private int mMaxY;
-    private RectF mRing;
+
+    private RectF mProgressRing;
+
+    private RectF mBackgroundRing;
+
     private final int mIndicatorRadius;
+
     private boolean isOnTouching = false;
+
     private OnChangeIndicatorPosition listener;
+
+    private TypedArray typedArray;
 
     @SuppressLint("CustomViewStyleable")
     public CirSeekBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.CirSeekBar);
-        mStrokeSize = a.getDimensionPixelSize(R.styleable.CirSeekBar_cir_seek_stroke, 10);
-        mIndicatorRadius = mStrokeSize;
-        mRadius = a.getDimensionPixelSize(R.styleable.CirSeekBar_cir_seek_size, 50) / 2 - mStrokeSize / 2;
-        mStartColor = a.getColor(R.styleable.CirSeekBar_cir_seek_start_color, Color.BLUE);
-        mEndColor = a.getColor(R.styleable.CirSeekBar_cir_seek_end_color, Color.BLUE);
-        mBackGroundColor = a.getColor(R.styleable.CirSeekBar_cir_seek_background_color, Color.BLACK);
+        typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CirSeekBar);
+        mProgressWidth = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_progress_stroke_width, 10);
+        mBackgroundWidth = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_background_stroke_width, 5);
+
+        mIndicatorRadius = mProgressWidth;
+        mRadius = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_seek_size, 50) / 2 - mProgressWidth / 2;
+        mStartColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_start_color, Color.BLUE);
+        mEndColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_end_color, Color.BLUE);
+        mBackGroundColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_background_color, Color.BLACK);
 
         initPaint();
         initBaseDimes();
 
-        a.recycle();
+        typedArray.recycle();
+    }
+
+    @Override
+    protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        setMeasuredDimension(mMaxX, mMaxY);
     }
 
     @Override
@@ -68,11 +102,6 @@ public class CirSeekBar extends View {
         paintIndicator(canvas);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(mMaxX, mMaxY);
-    }
-
     @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
@@ -80,20 +109,34 @@ public class CirSeekBar extends View {
 
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN: {
-                isOnTouching = true;
-                mPos = XYtoDegree(event.getX(), event.getY());
-                listener.onChangingPos(mPos / 360 * 100);
+                float x = event.getX();
+                float y = event.getY();
+                float distanceTouchToCenter = (float) Math.sqrt((x-cx)*(x-cx) + (y-cy)*(y-cy));
+
+                if(distanceTouchToCenter > mRadius - mIndicatorRadius * 2
+                        && distanceTouchToCenter < mRadius + mIndicatorRadius * 2){
+                    isOnTouching = true;
+                    mPos = XYtoDegree(event.getX(), event.getY());
+                    listener.onChangingPos(mPos / 360 * 100);
+                }else{
+                    return true;
+                }
+
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-                mPos = XYtoDegree(event.getX(), event.getY());
-                listener.onChangingPos(mPos / 360 * 100);
+                if(isOnTouching) {
+                    mPos = XYtoDegree(event.getX(), event.getY());
+                    listener.onChangingPos(mPos / 360 * 100);
+                }
                 break;
             }
             case MotionEvent.ACTION_UP: {
-                mPos = XYtoDegree(event.getX(), event.getY());
-                if (listener != null) {
-                    listener.onChangedPos(mPos / 360 * 100);
+                if(isOnTouching) {
+                    mPos = XYtoDegree(event.getX(), event.getY());
+                    if (listener != null) {
+                        listener.onChangedPos(mPos / 360 * 100);
+                    }
                 }
                 isOnTouching = false;
                 break;
@@ -105,17 +148,26 @@ public class CirSeekBar extends View {
     }
 
     private void initBaseDimes() {
-        cx = mRadius + mStrokeSize / 2f + mIndicatorRadius;
-        cy = mRadius + mStrokeSize / 2f + mIndicatorRadius;
+        cx = mRadius + mProgressWidth / 2f + mIndicatorRadius;
+        cy = mRadius + mProgressWidth / 2f + mIndicatorRadius;
 
-        mMaxX = mRadius * 2 + mStrokeSize + 2 * mIndicatorRadius;
-        mMaxY = mRadius * 2 + mStrokeSize + 2 * mIndicatorRadius;
+        mMaxX = mRadius * 2 + mProgressWidth + 2 * mIndicatorRadius;
+        mMaxY = mRadius * 2 + mProgressWidth + 2 * mIndicatorRadius;
     }
 
     private void initPaint() {
-        float startRect = mStrokeSize / 2f + mIndicatorRadius;
-        float endRect = mStrokeSize / 2f + 2 * mRadius + mIndicatorRadius;
-        mRing = new RectF(startRect, startRect, endRect, endRect);
+        float startProgressRect = mProgressWidth / 2f + mIndicatorRadius;
+        float endProgressRect = mProgressWidth / 2f + 2 * mRadius + mIndicatorRadius;
+
+        float startBackgroundRect = mBackgroundWidth / 2f + mIndicatorRadius;
+
+        mProgressRing = new RectF(startProgressRect, startProgressRect, endProgressRect, endProgressRect);
+
+        mBackgroundRing = new RectF(
+                startBackgroundRect,
+                startBackgroundRect,
+                endProgressRect,
+                endProgressRect);
 
         Shader gradient = new LinearGradient(
                 0,
@@ -128,12 +180,12 @@ public class CirSeekBar extends View {
         mPaintBackGround = new Paint();
         mPaintBackGround.setAntiAlias(true);
         mPaintBackGround.setStyle(Paint.Style.STROKE);
-        mPaintBackGround.setStrokeWidth(mStrokeSize);
+        mPaintBackGround.setStrokeWidth(mBackgroundWidth);
         mPaintBackGround.setColor(mBackGroundColor);
 
         mPaintProgress = new Paint();
         mPaintProgress.setStyle(Paint.Style.STROKE);
-        mPaintProgress.setStrokeWidth(mStrokeSize);
+        mPaintProgress.setStrokeWidth(mProgressWidth);
         mPaintProgress.setShader(gradient);
         mPaintProgress.setAntiAlias(true);
         mPaintProgress.setColor(Color.WHITE);
@@ -146,18 +198,16 @@ public class CirSeekBar extends View {
     }
 
     private void paintBackGround(Canvas canvas) {
-        canvas.drawArc(mRing, 0, 360, false, mPaintBackGround);
-
+        canvas.drawArc(mBackgroundRing, 0, 360, false, mPaintBackGround);
     }
 
     private void paintProgress(Canvas canvas) {
-        canvas.drawArc(mRing, 270, mPos, false, mPaintProgress);
+        canvas.drawArc(mProgressRing, 270, mPos, false, mPaintProgress);
     }
 
     private void paintIndicator(Canvas canvas) {
-
-        float cInX = (float) (cx + Math.cos(Math.toRadians(mPos + 270)) * mRadius);
-        float cInY = (float) (cy + Math.sin(Math.toRadians(mPos + 270)) * mRadius);
+        cInX = (float) (cx + Math.cos(Math.toRadians(mPos + 270)) * mRadius);
+        cInY = (float) (cy + Math.sin(Math.toRadians(mPos + 270)) * mRadius);
 
         canvas.drawCircle(cInX, cInY, mIndicatorRadius, mPaintIndicator);
     }
@@ -186,5 +236,4 @@ public class CirSeekBar extends View {
         void onChangingPos(float percent);
         void onChangedPos(float percent);
     }
-
 }

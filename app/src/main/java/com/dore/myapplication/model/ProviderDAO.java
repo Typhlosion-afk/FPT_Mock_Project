@@ -65,8 +65,6 @@ public class ProviderDAO {
                         .withAppendedId(ALBUMART_URI, Integer.parseInt(cursor.getString(idColumn)))
                         .toString();
 
-                LogUtils.d(uriSong);
-
                 Song song = new Song(
                         uriSong,
                         cursor.getString(nameColumn),
@@ -118,8 +116,6 @@ public class ProviderDAO {
                         .withAppendedId(ALBUMART_URI, Integer.parseInt(cursor.getString(idColumn)))
                         .toString();
 
-                LogUtils.d(uriSong);
-
                 Song song = new Song(
                         uriSong,
                         cursor.getString(nameColumn),
@@ -162,7 +158,6 @@ public class ProviderDAO {
     }
 
     private List<Album> addSongToAlbum(Song song, List<Album> album) {
-
         return album;
     }
 
