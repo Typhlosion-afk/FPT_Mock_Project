@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/search_bg_color"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/txt_song_name_card"
+        android:text="@string/songs"
+        android:textColor="@color/white"
+        android:textSize="15sp"
+        android:layout_marginHorizontal="20dp"
+        android:fontFamily="@font/circular_std_medium_book"
+        android:layout_marginVertical="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <View
+        android:background="@color/view_line_color"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
+
+</LinearLayout>

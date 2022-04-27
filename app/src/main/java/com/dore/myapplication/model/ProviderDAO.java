@@ -2,10 +2,12 @@ package com.dore.myapplication.model;
 
 import static com.dore.myapplication.utilities.Constants.ALBUMART_URI;
 
+import android.annotation.SuppressLint;
 import android.content.ContentUris;
 import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import com.dore.myapplication.utilities.LogUtils;
 
@@ -20,6 +22,8 @@ public class ProviderDAO {
 
     private List<Album> mAllAlbum = new ArrayList<>();
 
+    private Context mContext;
+
 
     int idColumn;
     int nameColumn;
@@ -29,6 +33,9 @@ public class ProviderDAO {
     int durColumn;
 
     public ProviderDAO(Context context) {
+
+        this.mContext = context;
+
         String[] projection = new String[]
                 {
                         MediaStore.Audio.Media.ALBUM_ID,
@@ -163,5 +170,55 @@ public class ProviderDAO {
 
     public void closeCursor(){
         cursor.close();
+    }
+
+    public List<Song> search(String s, int limit){
+        List<Song> searchList = new ArrayList<>();
+        String where = MediaStore.Audio.Media.TITLE + " LIKE ?";
+        String[] params = new String[] { "%" + s + "%"};
+
+        LogUtils.d("search: " + s);
+
+        String[] projection = new String[]
+                {
+                        MediaStore.Audio.Media.ALBUM_ID,
+                        MediaStore.Audio.Media.TITLE,
+                        MediaStore.Audio.Media.ALBUM,
+                        MediaStore.Audio.Media.ARTIST,
+                        MediaStore.Audio.Media.DATA,
+                        MediaStore.Audio.Media.DURATION,
+                };
+
+        Cursor songCursor = mContext.getContentResolver().query(
+                MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                where,
+                params,
+                null);
+
+        try {
+            while (songCursor.moveToNext() && searchList.size() < limit) {
+                String uriSong = ContentUris
+                        .withAppendedId(ALBUMART_URI, Integer.parseInt(songCursor.getString(idColumn)))
+                        .toString();
+
+                Song song = new Song(
+                        uriSong,
+                        songCursor.getString(nameColumn),
+                        songCursor.getString(artistColumn),
+                        songCursor.getString(dataColumn),
+                        songCursor.getString(albumColumn),
+                        songCursor.getString(durColumn)
+                );
+
+                if (song.getExtension().equals(".mp3")) {
+                    searchList.add(song);
+                }
+            }
+        } finally {
+            songCursor.close();
+        }
+        Log.d("TAG", "search: " + searchList.size());
+        return searchList;
     }
 }

@@ -32,7 +32,7 @@
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/splash_background.xml" value="0.15260416666666668" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/drawable/widget_bg_container.xml" value="0.1655" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/font/circular_std_medium_regular.xml" value="0.2564814814814815" />
-        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.33" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_splash.xml" value="0.1" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/activity_splash2.xml" value="0.22" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_albums.xml" value="0.2" />
@@ -45,6 +45,7 @@
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_my_playlist.xml" value="0.26875" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_playlist.xml" value="0.26875" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_recently.xml" value="0.5" />
+        <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/card_search.xml" value="0.33" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/dialog_fragment_close_app.xml" value="0.33" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/drawer_header.xml" value="0.25" />
         <entry key="..\:/Users/HaiDo/AndroidStudioProjects/MyApplication4/app/src/main/res/layout/fragment_album_detail.xml" value="0.22" />

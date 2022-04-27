@@ -212,7 +212,6 @@ public class CirSeekBar extends View {
         canvas.drawCircle(cInX, cInY, mIndicatorRadius, mPaintIndicator);
     }
 
-
     private float XYtoDegree(float touchX, float touchY) {
         float x = cx - touchX;
         float y = cy - touchY;

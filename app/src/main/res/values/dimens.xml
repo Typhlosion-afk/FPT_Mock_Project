@@ -17,5 +17,7 @@ http://developer.android.com/guide/topics/appwidgets/index.html#CreatingLayout
     <dimen name="widget_width">250dp</dimen>
     <dimen name="widget_height">110dp</dimen>
     <dimen name="card_recently_height">48dp</dimen>
+    <dimen name="search_height">36dp</dimen>
+    <dimen name="half_search_height">18dp</dimen>
 
 </resources>

@@ -5,7 +5,7 @@
     android:id="@+id/layout_drawer"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
+    android:fitsSystemWindows="false"
     tools:context=".activity.MainActivity">
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -42,28 +42,43 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
-            <EditText
-                android:id="@+id/edt_searcher"
-                android:layout_width="0dp"
-                android:layout_height="36dp"
-                android:background="@drawable/edit_search_bg"
-                android:backgroundTint="@color/search_bg_color"
-                android:drawableStart="@drawable/ic_search"
-                android:gravity="center"
-                android:hint="@string/search_album_song"
-                android:inputType="text"
-                android:paddingHorizontal="12dp"
-                android:textColorHint="@color/text_hint_color"
-                android:textCursorDrawable="@color/text_hint_color"
-                android:textSize="@dimen/normal_text_size"
-                android:visibility="invisible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintWidth_percent="0.8"
-                tools:ignore="RtlHardcoded" />
-
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <EditText
+            android:id="@+id/edt_searcher"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/search_height"
+            android:background="@drawable/edit_search_bg"
+            android:backgroundTint="@color/search_bg_color"
+            android:drawableStart="@drawable/ic_search"
+            android:gravity="center"
+            android:hint="@string/search_album_song"
+            android:inputType="text"
+            android:elevation="8dp"
+            android:paddingHorizontal="12dp"
+            android:layout_marginHorizontal="20dp"
+            android:textColorHint="@color/text_hint_color"
+            android:textCursorDrawable="@color/text_hint_color"
+            android:textSize="@dimen/normal_text_size"
+            android:visibility="invisible"
+            app:layout_constraintBottom_toBottomOf="@+id/constraintLayout"
+            app:layout_constraintEnd_toEndOf="@+id/constraintLayout"
+            app:layout_constraintTop_toTopOf="@+id/constraintLayout"
+            app:layout_constraintWidth_percent="0.6"
+            tools:ignore="RtlHardcoded" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/search_bg_color"
+            android:layout_marginTop="@dimen/half_search_height"
+            android:id="@+id/list_search_container"
+            android:layout_width="0dp"
+            android:paddingTop="@dimen/half_search_height"
+            android:layout_height="wrap_content"
+            android:elevation="5dp"
+            app:layout_constraintEnd_toEndOf="@+id/edt_searcher"
+            app:layout_constraintStart_toStartOf="@+id/edt_searcher"
+            app:layout_constraintTop_toTopOf="@+id/edt_searcher"
+            app:layout_constraintWidth_percent="0.6" />
 
 
         <androidx.fragment.app.FragmentContainerView
@@ -74,7 +89,9 @@
             app:defaultNavHost="true"
             app:layout_constraintBottom_toTopOf="@+id/media_controller_view"
             app:layout_constraintTop_toBottomOf="@+id/constraintLayout"
-            app:navGraph="@navigation/nav_graph" />
+            app:layout_constraintVertical_bias="0.0"
+            app:navGraph="@navigation/nav_graph"
+            tools:layout_editor_absoluteX="0dp" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/media_controller_view"

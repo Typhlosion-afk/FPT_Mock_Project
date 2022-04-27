@@ -126,8 +126,6 @@ public class MusicService extends Service implements
                 mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
                 mSong = mListSong.get(mSongPos);
 
-
-
                 playSong();
             }
         }

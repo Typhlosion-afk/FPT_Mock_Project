@@ -7,11 +7,12 @@ import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.fragment.app.FragmentManager;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -23,7 +24,10 @@ import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.os.IBinder;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -33,7 +37,6 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
-import com.dore.myapplication.dialog.CloseAppDialogFragment;
 import com.dore.myapplication.model.ProviderDAO;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
@@ -94,13 +97,15 @@ public class MainActivity extends AppCompatActivity{
 
     private BroadcastReceiver receiver;
 
-    private FragmentManager.BackStackEntry backStackEntry;
-
     private NavHostFragment navHostFragment;
 
     private ImageView mImgSong;
 
     private int mBackCount = 0;
+
+    private RecyclerView mSearchRecyclerView;
+
+    private SearchAdapter mSearchAdapter;
 
     private final ServiceConnection connection = new ServiceConnection() {
         @Override
@@ -136,8 +141,10 @@ public class MainActivity extends AppCompatActivity{
         initBroadcast();
         initView();
         initNav();
+        initSearchAdapter();
 
         handleAction();
+        handleSearching();
     }
 
     @Override
@@ -182,7 +189,7 @@ public class MainActivity extends AppCompatActivity{
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
-                update((Song) intent.getSerializableExtra("song"),
+                updateController((Song) intent.getSerializableExtra("song"),
                         intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
                         intent.getIntExtra("cur", 0),
                         intent.getBooleanExtra("playing", false));
@@ -207,11 +214,13 @@ public class MainActivity extends AppCompatActivity{
 
         mControllerView = findViewById(R.id.media_controller_view);
 
+        mSearchRecyclerView = findViewById(R.id.list_search_container);
+
         mBtnSearch.setVisibility(View.VISIBLE);
         mEdtSearch.setVisibility(View.INVISIBLE);
+        mSearchRecyclerView.setVisibility(View.INVISIBLE);
 
         mSeekBar.setMax(mSongDur);
-
     }
 
     @SuppressLint("NonConstantResourceId")
@@ -230,6 +239,7 @@ public class MainActivity extends AppCompatActivity{
             mainNavController.addOnDestinationChangedListener((navController, navDestination, bundle) -> {
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
+                        mSearchRecyclerView.setVisibility(View.GONE);
                     }
             );
 
@@ -256,7 +266,7 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void update(Song song, int dur, int cur, boolean playing){
+    private void updateController(Song song, int dur, int cur, boolean playing){
         if(song != mSong){
             mSong = song;
             mSongDur = dur;
@@ -278,10 +288,12 @@ public class MainActivity extends AppCompatActivity{
         }
 
         mSongCur = cur;
-        mSeekBar.setProgress(mSongCur);
+        if(!isSeekbarTouching) {
+            mSeekBar.setProgress(mSongCur);
+        }
     }
 
-    private void updateController(){
+    private void setFirstStateController(){
         if (mIsPlaying) {
             mBtnPlay.setImageResource(R.drawable.ic_control_pause_small);
         } else {
@@ -309,6 +321,8 @@ public class MainActivity extends AppCompatActivity{
         mBtnSearch.setOnClickListener(v -> {
             mBtnSearch.setVisibility(View.INVISIBLE);
             mEdtSearch.setVisibility(View.VISIBLE);
+            mEdtSearch.setText("");
+            mEdtSearch.setFocusableInTouchMode(true);
         });
 
         mBtnDrawer.setOnClickListener(v -> {
@@ -359,6 +373,13 @@ public class MainActivity extends AppCompatActivity{
                 isSeekbarTouching = false;
             }
         });
+
+    }
+
+    private void initSearchAdapter(){
+        mSearchAdapter = new SearchAdapter(this , new ArrayList<>());
+        mSearchRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        mSearchRecyclerView.setAdapter(mSearchAdapter);
     }
 
     private void doubleBackPress() {
@@ -383,11 +404,6 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void showCloseDialog(){
-        CloseAppDialogFragment closeFm= new CloseAppDialogFragment();
-        closeFm.show(getSupportFragmentManager(), null);
-    }
-
     public void hideController() {
         mSeekBar.setVisibility(View.GONE);
         mControllerView.setVisibility(View.GONE);
@@ -397,12 +413,37 @@ public class MainActivity extends AppCompatActivity{
         mSeekBar.setVisibility(View.VISIBLE);
         mControllerView.setVisibility(View.VISIBLE);
 
-        updateController();
+        setFirstStateController();
     }
 
-        private void initDAO(){
+    private void initDAO(){
         providerDAO = new ProviderDAO(this);
     }
+
+    private void handleSearching(){
+        mEdtSearch.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if(s.length() != 0) {
+                    mSearchAdapter.updateList(providerDAO.search(s.toString(), 10));
+                    mSearchRecyclerView.setVisibility(View.VISIBLE);
+                }else {
+                    mSearchRecyclerView.setVisibility(View.GONE);
+
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
 
     public MusicService getBoundService() {
         return mMusicService;
