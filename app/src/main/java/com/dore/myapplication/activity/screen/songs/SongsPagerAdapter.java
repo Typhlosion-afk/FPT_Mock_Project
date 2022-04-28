@@ -15,9 +15,7 @@ import java.util.List;
 
 public class SongsPagerAdapter extends FragmentStateAdapter {
 
-    private final int NUM_PAGES = 5;
-
-    private List<Fragment> lsFm = new ArrayList<>();
+    private List<Fragment> lsFm;
 
     public SongsPagerAdapter(Fragment fa) {
         super(fa);
@@ -26,6 +24,7 @@ public class SongsPagerAdapter extends FragmentStateAdapter {
     }
 
     private void initData() {
+        lsFm = new ArrayList<>();
         lsFm.add(new AllSongsFragment());
         lsFm.add(new PlaylistsFragment());
         lsFm.add(new AlbumsFragment());
@@ -41,6 +40,6 @@ public class SongsPagerAdapter extends FragmentStateAdapter {
 
     @Override
     public int getItemCount() {
-        return NUM_PAGES;
+        return 5;
     }
 }

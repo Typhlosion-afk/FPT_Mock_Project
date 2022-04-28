@@ -10,8 +10,7 @@
     <application
         android:name=".MusicApplication"
         android:allowBackup="true"
-        android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale"
-        android:windowSoftInputMode="adjustNothing"
+        android:windowSoftInputMode="adjustPan"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
@@ -45,8 +44,8 @@
             </intent-filter>
         </activity>
         <activity
+            android:windowSoftInputMode="adjustPan"
             android:name=".activity.MainActivity"
             android:exported="true"/>
     </application>
-
 </manifest>

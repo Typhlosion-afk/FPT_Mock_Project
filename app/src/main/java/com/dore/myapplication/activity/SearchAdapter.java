@@ -41,7 +41,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
     @NonNull
     @Override
     public SearchHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_search, parent, false);
+        mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_search, parent, false);
 
         return new SearchHolder(mRootView);
     }
@@ -50,13 +50,14 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.SearchHold
     public void onBindViewHolder(@NonNull SearchHolder holder, int position) {
         if(mSongList.size() == 0){
             holder.txtSongName.setText(getEmpty());
+        }else {
+            holder.txtSongName.setText(mSongList.get(position).getName());
         }
-        holder.txtSongName.setText(mSongList.get(position).getName());
     }
 
     @Override
     public int getItemCount() {
-        return mSongList == null ? 1 : mSongList.size();
+        return mSongList.size() == 0 ? 1 : mSongList.size();
     }
 
     public class SearchHolder extends RecyclerView.ViewHolder {

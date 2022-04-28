@@ -38,6 +38,7 @@ public class SongFragment extends BaseFragment {
         mTabLayout = mRootView.findViewById(R.id.tab_layout);
         mSongsPagerAdapter = new SongsPagerAdapter(this);
 
+
         mViewPager.setAdapter(mSongsPagerAdapter);
         new TabLayoutMediator(mTabLayout, mViewPager, (tab, position) -> {
             switch (position) {

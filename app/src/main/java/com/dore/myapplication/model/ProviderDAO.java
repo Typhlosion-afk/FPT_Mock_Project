@@ -92,11 +92,11 @@ public class ProviderDAO {
     public List<Artist> getAllArtist() {
         List<Artist> artists = new ArrayList<>();
 
-        if (mAllAlbum.size() == 0){
+        if (mAllAlbum.size() == 0) {
             mAllAlbum = getAllAlbum();
         }
 
-        for (Album album: mAllAlbum) {
+        for (Album album : mAllAlbum) {
             boolean isExist = false;
             for (Artist a : artists) {
                 if (a.getName().equals(album.getAuthor())) {
@@ -147,7 +147,7 @@ public class ProviderDAO {
 
         mAllAlbum.clear();
 
-        for (Song song: mAllSongs) {
+        for (Song song : mAllSongs) {
             boolean isExist = false;
             for (Album a : mAllAlbum) {
                 if (a.getName().equals(song.getAlbumName())) {
@@ -168,14 +168,14 @@ public class ProviderDAO {
         return album;
     }
 
-    public void closeCursor(){
+    public void closeCursor() {
         cursor.close();
     }
 
-    public List<Song> search(String s, int limit){
+    public List<Song> search(String s, int limit) {
         List<Song> searchList = new ArrayList<>();
         String where = MediaStore.Audio.Media.TITLE + " LIKE ?";
-        String[] params = new String[] { "%" + s + "%"};
+        String[] params = new String[]{"%" + s + "%"};
 
         LogUtils.d("search: " + s);
 
@@ -189,14 +189,12 @@ public class ProviderDAO {
                         MediaStore.Audio.Media.DURATION,
                 };
 
-        Cursor songCursor = mContext.getContentResolver().query(
+        try (Cursor songCursor = mContext.getContentResolver().query(
                 MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,
                 projection,
                 where,
                 params,
-                null);
-
-        try {
+                null)) {
             while (songCursor.moveToNext() && searchList.size() < limit) {
                 String uriSong = ContentUris
                         .withAppendedId(ALBUMART_URI, Integer.parseInt(songCursor.getString(idColumn)))
@@ -215,8 +213,6 @@ public class ProviderDAO {
                     searchList.add(song);
                 }
             }
-        } finally {
-            songCursor.close();
         }
         Log.d("TAG", "search: " + searchList.size());
         return searchList;

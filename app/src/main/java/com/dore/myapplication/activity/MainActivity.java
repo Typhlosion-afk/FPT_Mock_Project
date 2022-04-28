@@ -28,6 +28,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -47,7 +48,7 @@ import com.google.android.material.navigation.NavigationView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity{
+public class MainActivity extends AppCompatActivity {
 
     private EditText mEdtSearch;
 
@@ -125,6 +126,7 @@ public class MainActivity extends AppCompatActivity{
                 hideController();
             }
         }
+
         @Override
         public void onServiceDisconnected(ComponentName name) {
             mBound = false;
@@ -170,22 +172,19 @@ public class MainActivity extends AppCompatActivity{
     public void onBackPressed() {
         if (mDrawerNavigationView.isShown()) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
-        } else if(navHostFragment.getChildFragmentManager().getBackStackEntryCount() == 0){
+        } else if (navHostFragment.getChildFragmentManager().getBackStackEntryCount() == 0) {
             doubleBackPress();
-        }else{
+        } else {
             super.onBackPressed();
         }
     }
 
     private void initBindService() {
-
         Intent iStartService = new Intent(this, MusicService.class);
-        startService(iStartService);
         bindService(iStartService, connection, Context.BIND_AUTO_CREATE);
-
     }
 
-    private void initBroadcast(){
+    private void initBroadcast() {
         receiver = new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
@@ -240,6 +239,7 @@ public class MainActivity extends AppCompatActivity{
                         mEdtSearch.setVisibility(View.GONE);
                         mBtnSearch.setVisibility(View.VISIBLE);
                         mSearchRecyclerView.setVisibility(View.GONE);
+                        closeKeyBoard();
                     }
             );
 
@@ -247,7 +247,7 @@ public class MainActivity extends AppCompatActivity{
             NavigationUI.setupWithNavController(mDrawerNavigationView, mainNavController);
 
             bottomNavigationView.setOnItemSelectedListener(item -> {
-                switch (item.getItemId()){
+                switch (item.getItemId()) {
                     case R.id.homeFragment:
                         mainNavController.navigate(R.id.action_goto_home);
                         break;
@@ -266,8 +266,8 @@ public class MainActivity extends AppCompatActivity{
         }
     }
 
-    private void updateController(Song song, int dur, int cur, boolean playing){
-        if(song != mSong){
+    private void updateController(Song song, int dur, int cur, boolean playing) {
+        if (song != mSong) {
             mSong = song;
             mSongDur = dur;
             mTxtSongName.setText(mSong.getName());
@@ -288,19 +288,19 @@ public class MainActivity extends AppCompatActivity{
         }
 
         mSongCur = cur;
-        if(!isSeekbarTouching) {
+        if (!isSeekbarTouching) {
             mSeekBar.setProgress(mSongCur);
         }
     }
 
-    private void setFirstStateController(){
+    private void setFirstStateController() {
         if (mIsPlaying) {
             mBtnPlay.setImageResource(R.drawable.ic_control_pause_small);
         } else {
             mBtnPlay.setImageResource(R.drawable.ic_control_play_small);
         }
 
-        if(mSong != null) {
+        if (mSong != null) {
             mTxtSongName.setText(mSong.getName());
             mTxtSongAuthor.setText(mSong.getAuthor());
 
@@ -322,16 +322,17 @@ public class MainActivity extends AppCompatActivity{
             mBtnSearch.setVisibility(View.INVISIBLE);
             mEdtSearch.setVisibility(View.VISIBLE);
             mEdtSearch.setText("");
-            mEdtSearch.setFocusableInTouchMode(true);
+            mEdtSearch.requestFocus();
+
+            openKeyBoard();
         });
 
         mBtnDrawer.setOnClickListener(v -> {
 
         });
 
-        mControllerView.setOnClickListener(v -> {
-            mainNavController.navigate(R.id.action_play_song);
-        });
+        mControllerView.setOnClickListener(v ->
+                mainNavController.navigate(R.id.action_play_song));
 
         mBtnPlay.setOnClickListener(v -> {
             if (mMusicService != null) {
@@ -376,20 +377,22 @@ public class MainActivity extends AppCompatActivity{
 
     }
 
-    private void initSearchAdapter(){
-        mSearchAdapter = new SearchAdapter(this , new ArrayList<>());
-        mSearchRecyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+    private void initSearchAdapter() {
+        mSearchAdapter = new SearchAdapter(this, new ArrayList<>());
+        mSearchRecyclerView.setLayoutManager(
+                new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
         mSearchRecyclerView.setAdapter(mSearchAdapter);
     }
 
     private void doubleBackPress() {
-        mBackCount ++;
+        mBackCount++;
         if (mBackCount == 2) {
             super.onBackPressed();
 
-        }else {
+        } else {
             Toast.makeText(this, "Press back again to close app", Toast.LENGTH_SHORT).show();
-            new CountDownTimer(2000, 1000){
+            new CountDownTimer(2000, 1000) {
                 @Override
                 public void onTick(long millisUntilFinished) {
 
@@ -416,11 +419,11 @@ public class MainActivity extends AppCompatActivity{
         setFirstStateController();
     }
 
-    private void initDAO(){
+    private void initDAO() {
         providerDAO = new ProviderDAO(this);
     }
 
-    private void handleSearching(){
+    private void handleSearching() {
         mEdtSearch.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -428,10 +431,10 @@ public class MainActivity extends AppCompatActivity{
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(s.length() != 0) {
+                if (s.length() != 0) {
                     mSearchAdapter.updateList(providerDAO.search(s.toString(), 10));
                     mSearchRecyclerView.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     mSearchRecyclerView.setVisibility(View.GONE);
 
                 }
@@ -444,6 +447,15 @@ public class MainActivity extends AppCompatActivity{
         });
     }
 
+    private void closeKeyBoard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEdtSearch.getWindowToken(), 0);
+    }
+
+    private void openKeyBoard(){
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEdtSearch, InputMethodManager.SHOW_IMPLICIT);
+    }
 
     public MusicService getBoundService() {
         return mMusicService;

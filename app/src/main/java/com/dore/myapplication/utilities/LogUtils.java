@@ -9,7 +9,7 @@ public class LogUtils {
     public static void d(String message) {
         StackTraceElement stackTraceElement = new Throwable().getStackTrace()[1];
         if (BuildConfig.DEBUG) {
-            Log.d("class " + stackTraceElement.getFileName() + " in " + stackTraceElement.getMethodName()
+            Log.d("Dore " + stackTraceElement.getFileName() + " in " + stackTraceElement.getMethodName()
                     + " at line " + stackTraceElement.getLineNumber(), message);
         }
 
