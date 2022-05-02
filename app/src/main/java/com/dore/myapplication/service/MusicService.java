@@ -98,7 +98,7 @@ public class MusicService extends Service implements
                 mBroadcaster.sendBroadcast(mSongDataIntent);
 
             }
-            mHandler.postDelayed(mRunnable, 1000);
+            mHandler.postDelayed(mRunnable, 100);
         };
 
         startSongRunnable();
@@ -140,6 +140,7 @@ public class MusicService extends Service implements
         mSongDataIntent.putExtra("dur", mMediaPlayer.getDuration());
         mSongDataIntent.putExtra("playing", isPlaying);
         mSongDataIntent.putExtra("cur", mMediaPlayer.getCurrentPosition());
+        mSongDataIntent.putExtra("session", mMediaPlayer.getAudioSessionId());
 
         mBroadcaster.sendBroadcast(mSongDataIntent);
     }
@@ -370,6 +371,13 @@ public class MusicService extends Service implements
     public boolean onError(MediaPlayer mp, int what, int extra) {
 //        nextSong();
         return false;
+    }
+
+    public int getMediaSession() {
+        if(mMediaPlayer != null) {
+            return mMediaPlayer.getAudioSessionId();
+        }
+        return -1;
     }
 
     public class MusicBinder extends Binder {

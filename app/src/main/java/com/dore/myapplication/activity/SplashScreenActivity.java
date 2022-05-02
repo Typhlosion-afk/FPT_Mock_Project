@@ -25,9 +25,13 @@ public class SplashScreenActivity extends Activity {
     }
 
     private void requestPermission(){
-        String[] listPms = {Manifest.permission.READ_EXTERNAL_STORAGE};
+        String[] listPms = {
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.RECORD_AUDIO
+        };
 
-        if(ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED){
+        if(ContextCompat.checkSelfPermission(this, listPms[0]) == PackageManager.PERMISSION_GRANTED
+        && ContextCompat.checkSelfPermission(this, listPms[1]) == PackageManager.PERMISSION_GRANTED){
 
             startActivity(new Intent(this, MainActivity.class));
             this.finish();

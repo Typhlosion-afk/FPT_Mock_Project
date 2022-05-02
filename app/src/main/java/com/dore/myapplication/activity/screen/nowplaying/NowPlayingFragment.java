@@ -20,6 +20,7 @@ import com.dore.myapplication.R;
 import com.dore.myapplication.activity.MainActivity;
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.customview.CirSeekBar;
+import com.dore.myapplication.customview.MuzicVisualizer;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
 import com.dore.myapplication.utilities.LogUtils;
@@ -69,6 +70,10 @@ public class NowPlayingFragment extends BaseFragment{
 
     private ImageView mImgSong;
 
+    private MuzicVisualizer muzicVisualizer;
+
+    private int mAudioSession = -1;
+
     public NowPlayingFragment() {
     }
 
@@ -110,13 +115,14 @@ public class NowPlayingFragment extends BaseFragment{
                 update((Song) intent.getSerializableExtra("song"),
                         intent.getIntExtra("dur", MAX_SEEKBAR_VALUE),
                         intent.getIntExtra("cur", 0),
-                        intent.getBooleanExtra("playing", false));
+                        intent.getBooleanExtra("playing", false),
+                        intent.getIntExtra("session", - 1));
 
             }
         };
     }
 
-    private void update(Song song, int dur, int cur, boolean playing){
+    private void update(Song song, int dur, int cur, boolean playing, int audioSession){
         if(song != mSong){
             mSong = song;
             txtSongName.setText(mSong.getName());
@@ -140,6 +146,11 @@ public class NowPlayingFragment extends BaseFragment{
         if (!isSeekBarTouching) {
             mSongCur = cur;
             updateUiWithCur();
+        }
+
+        if(mAudioSession != audioSession) {
+            mAudioSession = audioSession;
+            muzicVisualizer.setUpWithAudioSession(mAudioSession);
         }
     }
 
@@ -171,6 +182,8 @@ public class NowPlayingFragment extends BaseFragment{
         mImgSong = mRootView.findViewById(R.id.img_playing);
 
         seekBar = mRootView.findViewById(R.id.seek_bar);
+
+        muzicVisualizer = mRootView.findViewById(R.id.muzicVisualizer);
 
         // first state when create view for fragment
         if (mService != null && mSong != null) {
@@ -229,10 +242,12 @@ public class NowPlayingFragment extends BaseFragment{
 
     private void next() {
         mService.nextSong();
+
     }
 
     private void prev() {
         mService.prevSong();
+
     }
 
     private void updateUiWithCur() {

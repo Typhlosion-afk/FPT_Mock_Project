@@ -1,9 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+     android:layout_height="wrap_content"
+     android:layout_width="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:background="@color/background_color"
     tools:context=".activity.screen.nowplaying.NowPlayingFragment">
 
@@ -89,12 +93,14 @@
         android:id="@+id/linearLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="40dp"
         android:gravity="center"
         android:orientation="horizontal"
         android:paddingVertical="@dimen/default_margin_20"
-        android:layout_marginHorizontal="40dp"
         android:weightSum="5"
-        app:layout_constraintBottom_toBottomOf="parent">
+        android:layout_marginTop="20dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_control_play">
 
         <ImageButton
             android:id="@+id/btn_playlist"
@@ -130,7 +136,6 @@
             android:src="@drawable/ic_control_eq" />
 
 
-
         <ImageButton
             android:id="@+id/btn_favourite"
             android:layout_width="0dp"
@@ -147,9 +152,9 @@
         android:layout_marginVertical="@dimen/default_margin_20"
         android:background="@android:color/transparent"
         android:src="@drawable/ic_control_play"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/view" />
 
     <ImageButton
         android:id="@+id/btn_control_next"
@@ -175,13 +180,13 @@
         app:layout_constraintEnd_toStartOf="@+id/btn_control_play"
         app:layout_constraintTop_toTopOf="@+id/btn_control_play" />
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginVertical="@dimen/default_margin_20"
-        android:scaleType="fitXY"
-        android:src="@drawable/eq_display"
-        app:layout_constraintBottom_toTopOf="@+id/view"
+    <com.dore.myapplication.customview.MuzicVisualizer
+        android:id="@+id/muzicVisualizer"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/visualizer_now_playing_height"
+        android:layout_marginVertical="20dp"
+        app:visualizer_line_space="12dp"
+        app:visualizer_line_width="4dp"
         app:layout_constraintEnd_toEndOf="@+id/img_playing"
         app:layout_constraintStart_toStartOf="@+id/img_playing"
         app:layout_constraintTop_toBottomOf="@+id/txt_playing_detail" />
@@ -190,9 +195,9 @@
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_marginVertical="40dp"
+        android:layout_marginVertical="20dp"
         android:background="@color/view_line_color"
-        app:layout_constraintBottom_toTopOf="@+id/btn_control_play" />
+        app:layout_constraintTop_toBottomOf="@+id/muzicVisualizer" />
 
 
     <com.dore.myapplication.customview.CirSeekBar
@@ -210,3 +215,4 @@
         app:layout_constraintStart_toStartOf="@+id/img_playing"
         app:layout_constraintTop_toTopOf="@+id/img_playing" />
 </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

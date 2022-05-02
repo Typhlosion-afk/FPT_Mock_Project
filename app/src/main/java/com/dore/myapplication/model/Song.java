@@ -14,12 +14,6 @@ public class Song extends AbsObject implements Serializable {
     public String imgPath;
     public String album;
     public String dur;
-//
-//    public Song(String name, String author, String path) {
-//        this.name = name;
-//        this.author = author;
-//        this.path = path;
-//    }
 
     public Song(String imgPath,String name, String author, String path, String album, String dur) {
         this.imgPath = imgPath;

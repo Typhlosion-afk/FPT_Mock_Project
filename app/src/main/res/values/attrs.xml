@@ -13,4 +13,12 @@
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+    <declare-styleable name="MuzicVisualizer">
+        <attr name="visualizer_name" format="string"/>
+        <attr name="visualizer_start_color" format="color"/>
+        <attr name="visualizer_end_color" format="color"/>
+        <attr name="visualizer_numOfLine" format="integer"/>
+        <attr name="visualizer_line_width" format="dimension"/>
+        <attr name="visualizer_line_space" format="dimension"/>
+    </declare-styleable>
 </resources>
