@@ -8,11 +8,13 @@
         <attr name="cir_seek_end_color" format="color" />
         <attr name="cir_seek_background_color" format="color" />
     </declare-styleable>
+
     <declare-styleable name="AppWidgetAttrs">
         <attr name="appWidgetPadding" format="dimension" />
         <attr name="appWidgetInnerRadius" format="dimension" />
         <attr name="appWidgetRadius" format="dimension" />
     </declare-styleable>
+
     <declare-styleable name="MuzicVisualizer">
         <attr name="visualizer_name" format="string"/>
         <attr name="visualizer_start_color" format="color"/>
@@ -20,5 +22,6 @@
         <attr name="visualizer_numOfLine" format="integer"/>
         <attr name="visualizer_line_width" format="dimension"/>
         <attr name="visualizer_line_space" format="dimension"/>
+        <attr name="visualizer_default_line_width" format="dimension"/>
     </declare-styleable>
 </resources>

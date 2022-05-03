@@ -21,7 +21,7 @@ import com.dore.myapplication.utilities.LogUtils;
 
 public class CirSeekBar extends View {
 
-    private final int mRadius;
+    private final float mRadius;
 
     private Paint mPaintProgress;
 
@@ -29,9 +29,9 @@ public class CirSeekBar extends View {
 
     private Paint mPaintBackGround;
 
-    private final int mProgressWidth;
+    private final float mProgressWidth;
 
-    private final int mBackgroundWidth;
+    private final float mBackgroundWidth;
 
     private @ColorInt
     final int mStartColor;
@@ -52,15 +52,15 @@ public class CirSeekBar extends View {
 
     private float cInY;
 
-    private int mMaxX;
+    private float mMaxX;
 
-    private int mMaxY;
+    private float mMaxY;
 
     private RectF mProgressRing;
 
     private RectF mBackgroundRing;
 
-    private final int mIndicatorRadius;
+    private final float mIndicatorRadius;
 
     private boolean isOnTouching = false;
 
@@ -73,11 +73,11 @@ public class CirSeekBar extends View {
         super(context, attrs);
 
         typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CirSeekBar);
-        mProgressWidth = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_progress_stroke_width, 10);
-        mBackgroundWidth = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_background_stroke_width, 5);
+        mProgressWidth = typedArray.getDimension(R.styleable.CirSeekBar_cir_progress_stroke_width, 10);
+        mBackgroundWidth = typedArray.getDimension(R.styleable.CirSeekBar_cir_background_stroke_width, 5);
 
         mIndicatorRadius = mProgressWidth;
-        mRadius = typedArray.getDimensionPixelSize(R.styleable.CirSeekBar_cir_seek_size, 50) / 2 - mProgressWidth / 2;
+        mRadius = typedArray.getDimension(R.styleable.CirSeekBar_cir_seek_size, 50) / 2 - mProgressWidth / 2;
         mStartColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_start_color, Color.BLUE);
         mEndColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_end_color, Color.BLUE);
         mBackGroundColor = typedArray.getColor(R.styleable.CirSeekBar_cir_seek_background_color, Color.BLACK);
@@ -90,7 +90,8 @@ public class CirSeekBar extends View {
 
     @Override
     protected synchronized void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(mMaxX, mMaxY);
+        // always round up max size of view
+        setMeasuredDimension((int)Math.ceil(mMaxX), (int)Math.ceil(mMaxY));
     }
 
     @Override
@@ -140,8 +141,8 @@ public class CirSeekBar extends View {
                 }
                 isOnTouching = false;
                 break;
-            }
 
+            }
         }
         invalidate();
         return true;
@@ -158,7 +159,6 @@ public class CirSeekBar extends View {
     private void initPaint() {
         float startProgressRect = mProgressWidth / 2f + mIndicatorRadius;
         float endProgressRect = mProgressWidth / 2f + 2 * mRadius + mIndicatorRadius;
-
         float startBackgroundRect = mBackgroundWidth / 2f + mIndicatorRadius;
 
         mProgressRing = new RectF(startProgressRect, startProgressRect, endProgressRect, endProgressRect);

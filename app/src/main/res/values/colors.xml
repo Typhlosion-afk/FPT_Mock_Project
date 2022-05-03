@@ -40,5 +40,8 @@
 
     <color name="widget_bg_color">#050814</color>
 
+    <color name="start_visualizer_color">#C35BD1</color>
+    <color name="end_visualizer_color">#657DDF</color>
+
 
 </resources>

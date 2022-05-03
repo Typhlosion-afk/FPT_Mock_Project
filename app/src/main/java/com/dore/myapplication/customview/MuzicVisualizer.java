@@ -18,17 +18,18 @@ import androidx.annotation.Nullable;
 
 import com.dore.myapplication.R;
 
+import java.util.Arrays;
+
 public class MuzicVisualizer extends View {
 
-    private float maxHeight;
+    private float viewHeight;
 
-    private float maxWidth;
+    private float viewWidth;
+
+    private @ColorInt int mStartColor;
 
     private @ColorInt
-    int mStartColor;
-
-    private @ColorInt
-    int mEndColor;
+    final int mEndColor;
 
     private Visualizer mVisualizer;
 
@@ -48,6 +49,13 @@ public class MuzicVisualizer extends View {
 
     private float mStartFirstLine;
 
+    //The height of the line when value equal 0
+    private final float mBaseLineHeight;
+
+    private final byte[] mBaseBytes = new byte[128];
+
+    private final byte[] testBytes = new byte[128];
+
     public MuzicVisualizer(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
@@ -56,31 +64,35 @@ public class MuzicVisualizer extends View {
         mLineSpace = 20;
         mNumOfLine = 16;
 
+        Arrays.fill(mBaseBytes, (byte) 128);
+
         initPaint();
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.MuzicVisualizer);
 
         mStartColor = a.getColor(R.styleable.MuzicVisualizer_visualizer_start_color, Color.RED);
-        mEndColor = a.getColor(R.styleable.MuzicVisualizer_visualizer_end_color, Color.RED);
+        mEndColor = a.getColor(R.styleable.MuzicVisualizer_visualizer_end_color, Color.BLUE);
         mNumOfLine = a.getInt(R.styleable.MuzicVisualizer_visualizer_numOfLine, 16);
         mLineWidth = a.getDimension(R.styleable.MuzicVisualizer_visualizer_line_width, 10f);
         mLineSpace = a.getDimension(R.styleable.MuzicVisualizer_visualizer_line_space, 20f);
+        mBaseLineHeight = a.getDimension(R.styleable.MuzicVisualizer_visualizer_default_line_width, mLineWidth);
 
         a.recycle();
     }
 
+
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        maxHeight = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec);
-        maxWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
-        mCenterY = maxHeight/2f;
+        viewHeight = getDefaultSize(getSuggestedMinimumHeight(), heightMeasureSpec) + mBaseLineHeight;
+        viewWidth = getDefaultSize(getSuggestedMinimumWidth(), widthMeasureSpec);
+
+        mCenterY = viewHeight/ 2f;
 
         float widthOfAllLine = mNumOfLine * (mLineSpace + mLineWidth) - mLineSpace;
 
-        mStartFirstLine = (maxWidth - widthOfAllLine) / 2f;
+        mStartFirstLine = (viewWidth - widthOfAllLine) / 2f;
 
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
+        setMeasuredDimension((int)Math.ceil(viewWidth), (int)Math.ceil(viewHeight));
     }
 
     @SuppressLint("DrawAllocation")
@@ -93,22 +105,22 @@ public class MuzicVisualizer extends View {
     }
 
     private void initPaint(){
-        Shader gradient = new LinearGradient(
-                0,
-                0,
-                0,
-                maxHeight,
-                mStartColor,
-                mEndColor,
-                Shader.TileMode.CLAMP);
-
         mColPaint = new Paint();
 
         mColPaint.setAntiAlias(true);
-//        mColPaint.setShader(gradient);
         mColPaint.setColor(Color.WHITE);
-        mColPaint.setStrokeWidth(10);
+    }
 
+    private void setGradientPaint(float colHeight){
+        Shader gradient = new LinearGradient(
+                0,
+                mCenterY - colHeight / 2f,
+                0,
+                mCenterY + colHeight / 2f,
+                mStartColor,
+                mEndColor,
+                Shader.TileMode.CLAMP);
+        mColPaint.setShader(gradient);
     }
 
     public void setUpWithAudioSession(int audioSession){
@@ -139,25 +151,24 @@ public class MuzicVisualizer extends View {
 
     private void drawAllCol(Canvas canvas){
 
-        float colHeight = mLineWidth + 0f;
+        float colHeight;
         int lineCounter = 0;
 
         if(mBytes == null){
-            for (int i = 0; i < 16; i ++) {
-                drawOneCol(canvas, mStartFirstLine + lineCounter * (mLineWidth + mLineSpace), colHeight);
-                lineCounter++;
-            }
-        }else {
-            for (int i = 0; i < mBytes.length; i += 8) {
-                colHeight = (1f - Math.abs(mBytes[i]) / (128.00f)) * maxHeight + mLineWidth;
-                drawOneCol(canvas, mStartFirstLine + lineCounter * (mLineWidth + mLineSpace), colHeight);
-                lineCounter++;
-            }
+            mBytes = mBaseBytes;
+        }
+
+        for (int i = 0; i < mBytes.length; i += 8) {
+            colHeight = (1f - Math.abs(mBytes[i]) / (128.00f)) * (viewHeight - mBaseLineHeight) + mBaseLineHeight;
+            drawSingleCol(canvas, mStartFirstLine + lineCounter * (mLineWidth + mLineSpace), colHeight);
+            lineCounter++;
         }
 
     }
 
-    private void drawOneCol(Canvas canvas, float startLineX, float colHeight){
+    private void drawSingleCol(Canvas canvas, float startLineX, float colHeight){
+        setGradientPaint(colHeight);
+
         canvas.drawRoundRect(
                 startLineX,
                 mCenterY - colHeight / 2f,
@@ -176,10 +187,16 @@ public class MuzicVisualizer extends View {
         }
     }
 
+    private byte[] getBaseBytesForTest(){
+        for (int i = 0; i < mBaseBytes.length; i ++){
+            mBaseBytes[i] = (byte) i;
+        }
+        return mBaseBytes;
+    }
+
     @Override
     protected void onDetachedFromWindow() {
         stopVisualizer();
         super.onDetachedFromWindow();
     }
 }
-
