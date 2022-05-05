@@ -22,6 +22,7 @@ import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Artist;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -102,12 +103,8 @@ public class ArtistDetailsFragment extends BaseFragment {
         mTxtArtistName.setText(mArtist.getName());
         mTxtMusicTypes.setText("");
 
-        Glide
-                .with(mRootView.getContext())
-                .load(mListAlbums.get(0).getListSong().get(0).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .into(img);
+        ImageUtil imageUtil = new ImageUtil();
+        imageUtil.showAlbumImage(mRootView.getContext(), mListAlbums.get(0), img);
     }
 
     private void initAdapter() {

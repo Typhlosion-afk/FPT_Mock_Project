@@ -26,8 +26,6 @@ import java.sql.Connection;
 
 public class MusicApplication extends Application {
 
-    public static ProviderDAO providerDAO;
-
     @Override
     public void onCreate() {
         super.onCreate();
@@ -47,5 +45,4 @@ public class MusicApplication extends Application {
             manager.createNotificationChannel(channel);
         }
     }
-
 }

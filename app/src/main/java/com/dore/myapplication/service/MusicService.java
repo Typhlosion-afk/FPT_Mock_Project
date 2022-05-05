@@ -17,6 +17,7 @@ import android.app.Notification;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
 import android.media.MediaPlayer;
@@ -25,6 +26,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.util.Log;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
@@ -42,7 +44,8 @@ import java.util.Random;
 public class MusicService extends Service implements
         MediaPlayer.OnPreparedListener,
         MediaPlayer.OnCompletionListener,
-        MediaPlayer.OnErrorListener{
+        MediaPlayer.OnErrorListener,
+        AudioManager.OnAudioFocusChangeListener {
 
     private final IBinder binder = new MusicBinder();
 
@@ -76,6 +79,9 @@ public class MusicService extends Service implements
 
     private boolean isBinding = false;
 
+    private AudioManager mAudioManager;
+
+    private boolean isInCalling;
 
     @Override
     public void onCreate() {
@@ -84,6 +90,9 @@ public class MusicService extends Service implements
         LogUtils.d("On Create");
 
         mBroadcaster = LocalBroadcastManager.getInstance(this);
+        mAudioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        mAudioManager.requestAudioFocus(this, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
+        isInCalling = false;
 
         initMediaPlayer();
         initNotification();
@@ -92,16 +101,8 @@ public class MusicService extends Service implements
             startForeground(mSong);
         }
 
-        mRunnable = () -> {
-            if (mMediaPlayer != null && isPlaying) {
-                mSongDataIntent.putExtra("cur", mMediaPlayer.getCurrentPosition());
-                mBroadcaster.sendBroadcast(mSongDataIntent);
-
-            }
-            mHandler.postDelayed(mRunnable, 100);
-        };
-
         startSongRunnable();
+
     }
 
     @SuppressWarnings("unchecked")
@@ -111,22 +112,22 @@ public class MusicService extends Service implements
             int notificationAction = intent.getIntExtra(NOTIFICATION_DATA_ACTION, -1);
             int widgetAction = intent.getIntExtra(WIDGET_DATA_ACTION, -1);
 
-            if(notificationAction != - 1) {
+            if (notificationAction != -1) {
                 handleAction(notificationAction);
             }
 
-            if(widgetAction != -1){
+            if (widgetAction != -1) {
                 handleAction(widgetAction);
             }
 
             if (intent.getSerializableExtra(KEY_SONG_LIST) != null
-                    && intent.getIntExtra(KEY_SONG_POSITION,-1) != -1) {
+                    && intent.getIntExtra(KEY_SONG_POSITION, -1) != -1) {
 
-                if(mListSong != intent.getSerializableExtra(KEY_SONG_LIST)) {
+                if (mListSong != intent.getSerializableExtra(KEY_SONG_LIST)) {
                     mListSong = (List<Song>) intent.getSerializableExtra(KEY_SONG_LIST);
                 }
 
-                mSongPos = intent.getIntExtra(KEY_SONG_POSITION,-1);
+                mSongPos = intent.getIntExtra(KEY_SONG_POSITION, -1);
                 mSong = mListSong.get(mSongPos);
 
                 playSong();
@@ -135,7 +136,7 @@ public class MusicService extends Service implements
         return START_NOT_STICKY;
     }
 
-    private void sendSongData(){
+    private void sendSongData() {
         mSongDataIntent.putExtra("song", mSong);
         mSongDataIntent.putExtra("dur", mMediaPlayer.getDuration());
         mSongDataIntent.putExtra("playing", isPlaying);
@@ -193,6 +194,7 @@ public class MusicService extends Service implements
         if (mMediaPlayer != null) {
             isPlaying = false;
             mMediaPlayer.release();
+
             mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
 
             initMediaPlayer();
@@ -201,6 +203,7 @@ public class MusicService extends Service implements
 
             LogUtils.d("Song: " + mSongPos);
             LogUtils.d("Song: " + mSong.getName());
+
 
             updateNotification();
             updateWidget();
@@ -223,20 +226,21 @@ public class MusicService extends Service implements
 
     public void resumeSong() {
         if (mMediaPlayer != null) {
+
             mMediaPlayer.seekTo(mCurrent);
             mMediaPlayer.start();
             isPlaying = true;
-
             updateNotification();
             updateWidget();
             sendSongData();
+
         }
     }
 
     public void nextSong() {
-        if(mSongPos < mListSong.size() - 1) {
+        if (mSongPos < mListSong.size() - 1) {
             mSongPos++;
-        }else {
+        } else {
             mSongPos = 0;
         }
         LogUtils.d("pos" + mSongPos);
@@ -246,10 +250,10 @@ public class MusicService extends Service implements
         playSong();
     }
 
-    public void prevSong(){
-        if(mSongPos > 0) {
-            mSongPos --;
-        }else {
+    public void prevSong() {
+        if (mSongPos > 0) {
+            mSongPos--;
+        } else {
             mSongPos = mListSong.size() - 1;
         }
         mSong = mListSong.get(mSongPos);
@@ -269,19 +273,16 @@ public class MusicService extends Service implements
 
         stopMuzicForeground();
 
-        if(!isBinding){
+        if (!isBinding) {
             stopSelf();
-        }else {
+        } else {
             mMediaPlayer = MediaPlayer.create(this, mSong.getUri());
             updateWidget();
             sendSongData();
         }
-
-        stopSongRunnable();
-
     }
 
-    public int getSongDur(){
+    public int getSongDur() {
         return mMediaPlayer == null ? MAX_SEEKBAR_VALUE : mMediaPlayer.getDuration();
     }
 
@@ -297,7 +298,7 @@ public class MusicService extends Service implements
 
     }
 
-    private void updateWidget(){
+    private void updateWidget() {
         Intent mSongDataWidgetIntent = new Intent(this, MuzicAppWidget.class);
         mSongDataWidgetIntent.setAction(GLOBAL_BROADCAST_RECEIVER);
 
@@ -317,39 +318,52 @@ public class MusicService extends Service implements
         isForegroundRunning = true;
     }
 
-    private void stopMuzicForeground(){
+    private void stopMuzicForeground() {
         isForegroundRunning = false;
         stopForeground(true);
     }
 
-    public Song getPlayingSong(){
+    public Song getPlayingSong() {
         return mSong;
     }
 
-    public List<Song> getListSong(){
+    public List<Song> getListSong() {
         return mListSong;
     }
 
-    public int getPlayingSongPos(){
+    public int getPlayingSongPos() {
         return mSongPos;
     }
 
-    private void startSongRunnable(){
+    private void startSongRunnable() {
+
+        if(mRunnable != null){
+            mRunnable = null;
+        }
+        mRunnable = () -> {
+            if (mMediaPlayer != null && isPlaying) {
+                mSongDataIntent.putExtra("cur", mMediaPlayer.getCurrentPosition());
+                mBroadcaster.sendBroadcast(mSongDataIntent);
+            }
+            mHandler.postDelayed(mRunnable, 100);
+        };
+
         mRunnable.run();
     }
 
-    private void stopSongRunnable(){
+    private void stopSongRunnable() {
         mHandler.removeCallbacks(mRunnable);
     }
 
     @Override
     public void onDestroy() {
         LogUtils.d("Service Destroy");
-        if(mMediaPlayer != null){
+        if (mMediaPlayer != null) {
             mMediaPlayer.release();
             mMediaPlayer = null;
         }
 
+        mAudioManager.abandonAudioFocus(this);
         stopSongRunnable();
 
         super.onDestroy();
@@ -373,8 +387,18 @@ public class MusicService extends Service implements
         return false;
     }
 
+
+    @Override
+    public void onAudioFocusChange(int focusChange) {
+        if (focusChange <= 0) {
+            pauseSong();
+        } else {
+            resumeSong();
+        }
+    }
+
     public int getMediaSession() {
-        if(mMediaPlayer != null) {
+        if (mMediaPlayer != null) {
             return mMediaPlayer.getAudioSessionId();
         }
         return -1;
@@ -407,4 +431,5 @@ public class MusicService extends Service implements
         isBinding = false;
         return super.onUnbind(intent);
     }
+
 }

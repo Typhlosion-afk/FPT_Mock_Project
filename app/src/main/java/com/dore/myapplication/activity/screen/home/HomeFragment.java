@@ -1,6 +1,6 @@
 package com.dore.myapplication.activity.screen.home;
 
-import static com.dore.myapplication.MusicApplication.providerDAO;
+import static com.dore.myapplication.activity.MainActivity.providerDAO;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;

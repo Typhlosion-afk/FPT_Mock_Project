@@ -17,7 +17,6 @@ import android.net.Uri;
 import android.util.Log;
 import android.widget.RemoteViews;
 
-import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;

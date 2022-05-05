@@ -66,13 +66,11 @@ public class CirSeekBar extends View {
 
     private OnChangeIndicatorPosition listener;
 
-    private TypedArray typedArray;
-
     @SuppressLint("CustomViewStyleable")
     public CirSeekBar(Context context, @Nullable AttributeSet attrs) {
         super(context, attrs);
 
-        typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CirSeekBar);
+        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.CirSeekBar);
         mProgressWidth = typedArray.getDimension(R.styleable.CirSeekBar_cir_progress_stroke_width, 10);
         mBackgroundWidth = typedArray.getDimension(R.styleable.CirSeekBar_cir_background_stroke_width, 5);
 

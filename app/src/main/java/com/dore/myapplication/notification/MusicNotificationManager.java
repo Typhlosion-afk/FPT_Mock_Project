@@ -28,11 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.request.target.BitmapImageViewTarget;
-import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.target.NotificationTarget;
-import com.bumptech.glide.request.transition.Transition;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.MainActivity;
 import com.dore.myapplication.model.Song;

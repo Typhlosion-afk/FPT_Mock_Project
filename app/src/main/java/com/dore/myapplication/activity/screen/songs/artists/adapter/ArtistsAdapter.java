@@ -20,18 +20,18 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Artist;
+import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsViewHolder> {
 
-    private View mRootView;
-
     private List<Artist> mListArtist;
 
-    private Context mContext;
+    private final Context mContext;
 
+    private final ImageUtil imageUtil = new ImageUtil();
 
     public ArtistsAdapter(List<Artist> mListArtist, Context context) {
         this.mListArtist = new ArrayList<>();
@@ -51,7 +51,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
     @Override
     public ArtistsViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
-        mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_artists, parent, false);
+        View mRootView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_artists, parent, false);
 
         return new ArtistsViewHolder(mRootView);
     }
@@ -64,12 +64,7 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
 //        holder.txtNumSong.setText(strNumSong(artist.getSongs().size()));
         holder.txtNumAlbum.setText(strNumAlbum(artist.getAlbums().size()));
 
-        Glide
-                .with(mContext)
-                .load(artist.getAlbums().get(0).getListSong().get(0).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .into(holder.img);
+        imageUtil.showAlbumImage(mContext, artist.getAlbums().get(0), holder.img);
 
     }
 

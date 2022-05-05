@@ -22,6 +22,7 @@ import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.ImageUtil;
 import com.dore.myapplication.utilities.LogUtils;
 
 import java.io.Serializable;
@@ -52,15 +53,8 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
     @Override
     public void onBindViewHolder(@NonNull HomeRecommendAdapter.HomeHolder holder, int position) {
 
-        Glide
-                .with(mContext)
-                .load(mListSong.get(position).getImgPath())
-                .centerCrop()
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .centerCrop()
-                .into(holder.imgBackground);
-
+        ImageUtil imageUtil = new ImageUtil();
+        imageUtil.showSongImage(mContext, mListSong.get(position), holder.imgBackground);
 
         holder.txtName.setText(mListSong.get(position).getName());
         holder.txtAuthor.setText(mListSong.get(position).getAuthor());

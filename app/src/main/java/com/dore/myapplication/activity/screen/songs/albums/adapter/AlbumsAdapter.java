@@ -15,25 +15,24 @@ import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Album;
+import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHolder> {
 
-    private View mRootView;
-
     private List<Album> mAlbumList;
 
-    private Context mContext;
+    private final Context mContext;
 
     private final String TAG = "album";
+
+    private final ImageUtil mImageUtil = new ImageUtil();
 
     public AlbumsAdapter(List<Album> albumList, Context context) {
 
@@ -50,7 +49,7 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
     @NonNull
     @Override
     public AlbumsAdapter.AlbumsHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_albums, parent, false);
+        View mRootView = LayoutInflater.from(mContext).inflate(R.layout.card_albums, parent, false);
         return new AlbumsHolder(mRootView);
     }
 
@@ -62,12 +61,8 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
         holder.txtAuthor.setText(album.getAuthor());
         holder.txtNumSong.setText(getStrSizeAlbum(album.getListSong().size()));
 
-        Glide
-                .with(mContext)
-                .load(album.getListSong().get(0).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .into(holder.img);
+        mImageUtil.showAlbumImage(mContext, album, holder.img);
+
     }
 
     @Override

@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,10 +32,13 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
     private Context mContext;
 
-    public AlbumDetailAdapter(Context context, List<Song> mListSong) {
-        this.mContext = context;
-        this.mListSong = new ArrayList<>();
-        this.mListSong.addAll(mListSong);
+    private TimeUtil mTimeUtil;
+
+    public AlbumDetailAdapter(Context context, List<Song> listSong) {
+        mTimeUtil = new TimeUtil();
+        mContext = context;
+        mListSong = new ArrayList<>();
+        mListSong.addAll(listSong);
     }
 
     private String strDetail(String year, int numSong, int time) {
@@ -50,8 +54,10 @@ public class AlbumDetailAdapter extends RecyclerView.Adapter<AlbumDetailAdapter.
 
     @Override
     public void onBindViewHolder(@NonNull AlbumHolder holder, int position) {
-        holder.txtName.setText(mListSong.get(position).getName());
-        holder.txtTime.setText(mListSong.get(position).getStrDurTime());
+        Song song = mListSong.get(position);
+
+        holder.txtName.setText(song.getName());
+        holder.txtTime.setText(mTimeUtil.getSongTime(song));
     }
 
     @Override

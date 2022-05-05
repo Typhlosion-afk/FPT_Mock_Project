@@ -6,7 +6,6 @@ import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,14 +13,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,9 +27,11 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
 
     private View mRootView;
 
-    private ArrayList<Song> mListSong;
+    private final ArrayList<Song> mListSong;
 
-    private Context mContext;
+    private final Context mContext;
+
+    private final ImageUtil mImageUtil = new ImageUtil();
 
     public AllSongsAdapter(Context context, List<Song> songs) {
         mContext = context;
@@ -52,13 +51,7 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
         holder.txtSongName.setText(mListSong.get(position).name);
         holder.txtSongAuthor.setText(mListSong.get(position).author);
 
-        Glide
-                .with(mContext)
-                .load(mListSong.get(position).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .centerCrop()
-                .into(holder.imgSong);
+        mImageUtil.showSongImage(mContext, mListSong.get(position), holder.imgSong);
     }
 
     @Override

@@ -69,7 +69,7 @@ public class ProviderDAO {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String uriSong = ContentUris
-                        .withAppendedId(ALBUMART_URI, Integer.parseInt(cursor.getString(idColumn)))
+                        .withAppendedId(ALBUMART_URI, Long.parseLong(cursor.getString(idColumn)))
                         .toString();
 
                 Song song = new Song(
@@ -120,7 +120,7 @@ public class ProviderDAO {
         if (cursor != null && cursor.moveToFirst()) {
             do {
                 String uriSong = ContentUris
-                        .withAppendedId(ALBUMART_URI, Integer.parseInt(cursor.getString(idColumn)))
+                        .withAppendedId(ALBUMART_URI, Long.parseLong(cursor.getString(idColumn)))
                         .toString();
 
                 Song song = new Song(
@@ -197,7 +197,7 @@ public class ProviderDAO {
                 null)) {
             while (songCursor.moveToNext() && searchList.size() < limit) {
                 String uriSong = ContentUris
-                        .withAppendedId(ALBUMART_URI, Integer.parseInt(songCursor.getString(idColumn)))
+                        .withAppendedId(ALBUMART_URI, Long.parseLong(songCursor.getString(idColumn)))
                         .toString();
 
                 Song song = new Song(

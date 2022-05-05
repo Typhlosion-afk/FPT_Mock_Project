@@ -1,6 +1,5 @@
 package com.dore.myapplication.activity;
 
-import static com.dore.myapplication.MusicApplication.providerDAO;
 import static com.dore.myapplication.utilities.Constants.LOCAL_BROADCAST_RECEIVER;
 import static com.dore.myapplication.utilities.Constants.MAX_SEEKBAR_VALUE;
 
@@ -36,11 +35,11 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.ProviderDAO;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.ImageUtil;
 import com.dore.myapplication.utilities.LogUtils;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationView;
@@ -50,15 +49,17 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+    @SuppressLint("StaticFieldLeak")
+    public static ProviderDAO providerDAO;
+
+    @SuppressLint("StaticFieldLeak")
+    public static NavController mainNavController;
+
     private EditText mEdtSearch;
 
     private ImageView mBtnDrawer;
 
     private ImageView mBtnSearch;
-
-    private Boolean isDrawerShowing = false;
-
-    public static NavController mainNavController;
 
     private NavigationView mDrawerNavigationView;
 
@@ -84,8 +85,6 @@ public class MainActivity extends AppCompatActivity {
 
     private int mSongDur = MAX_SEEKBAR_VALUE;
 
-    private int mSongPos = 0;
-
     private boolean mBound = false;
 
     private boolean mIsPlaying = false;
@@ -93,8 +92,6 @@ public class MainActivity extends AppCompatActivity {
     private Song mSong;
 
     private boolean isSeekbarTouching = false;
-
-    private List<Song> mListSong = new ArrayList<>();
 
     private BroadcastReceiver receiver;
 
@@ -266,6 +263,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    private final ImageUtil mImageUtil = new ImageUtil();
+
     private void updateController(Song song, int dur, int cur, boolean playing) {
         if (song != mSong) {
             mSong = song;
@@ -274,12 +273,7 @@ public class MainActivity extends AppCompatActivity {
             mTxtSongAuthor.setText(mSong.getAuthor());
             mSeekBar.setMax(mSongDur);
 
-            Glide
-                    .with(this)
-                    .load(mSong.imgPath)
-                    .placeholder(R.drawable.img_bg_playlist_default)
-                    .centerCrop()
-                    .into(mImgSong);
+            mImageUtil.showSongImage(this, mSong, mImgSong);
         }
 
         if (mIsPlaying != playing) {
@@ -303,13 +297,7 @@ public class MainActivity extends AppCompatActivity {
         if (mSong != null) {
             mTxtSongName.setText(mSong.getName());
             mTxtSongAuthor.setText(mSong.getAuthor());
-
-            Glide
-                    .with(this)
-                    .load(mSong.imgPath)
-                    .placeholder(R.drawable.img_bg_playlist_default)
-                    .centerCrop()
-                    .into(mImgSong);
+            mImageUtil.showSongImage(this, mSong, mImgSong);
 
             mSeekBar.setProgress(mSongCur);
             mSeekBar.setMax(mSongDur);

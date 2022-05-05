@@ -8,12 +8,12 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
 import com.dore.myapplication.activity.screen.albumdetail.adapter.AlbumDetailAdapter;
 import com.dore.myapplication.base.BaseFragment;
 import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Song;
+import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,27 +75,16 @@ public class AlbumDetailFragment extends BaseFragment {
         mImgAvatar = mRootView.findViewById(R.id.img_album_avatar);
         mImgCover = mRootView.findViewById(R.id.img_album_cover);
 
+        //TODO test value
         int time = 32;
 
         mTxtName.setText(album.getName());
         mTxtAuthor.setText(album.getAuthor());
         mTxtDetail.setText(strAlbumDetails(album.getYear(), album.getListSong().size(), time));
-        Glide
-                .with(mRootView.getContext())
-                .load(album.getListSong().get(0).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .centerCrop()
-                .into(mImgAvatar);
 
-        Glide
-                .with(mRootView.getContext())
-                .load(album.getListSong().get(0).getImgPath())
-                .placeholder(R.drawable.img_bg_recommend_default)
-                .error(R.drawable.img_bg_recommend_default)
-                .centerCrop()
-                .into(mImgCover);
-
+        ImageUtil imageUtil = new ImageUtil();
+        imageUtil.showAlbumImage(mRootView.getContext(), album, mImgAvatar);
+        imageUtil.showAlbumImage(mRootView.getContext(), album, mImgCover);
     }
 
     private void initAdapter() {

@@ -23,7 +23,9 @@ import com.dore.myapplication.customview.CirSeekBar;
 import com.dore.myapplication.customview.MuzicVisualizer;
 import com.dore.myapplication.model.Song;
 import com.dore.myapplication.service.MusicService;
+import com.dore.myapplication.utilities.ImageUtil;
 import com.dore.myapplication.utilities.LogUtils;
+import com.dore.myapplication.utilities.TimeUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -74,6 +76,10 @@ public class NowPlayingFragment extends BaseFragment{
 
     private int mAudioSession = -1;
 
+    private TimeUtil mTimeUtil = new TimeUtil();
+
+    private ImageUtil mImageUtil = new ImageUtil();
+
     public NowPlayingFragment() {
     }
 
@@ -84,6 +90,7 @@ public class NowPlayingFragment extends BaseFragment{
 
     @Override
     public void onViewReady(View rootView) {
+
         mRootView = rootView;
 
         initBroadcast();
@@ -128,14 +135,9 @@ public class NowPlayingFragment extends BaseFragment{
             txtSongName.setText(mSong.getName());
             txtSongAuthor.setText(mSong.getAuthor());
             mSongDur = dur;
-            txtDurTime.setText(posToTime(mSongDur));
+            txtDurTime.setText(mTimeUtil.posToTime(mSongDur));
 
-            Glide
-                    .with(mRootView.getContext())
-                    .load(mSong.imgPath)
-                    .placeholder(R.drawable.img_bg_playlist_default)
-                    .centerCrop()
-                    .into(mImgSong);
+            mImageUtil.showSongImage(mRootView.getContext(), mSong, mImgSong);
         }
 
         if (mIsPlaying != playing) {
@@ -190,15 +192,10 @@ public class NowPlayingFragment extends BaseFragment{
             txtSongName.setText(mSong.getName());
             txtSongAuthor.setText(mSong.getAuthor());
 
-            Glide
-                    .with(mRootView.getContext())
-                    .load(mSong.imgPath)
-                    .placeholder(R.drawable.img_bg_playlist_default)
-                    .centerCrop()
-                    .into(mImgSong);
+            mImageUtil.showSongImage(mRootView.getContext(), mSong, mImgSong);
 
             btnPlay.setImageResource(mIsPlaying ? R.drawable.ic_control_pause : R.drawable.ic_control_play);
-            txtDurTime.setText(posToTime(mSongDur));
+            txtDurTime.setText(mTimeUtil.posToTime(mSongDur));
 
             updateUiWithCur();
         }
@@ -216,7 +213,7 @@ public class NowPlayingFragment extends BaseFragment{
             @Override
             public void onChangingPos(float percent) {
                 isSeekBarTouching = true;
-                txtCurTime.setText(posToTime((int) (percent / 100 * mSongDur)));
+                txtCurTime.setText(mTimeUtil.posToTime((int) (percent / 100 * mSongDur)));
             }
 
             @Override
@@ -253,7 +250,7 @@ public class NowPlayingFragment extends BaseFragment{
     private void updateUiWithCur() {
         if (mSongDur != 0) {
             seekBar.setProgress((mSongCur * 1.0f / mSongDur) * 100);
-            txtCurTime.setText(posToTime(mSongCur));
+            txtCurTime.setText(new TimeUtil().posToTime(mSongCur));
         }
     }
 
@@ -263,11 +260,4 @@ public class NowPlayingFragment extends BaseFragment{
         super.onDestroy();
     }
 
-    private String posToTime(int pos) {
-        int m = pos / 1000 / 60;
-        int s = pos / 1000 % 60;
-        String min = m < 10 ? "0" + m : "" + m;
-        String sec = s < 10 ? "0" + s : "" + s;
-        return min + ":" + sec;
-    }
 }

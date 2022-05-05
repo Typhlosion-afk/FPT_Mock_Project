@@ -1,6 +1,6 @@
 package com.dore.myapplication.activity.screen.songs.albums;
 
-import static com.dore.myapplication.MusicApplication.providerDAO;
+import static com.dore.myapplication.activity.MainActivity.providerDAO;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -21,13 +21,9 @@ public class AlbumsFragment extends BaseFragment {
 
     private View mRootView;
 
-    private List<Song> mListSong = new ArrayList<>();
+    private final List<Song> mListSong = new ArrayList<>();
 
     private List<Album> mListAlbum = new ArrayList<>();
-
-    private AlbumsAdapter mAlbumsAdapter;
-
-    private RecyclerView mRecyclerView;
 
 
     public AlbumsFragment() {
@@ -53,8 +49,8 @@ public class AlbumsFragment extends BaseFragment {
     }
 
     private void initAdapter() {
-        mAlbumsAdapter = new AlbumsAdapter(mListAlbum, mRootView.getContext());
-        mRecyclerView = mRootView.findViewById(R.id.albums_container);
+        AlbumsAdapter mAlbumsAdapter = new AlbumsAdapter(mListAlbum, mRootView.getContext());
+        RecyclerView mRecyclerView = mRootView.findViewById(R.id.albums_container);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mRootView.getContext(), 2, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAlbumsAdapter);
     }

@@ -1,6 +1,6 @@
 package com.dore.myapplication.activity.screen.songs.allsong;
 
-import static com.dore.myapplication.MusicApplication.providerDAO;
+import static com.dore.myapplication.activity.MainActivity.providerDAO;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,11 +20,7 @@ public class AllSongsFragment extends BaseFragment {
 
     private View mRootView;
 
-    private List<Song> mListSong = new ArrayList<>();
-
-    private AllSongsAdapter mAllSongsAdapter;
-
-    private RecyclerView mRecycleView;
+    private final List<Song> mListSong = new ArrayList<>();
 
     public AllSongsFragment() {
     }
@@ -72,8 +68,8 @@ public class AllSongsFragment extends BaseFragment {
     }
 
     private void initAdapter() {
-        mAllSongsAdapter = new AllSongsAdapter(mRootView.getContext(), mListSong);
-        mRecycleView = mRootView.findViewById(R.id.recycle_all_song);
+        AllSongsAdapter mAllSongsAdapter = new AllSongsAdapter(mRootView.getContext(), mListSong);
+        RecyclerView mRecycleView = mRootView.findViewById(R.id.recycle_all_song);
 
         mRecycleView.setLayoutManager(new LinearLayoutManager(
                 mRootView.getContext(),
