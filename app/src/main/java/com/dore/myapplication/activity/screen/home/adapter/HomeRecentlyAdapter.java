@@ -78,4 +78,9 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
         }
 
     }
+
+    public void update(ArrayList<Song> songs){
+        this.mListSong = songs;
+        notifyItemRangeInserted(0, mListSong.size());
+    }
 }

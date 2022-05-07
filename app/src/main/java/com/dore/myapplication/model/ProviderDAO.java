@@ -22,7 +22,7 @@ public class ProviderDAO {
 
     private List<Album> mAllAlbum = new ArrayList<>();
 
-    private Context mContext;
+    private final Context mContext;
 
 
     int idColumn;

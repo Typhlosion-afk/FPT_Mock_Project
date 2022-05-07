@@ -6,6 +6,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.os.Handler;
+import android.util.Log;
 import android.view.View;
 
 import com.dore.myapplication.R;
@@ -57,6 +59,7 @@ public class HomeFragment extends BaseFragment {
 
         initData();
         initAdapter();
+
     }
 
     private void initData() {
@@ -105,4 +108,14 @@ public class HomeFragment extends BaseFragment {
         mRecycleViewRecently.setAdapter(mHomeRecentlyAdapter);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        Log.d("TAG", "onDestroy");
+        super.onDestroy();
+    }
 }

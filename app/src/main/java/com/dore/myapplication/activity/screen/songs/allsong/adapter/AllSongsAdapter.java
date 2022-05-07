@@ -27,7 +27,7 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
 
     private View mRootView;
 
-    private final ArrayList<Song> mListSong;
+    private ArrayList<Song> mListSong;
 
     private final Context mContext;
 
@@ -84,6 +84,11 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
             });
         }
 
+    }
+
+    public void update(List<Song> songs){
+        mListSong = new ArrayList<>(songs);
+        notifyItemRangeInserted(0, mListSong.size());
     }
 
 }

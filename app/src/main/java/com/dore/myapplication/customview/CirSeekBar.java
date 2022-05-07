@@ -116,7 +116,9 @@ public class CirSeekBar extends View {
                         && distanceTouchToCenter < mRadius + mIndicatorRadius * 2){
                     isOnTouching = true;
                     mPos = XYtoDegree(event.getX(), event.getY());
-                    listener.onChangingPos(mPos / 360 * 100);
+                    if(listener!= null){
+                        listener.onChangingPos(mPos / 360 * 100);
+                    }
                 }else{
                     return true;
                 }
@@ -124,11 +126,12 @@ public class CirSeekBar extends View {
                 break;
             }
             case MotionEvent.ACTION_MOVE: {
-                if(isOnTouching) {
+                if(isOnTouching && listener != null) {
                     mPos = XYtoDegree(event.getX(), event.getY());
                     listener.onChangingPos(mPos / 360 * 100);
                 }
                 break;
+
             }
             case MotionEvent.ACTION_UP: {
                 if(isOnTouching) {

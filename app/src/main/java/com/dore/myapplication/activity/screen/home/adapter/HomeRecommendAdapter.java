@@ -95,4 +95,9 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
         }
 
     }
+
+    public void update(ArrayList<Song> songs){
+        this.mListSong = songs;
+        notifyItemRangeInserted(0, mListSong.size());
+    }
 }
