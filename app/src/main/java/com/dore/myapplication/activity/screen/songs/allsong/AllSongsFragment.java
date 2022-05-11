@@ -37,8 +37,8 @@ public class AllSongsFragment extends BaseFragment {
     public void onViewReady(View rootView) {
         mRootView = rootView;
 
-        initData();
         initAdapter();
+        setThreadUpdateData();
     }
 
     @Override
@@ -63,6 +63,22 @@ public class AllSongsFragment extends BaseFragment {
     public void onDestroy() {
         LogUtils.d("Destroy");
         super.onDestroy();
+    }
+
+    private void setThreadUpdateData() {
+        Runnable updateUiRunnable = () -> {
+            if (mAllSongsAdapter != null) {
+                mAllSongsAdapter.update(mListSong);
+            }
+        };
+
+        Runnable dataRunnable = () -> {
+            initData();
+            requireActivity().runOnUiThread(updateUiRunnable);
+        };
+
+        Thread dataThread = new Thread(dataRunnable);
+        dataThread.start();
     }
 
     private void initData() {

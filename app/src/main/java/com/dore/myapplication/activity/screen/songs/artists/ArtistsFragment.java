@@ -46,8 +46,8 @@ public class ArtistsFragment extends BaseFragment {
         mRootView = rootView;
         LogUtils.d("Create");
 
-        initData();
         initAdapter();
+        setThreadUpdateData();
     }
 
     @Override
@@ -77,6 +77,22 @@ public class ArtistsFragment extends BaseFragment {
     private void initData() {
         mListArtist.clear();
         mListArtist.addAll(providerDAO.getAllArtist());
+    }
+
+    private void setThreadUpdateData() {
+        Runnable updateUiRunnable = () -> {
+            if (mArtistsAdapter!= null) {
+                mArtistsAdapter.update(mListArtist);
+            }
+        };
+
+        Runnable dataRunnable = () -> {
+            initData();
+            requireActivity().runOnUiThread(updateUiRunnable);
+        };
+
+        Thread dataThread = new Thread(dataRunnable);
+        dataThread.start();
     }
 
     private void initAdapter() {

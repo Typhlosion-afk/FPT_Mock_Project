@@ -25,6 +25,7 @@ public class AlbumsFragment extends BaseFragment {
 
     private List<Album> mListAlbum = new ArrayList<>();
 
+    AlbumsAdapter mAlbumsAdapter;
 
     public AlbumsFragment() {
     }
@@ -39,19 +40,39 @@ public class AlbumsFragment extends BaseFragment {
 
         mRootView = rootView;
 
-        initData();
         initAdapter();
+        setThreadUpdateData();
     }
+
 
     private void initData() {
         mListAlbum.clear();
         mListAlbum = providerDAO.getAllAlbum();
     }
 
+    private void setThreadUpdateData() {
+
+        Runnable updateUiRunnable = () -> {
+            if (mAlbumsAdapter != null) {
+                mAlbumsAdapter.update(mListAlbum);
+            }
+        };
+
+        Runnable dataRunnable = () -> {
+            initData();
+            requireActivity().runOnUiThread(updateUiRunnable);
+        };
+
+        Thread dataThread = new Thread(dataRunnable);
+        dataThread.start();
+    }
+
     private void initAdapter() {
-        AlbumsAdapter mAlbumsAdapter = new AlbumsAdapter(mListAlbum, mRootView.getContext());
+        mAlbumsAdapter = new AlbumsAdapter(mListAlbum, mRootView.getContext());
         RecyclerView mRecyclerView = mRootView.findViewById(R.id.albums_container);
         mRecyclerView.setLayoutManager(new GridLayoutManager(mRootView.getContext(), 2, RecyclerView.VERTICAL, false));
         mRecyclerView.setAdapter(mAlbumsAdapter);
     }
+
+
 }

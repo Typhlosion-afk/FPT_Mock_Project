@@ -26,23 +26,17 @@ public class HomeFragment extends BaseFragment {
 
     private Context mContext;
 
-    private RecyclerView mRecycleViewRecently;
-
-    private RecyclerView mRecycleViewPlaylist;
-
-    private RecyclerView mRecycleViewRecommend;
-
     private HomePlaylistAdapter mHomePlaylistAdapter;
 
     private HomeRecentlyAdapter mHomeRecentlyAdapter;
 
     private HomeRecommendAdapter mHomeRecommendAdapter;
 
-    private ArrayList<Song> mListRecommend = new ArrayList<>();
+    private final ArrayList<Song> mListRecommend = new ArrayList<>();
 
-    private ArrayList<Playlist> mListPlaylist = new ArrayList<>();
+    private final ArrayList<Playlist> mListPlaylist = new ArrayList<>();
 
-    private ArrayList<Song> mListRecently = new ArrayList<>();
+    private final ArrayList<Song> mListRecently = new ArrayList<>();
 
     public HomeFragment() {
     }
@@ -57,9 +51,30 @@ public class HomeFragment extends BaseFragment {
         mRootView = rootView;
         mContext = mRootView.getContext();
 
-        initData();
         initAdapter();
+        setThreadUpdateData();
+    }
 
+    private void setThreadUpdateData() {
+
+        Runnable updateUiRunnable = () -> {
+            if (mHomePlaylistAdapter != null &&
+                    mHomeRecommendAdapter != null &&
+                    mHomeRecentlyAdapter != null) {
+                mHomeRecentlyAdapter.update(mListRecently);
+                mHomeRecommendAdapter.update(mListRecommend);
+            }
+        };
+
+
+        Runnable dataRunnable = () -> {
+            initData();
+            requireActivity().runOnUiThread(updateUiRunnable);
+
+        };
+
+        Thread dataThread = new Thread(dataRunnable);
+        dataThread.start();
     }
 
     private void initData() {
@@ -89,19 +104,19 @@ public class HomeFragment extends BaseFragment {
                         LinearLayoutManager.HORIZONTAL,
                         false);
 
-        mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
+        RecyclerView mRecycleViewRecommend = mRootView.findViewById(R.id.recycle_hot_rec);
         mRecycleViewRecommend.setLayoutManager(layoutHomeRecommend);
         mRecycleViewRecommend.setNestedScrollingEnabled(false);
         mHomeRecommendAdapter = new HomeRecommendAdapter(mContext, mListRecommend);
         mRecycleViewRecommend.setAdapter(mHomeRecommendAdapter);
 
-        mRecycleViewPlaylist = mRootView.findViewById(R.id.recycle_playlist);
+        RecyclerView mRecycleViewPlaylist = mRootView.findViewById(R.id.recycle_playlist);
         mRecycleViewPlaylist.setLayoutManager(layoutPlaylist);
-        mHomePlaylistAdapter = new HomePlaylistAdapter(mContext ,mListPlaylist);
+        mHomePlaylistAdapter = new HomePlaylistAdapter(mContext, mListPlaylist);
         mRecycleViewPlaylist.setNestedScrollingEnabled(false);
         mRecycleViewPlaylist.setAdapter(mHomePlaylistAdapter);
 
-        mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
+        RecyclerView mRecycleViewRecently = mRootView.findViewById(R.id.recycle_recently);
         mRecycleViewRecently.setNestedScrollingEnabled(false);
         mRecycleViewRecently.setLayoutManager(layoutRecently);
         mHomeRecentlyAdapter = new HomeRecentlyAdapter(mListRecently);
@@ -118,4 +133,5 @@ public class HomeFragment extends BaseFragment {
         Log.d("TAG", "onDestroy");
         super.onDestroy();
     }
+
 }

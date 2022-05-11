@@ -4,10 +4,12 @@ import static com.dore.myapplication.activity.MainActivity.mainNavController;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -96,8 +98,12 @@ public class HomeRecommendAdapter extends RecyclerView.Adapter<HomeRecommendAdap
 
     }
 
-    public void update(ArrayList<Song> songs){
-        this.mListSong = songs;
-        notifyItemRangeInserted(0, mListSong.size());
+    @SuppressLint("NotifyDataSetChanged")
+    public void update(List<Song> songs){
+        if(mListSong != songs) {
+            mListSong = new ArrayList<>(songs);
+            notifyDataSetChanged();
+            Log.d("song", "update list song");
+        }
     }
 }

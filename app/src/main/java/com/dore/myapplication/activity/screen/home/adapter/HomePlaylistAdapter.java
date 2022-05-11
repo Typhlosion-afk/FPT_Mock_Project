@@ -40,13 +40,13 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
     @Override
     public void onBindViewHolder(@NonNull HomePlaylistAdapter.HomeHolder holder, int position) {
 
-        if(mListPlaylist.size() == 0){
+        if (mListPlaylist.size() == 0) {
             holder.imgBackground.setImageResource(R.drawable.add_playlist_bg);
 
             holder.txtName.setVisibility(View.INVISIBLE);
             holder.txtAuthor.setVisibility(View.INVISIBLE);
 
-        }else {
+        } else {
             holder.imgBackground.setImageResource(R.drawable.img_bg_playlist_default);
 
             holder.txtName.setText(mListPlaylist.get(position).getName());
@@ -63,7 +63,7 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
         return "Total " + size;
     }
 
-    class HomeHolder extends RecyclerView.ViewHolder{
+    class HomeHolder extends RecyclerView.ViewHolder {
 
         private TextView txtName;
 
@@ -86,13 +86,11 @@ public class HomePlaylistAdapter extends RecyclerView.Adapter<HomePlaylistAdapte
 
         }
 
-        private void initAction(){
+        private void initAction() {
             itemView.setOnClickListener(v -> {
-                if(mListPlaylist.size() == 0){
+                if (mListPlaylist.size() == 0) {
                     Toast.makeText(mContext, "Dialog add playlist is showing", Toast.LENGTH_SHORT).show();
-                }
-
-                else {
+                } else {
                     //
                 }
             });

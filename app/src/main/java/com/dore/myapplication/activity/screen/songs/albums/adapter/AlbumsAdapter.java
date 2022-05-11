@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.dore.myapplication.R;
 import com.dore.myapplication.model.Album;
+import com.dore.myapplication.model.Song;
 import com.dore.myapplication.utilities.ImageUtil;
 
 import java.util.ArrayList;
@@ -193,6 +194,15 @@ public class AlbumsAdapter extends RecyclerView.Adapter<AlbumsAdapter.AlbumsHold
 
         private void details(Album album) {
 
+        }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void update(List<Album> albums) {
+        if(mAlbumList != albums) {
+            this.mAlbumList.clear();
+            mAlbumList.addAll(albums);
+            notifyDataSetChanged();
         }
     }
 }

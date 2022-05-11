@@ -4,6 +4,7 @@ import static com.dore.myapplication.activity.MainActivity.mainNavController;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_LIST;
 import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
@@ -86,9 +87,13 @@ public class AllSongsAdapter extends RecyclerView.Adapter<AllSongsAdapter.SongHo
 
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     public void update(List<Song> songs){
-        mListSong = new ArrayList<>(songs);
-        notifyItemRangeInserted(0, mListSong.size());
+        if(mListSong != songs) {
+            mListSong.clear();
+            mListSong.addAll(songs);
+            notifyDataSetChanged();
+        }
     }
 
 }

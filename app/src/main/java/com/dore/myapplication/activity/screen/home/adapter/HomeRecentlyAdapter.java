@@ -6,6 +6,7 @@ import static com.dore.myapplication.utilities.Constants.KEY_SONG_POSITION;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -79,8 +80,11 @@ public class HomeRecentlyAdapter extends RecyclerView.Adapter<HomeRecentlyAdapte
 
     }
 
-    public void update(ArrayList<Song> songs){
-        this.mListSong = songs;
-        notifyItemRangeInserted(0, mListSong.size());
+    public void update(ArrayList<Song> songs) {
+        if(mListSong != songs) {
+            this.mListSong = songs;
+            notifyItemRangeInserted(0, mListSong.size());
+            Log.d("song", "update list song");
+        }
     }
 }

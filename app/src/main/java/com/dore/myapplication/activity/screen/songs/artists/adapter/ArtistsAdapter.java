@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.dore.myapplication.R;
+import com.dore.myapplication.model.Album;
 import com.dore.myapplication.model.Artist;
 import com.dore.myapplication.utilities.ImageUtil;
 
@@ -190,6 +191,12 @@ public class ArtistsAdapter extends RecyclerView.Adapter<ArtistsAdapter.ArtistsV
         private void details(Artist artist) {
 
         }
+    }
+
+    @SuppressLint("NotifyDataSetChanged")
+    public void update(List<Artist> artists) {
+        this.mListArtist = artists;
+        notifyDataSetChanged();
     }
 
 }
